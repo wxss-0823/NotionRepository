@@ -6,6 +6,7 @@
 
 ### Git遇见的问题
 
-- fatal: unable to access 'https://github.com/wxss-0823/MathCodes.git/': Failure when receiving data from the peer
+- `fatal: unable to access 'https://github.com/wxss-0823/MathCodes.git/': Failure when receiving data from the peer`
   - 网速太差，换网
-- 
+- `fatal: refusing to merge unrelated histories`
+  - 最后加上`--allow-unrelated-histories`
