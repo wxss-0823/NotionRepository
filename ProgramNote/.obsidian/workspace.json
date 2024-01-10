@@ -11,8 +11,12 @@
             "id": "2a27abef1dff5898",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Front-endNote.md",
+                "mode": "preview",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Front-endNote.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,8 +102,9 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
+                "file": "Front-endNote.md",
+                "linksCollapsed": true,
+                "unlinkedCollapsed": false
               }
             }
           },
@@ -118,10 +124,13 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Front-endNote.md"
+              }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -138,6 +147,6 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "e1fda920ecd3f163",
+  "active": "2a27abef1dff5898",
   "lastOpenFiles": []
 }
