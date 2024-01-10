@@ -2027,63 +2027,1046 @@ li a {
 
 - 创建一个鼠标移动上去后显示下拉菜单的效果。
 
+##### 基本下拉菜单
 
+- 当鼠标移动到指定元素上时，会出现下拉菜单。
 
+##### 下拉菜单
 
+- 创建下拉菜单，并允许用户选取列表中的某一项。
 
+##### 下拉内容对齐方式
 
+```css
+.dropdown-content {    
+    right: 0;
+}
+```
 
+#### 27.  CSS 提示工具（Tooltip）
 
+##### 基础提示框（Tooltip）
 
+- 指示框在鼠标移动到指定元素上时显示。
 
+##### 定位提示工具
 
+- 指示在元素的左右正中间，使用 `top:-5px` 修正位置。具体像素大小由 padding 决定。
+- 指示在元素的上下正中间，使用 `margin-left: -60px` 修正位置，具体大小由表格宽度决定。
 
+##### 添加箭头
 
+- 使用伪元素 `::after` 及 content 属性为提示工具创建一个小箭头标志。箭头是由边框组成的，但组合起来后提示工具类似语音信息框。
+- `border-color` ：将四边形按对角线分为四个三角形，仅显示上三角就类似箭头效果。
 
+##### 淡入效果
 
+- 使用 CSS3 的 transition 属性及 opacity 属性来实现提示工具的淡入效果。
 
+#### 28.  CSS 图片廊
 
+​	[实例](https://www.runoob.com/try/try.php?filename=trycss_image_gallery)
 
+#### 29.  CSS 图像透明/不透明
 
+​	[实例](https://www.runoob.com/css/css-image-transparency.html)
 
+#### 30.  CSS 图像拼合技术
 
+- 使用一个拼合图像，利用偏移完成目标。
 
+  [实例](https://www.runoob.com/css/css-image-sprites.html)
 
+#### 31.  CSS 媒体类型
 
+##### @media 规则
 
+- 允许在相同样式表为不同媒体设置不同的样式。
+- 可使用 `@media screen` ， `@media print` ， `@media screen,print`
 
+##### [其他媒体类型](https://www.runoob.com/css/css-mediatypes.html)
 
+#### 32.  CSS 属性选择器
 
+- 具有特定属性的HTML元素样式不仅仅是 class 和 id。
 
+##### 属性选择器
 
+- 将包含某个属性的全部元素匹配，例如：`[title]` 会匹配所有设置了该属性的元素。
 
+##### 属性和值选择器
 
+```css
+[title=runoob]
+{
+    border:5px solid green;
+}
+```
 
+##### 属性和值的选择器 - 多值
 
+- 属性的值中包含特定值即被匹配。
+- 包含指定值的 `title` 属性，使用（~）分割属性和值。
 
+```css
+[title~=hello] { color:blue; }
+```
 
+- 包含指定值的 `lang` 属性，使用（|）分割属性和值。
 
+```css
+[lang|=en] { color:blue; }
+```
 
+##### 表单样式
 
+- 属性选择器无需使用 class 或 id 的形式
 
+```css
+input[type="text"] {
+	...
+}
+```
 
+#### 33.  CSS 表单
 
+##### 输入框（input）样式
 
+- `input[type=text]` - 选取文本输入框
+- `input[type=password]` - 选取密码输入框
+- `input[type=number]` - 选取数字输入框
 
+##### 输入框填充
 
+- 使用 `padding` 属性可以在输入框中添加内边距。
 
+##### 输入框（input）边框
 
+- 使用 `border` 属性可以修改 input 边框的大小或颜色，使用 `border-radius` 属性可以给 input 添加圆角。
 
+##### 输入框（input）颜色
 
+- 使用 `background-color` 属性来设置输入框的背景颜色，`color` 属性用于修改文本颜色。
 
+##### 输入框（input）聚焦
 
+- 默认情况，输入框获取焦点时，会有蓝色轮廓，设置 input 样式为 `outline: none;` 来忽略该效果。
+- 使用 `:focus` 选择器可以设置输入框在获取焦点时的样式。
 
+```css
+input[type=text]:focus {
+  background-color: lightblue;
+}
+```
 
+##### 输入框（input）图标
 
+- 在输入框中添加图标，可以使用 `background-image` 属性和用于定位的 `background-position` 属性。
+- 注意设置图标的左边距，让图标有一定的空间。
 
+##### 带动画的搜索框
 
+- 使用 CSS `transition` 属性，该属性设置了输入框在获取焦点时会向右延展。
 
+##### 文本框（textarea）样式
 
+- 使用 `resize` 属性来禁用文本框可以重置大小的功能
+- `resize: none;`
+
+##### 下拉菜单（select）样式
+
+```css
+select {
+	...
+}
+```
+
+##### 按钮样式
+
+```css
+input[type=button], input[type=submit], input[type=reset] {
+	...
+}
+ 
+/* 提示: 使用 width: 100% 设置全宽按钮 */
+```
+
+##### 响应式表单
+
+- 可以根据浏览器窗口大小重新布局各个元素，可以通过重置浏览器窗口大小来查看效果。
+
+```css
+/* 响应式布局 layout - 在屏幕宽度小于 600px 时， 设置为上下堆叠元素 */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+```
+
+#### 34.  CSS 计数器
+
+- 通过一个变量来设置，根据规则递增变量。
+
+##### 使用计数器自动编号
+
+- `counter-reset` - 创建或者重置计数器
+- `counter-increment` - 递增变量
+- `content` - 插入生成的内容
+- `counter()` 或 `counters()` 函数 - 将计数器的值添加到元素
+
+```css
+body {
+  counter-reset: section;
+}
+ 
+h2::before {
+  counter-increment: section;
+  content: "Section " counter(section) ": ";
+}
+```
+
+##### 嵌套计数器
+
+- 在页面创建一个计时器，在每个 \<h1> 元素前添加计数值，嵌套的计数值则放在 \<h2> 元素前面。
+
+#### 35.  CSS 网页布局
+
+##### 头部区域
+
+- 位于整个网页的顶部，一般用于设置网页的标题或者网页的logo。
+
+##### 菜单导航区域
+
+- 包含了一些链接，可以引导用户浏览其他页面。
+
+##### 内容区域
+
+- 相等的列
+  - 两列可以设置 width 为50%，四列可以设置为25%。
+- 不相等的列
+  - 在中间部分设置内容区域，左右设置导航，加起来100%。 
+
+##### 底部区域
+
+- 在网页的最下方，一般包含版权信息和联系方式等。
+
+##### 响应式网页布局
+
+- 页面的布局会根据屏幕的大小来调整。
+
+#### 36.  CSS !important 规则
+
+- 用于增加样式的权重。
+- 与优先级无关，与最终结果直接相关，会覆盖其他声明。
+
+##### 使用建议
+
+- **一定**要优先考虑使用样式规则的优先级来解决问题而不是 `!important`
+- **只有**在需要覆盖全站或外部 CSS 的特定页面中使用 `!important`
+- **永远不要**在你的插件中使用 `!important`
+- **永远不要**在全站范围的 CSS 代码中使用 `!important`
+
+##### 何时使用 !important
+
+- 在网站上设定一个全站样式的 CSS 样式可以使用 `!important` 
+
+### CSS3 教程
+
+#### 1.  CSS3 边框
+
+##### 圆角
+
+- 由 border-radius 属性定义。
+- 只有两个输入，第一个对应左上角与右下角。
+
+##### 盒阴影
+
+- 由 box-shadow 属性定义。
+
+##### 边界图片
+
+- 由 border-image 属性定义。
+- 允许指定一个图片作为边框。
+
+#### 2.  CSS3 背景
+
+##### background-image 属性
+
+- 添加背景图片。
+
+##### background-size 属性
+
+- 指定背景图像的大小。
+
+##### background-origin 属性
+
+- 指定了背景图像的位置区域。
+- content-box，padding-box，border-box区域可以放置背景图片。
+- 移动图片至指定区域。
+
+##### 多个背景图片
+
+- 允许放置多个背景图片。
+
+##### background-clip 属性
+
+- 背景裁剪属性是从指定位置开始绘制。
+- 裁剪指定区域外的部分。
+
+#### 3.  CSS3 渐变（Gradients）
+
+- 可以在多个指定颜色之间显示平稳的过渡。
+- 定义了两种类型的渐变：
+  - 线性渐变（Linear Gradients） - 向下/向上/向左/向右/对角方向。
+  - 径向渐变（Radial Gradients） - 由它们的中心定义。
+
+##### 线性渐变
+
+###### 使用预定义方向
+
+```css
+background-image: linear-gradient(direction, color-stop1, color-stop2, ...);
+```
+
+###### 使用角度
+
+```css
+background-image: linear-gradient(angle, color-stop1, color-stop2);
+```
+
+###### 使用透明度（transparent）
+
+- rgba() 函数中最后一个参数表示透明度：0表示完全透明，1表示完全不透明。
+
+###### 重复的线性渐变
+
+- 由 repeating-linear-gradient() 定义。
+
+##### 径向渐变
+
+- 至少定义两种颜色节点、指定渐变的中心、形状、大小。
+
+###### 语法
+
+```css
+background-image: radial-gradient(shape size at position, start-color, ..., last-color);
+```
+
+###### 径向渐变 - 颜色节点均匀分布（默认情况下）
+
+```css
+#grad {
+  background-image: radial-gradient(red, yellow, green);
+}
+```
+
+###### 径向渐变 - 颜色节点不均匀分布
+
+```css
+#grad {
+  background-image: radial-gradient(red 5%, yellow 15%, green 60%);
+}
+```
+
+###### 设置形状
+
+- 可以是 circle 或 ellipse。
+
+###### 不同尺寸大小关键词
+
+- **closest-side**
+- **farthest-side**
+- **closest-corner**
+- **farthest-corner**
+
+###### 重复的径向渐变
+
+- 由 repeating-radial-gradient() 函数定义。
+
+#### 4.  CSS3 文本效果
+
+##### 文本阴影
+
+- 由 text-shadow 属性定义。
+- 指定水平阴影、垂直阴影、模糊的距离及阴影的颜色。
+
+##### box-shadow 属性
+
+- 适用于盒子阴影。
+- 可以添加阴影颜色、阴影模糊。
+- 也可以在 `::before` & `::after` 两个伪元素中添加阴影效果。
+- 用于创建卡片效果。
+
+##### Text Overflow 属性
+
+- 指定应向用户如何显示溢出内容。
+
+##### CSS3 的换行
+
+- 自动换行属性允许强制文本换行 - 即使这意味着分裂它中间的一个字。
+
+```css
+p {word-wrap:break-word;}
+```
+
+##### 单词拆分换行
+
+- 指定换行规则。
+
+```css
+/* 在 - 出换行 */
+p.test1 {
+    word-break: keep-all;
+}
+
+/* 在任意字符处换行 */
+p.test2 {
+    word-break: break-all;
+}
+```
+
+#### 5.  CSS3 字体
+
+##### @font-face 规则
+
+- 将字体文件包含在网站中，它会自动下载给需要的用户。
+
+##### 使用自己的字体
+
+```css
+@font-face
+{
+    font-family: myFirstFont;
+    src: url(sansation_light.woff);
+}
+```
+
+##### 使用粗体文本
+
+- 必须添加另一个包含粗体文字的 `@font-face` 规则。
+
+#### 6.  CSS3 2D 转换
+
+- 对元素进行移动、缩放、转动、拉长或拉伸。
+
+##### translate() 方法
+
+- 根据左(X轴)和顶部(Y轴)位置给定的参数，从当前元素位置移动。
+
+ ##### rotate() 方法
+
+- 给定度数顺时针旋转元素。负值是允许的，这样是元素逆时针旋转。
+
+##### scale() 方法
+
+- 该元素增加或减少的大小，取决于宽度（X轴）和高度（Y轴）的参数。
+
+##### skew() 方法
+
+###### 语法
+
+```css
+transform:skew(<angle> [,<angle>]);
+```
+
+- 包含两个参数值，分别表示X轴和Y轴倾斜的角度，如果第二个参数为空，则默认为0，参数为负表示向相反方向倾斜。
+  - `skewX(<angle>);`表示只在X轴(水平方向)倾斜。
+  - `skewY(<angle>);`表示只在Y轴(垂直方向)倾斜。
+
+##### matrix() 方法
+
+- 有六个参数，包含旋转、缩放、移动、倾斜。
+
+#### 7.  CSS3 3D 转换
+
+- 允许使用 3D 转换来对元素进行格式化。
+
+##### rotateX() 方法
+
+- 围绕其在一个给定度数X轴旋转的元素。
+
+##### rotateY() 方法
+
+- 围绕其在一个给定度数Y轴旋转的元素。
+
+#### 8.  CSS3 过渡
+
+- 指定要添加效果的 CSS 属性。
+- 指定效果持续的时间。
+
+- 若未指定期限，则 transition 无效果，因为默认值为0。
+
+##### 多项改变
+
+- 添加多个样式的变换效果，添加的属性由逗号分隔。
+
+#### 9.  CSS3 动画
+
+##### @keyframes 规则
+
+- 规则是创建动画。
+- 指定一个 CSS 样式和动画将逐步从目前的样式更改为新的样式。
+
+##### 动画
+
+- 由 @keyframes 创建动画后，绑定至一个选择器，否则动画不会生效。
+  - 规定动画名称。
+  - 规定动画时长。
+
+#### 10.  CSS3 多列
+
+- 可以将文本内容设计成像报纸一样的多列布局
+
+##### 创建多列
+
+- `column-count` 属性指定了需要分割的列数。
+
+##### 多列中间隙
+
+- `column-gap` 属性指定了列与列间的间隙。
+
+##### 列边框
+
+- `column-rule-style` 属性指定了列与列间的边框样式。
+- `column-rule-width` 属性指定了两列的边框厚度。
+- `column-rule-color` 属性指定了两列的边框颜色。
+
+##### 元素跨越列
+
+- `column-span` 属性制定了元素跨越多少列。
+
+##### 列的宽度
+
+- `column-width` 属性指定了列的宽度。
+
+#### 11.  CSS3 用户界面
+
+##### 调整尺寸（Resizing）
+
+- 指定一个元素是否应该由用户去调整大小。
+
+##### 方框大小调整（Box Sizing）
+
+- 定义了用户应该如何计算一个元素的总大小。
+- `box-sizing: border-box;` 意为 `width` 表示整个边框的总大小；
+- `box-sizing: content-box;` 意为 `width` 表示整个内容的总大小。
+
+##### 外形修饰（outline-offset）
+
+- 对轮廓进行偏移，并在超出边框边缘的位置绘制轮廓。
+  - 轮廓不占用空间。
+  - 轮廓可能是非矩形。
+
+```css
+div {
+    border:2px solid black;
+    outline:2px solid red;
+    outline-offset:15px;
+}
+```
+
+#### 12. CSS3 图片
+
+##### 圆角图片
+
+###### 圆角图片
+
+```css
+img {border-radius: 8px;}
+```
+
+###### 椭圆角图片
+
+```css
+img {border-radius: 50%;}
+```
+
+##### 缩略图
+
+- 使用 border 属性来创建缩略图。
+
+##### 响应式图片
+
+- 自动适配各种尺寸的屏幕。
+
+```css
+img {    
+    max-width: 100%;    
+    height: auto;
+}
+```
+
+##### 图片文本
+
+- 通过定位，父类设置为 `relative` ，子类设置为 `absolute` 。通过相对于父类的偏移使文本显示在图片上。
+
+##### 卡片式图片
+
+- 通过添加 `box-shadow` ，`background-color` 等属性，达到效果。
+
+##### 图片滤镜
+
+- `filter` 属性为元素添加可视效果。
+
+#### 13.  CSS3 按钮
+
+##### 按钮颜色
+
+- `background-color` 设置按钮颜色。
+
+##### 按钮大小
+
+- `font-size` 设置按钮大小。
+
+##### 圆角按钮
+
+- `border-radius` 设置圆角按钮。
+
+##### 边框颜色
+
+- `border` 设置按钮边框颜色。
+
+##### 悬停按钮
+
+- `:hover` 修改鼠标悬停在按钮上的样式。
+
+##### 按钮阴影
+
+- `box-shadow` 属性来为按钮添加阴影。
+
+##### 禁用按钮
+
+- `opacity` 属性为按钮添加透明度。
+- `cursor` 属性设置为 `not-allowed` 来设置一个禁用的图片。
+
+##### 按钮宽度
+
+- 默认由按钮上的文本内容决定。
+- 设置固定宽度用像素（px）；设置响应式按钮用百分比。
+
+##### 按钮组
+
+- 移除外边距并添加 `float:left` 来设置按钮组。
+- 使用 `border` 属性来设置带边框的按钮组。
+
+##### 按钮动画
+
+​	[实例](https://www.runoob.com/try/try.php?filename=trycss_buttons_animate1)
+
+#### 14.  CSS3 框大小
+
+##### 不适用 box-sizing 属性
+
+- **width(宽) + padding(内边距) + border(边框) = 元素实际宽度**
+- **height(高) + padding(内边距) + border(边框) = 元素实际高度**
+
+##### 使用 box-sizing 属性
+
+- 如果在元素上设置了 `box-sizing: border-box;` 则 padding(内边距) 和 border(边框) 也包含在 width 和 height 中。
+
+#### 15.  CSS3 弹性盒子（Flex Box）
+
+##### 内容
+
+- 由弹性容器（Flex container）和弹性子元素（Flex item）组成。
+- 通过设置 `display` 属性为 flex 或 inline-flex ，将其定义为弹性容器。
+- 包含了一个或多个弹性子元素。
+
+##### flex-direction 
+
+- 指定了弹性子元素在父容器中的位置。
+
+###### 语法
+
+```css
+flex-direction: row | row-reverse | column | column-reverse
+```
+
+- row：横向从左到右排列（左对齐），默认的排列方式。
+- row-reverse：反转横向排列（右对齐，从后往前排，最后一项排在最前面。
+- column：纵向排列。
+- column-reverse：反转纵向排列，从后往前排，最后一项排在最上面。
+
+##### justify-content 属性
+
+- 应用在弹性容器上，把弹性项沿着弹性容器的主轴线对齐。
+
+###### 语法
+
+```css
+justify-content: flex-start | flex-end | center | space-between | space-around
+```
+
+- flex-start：
+
+  弹性项目向行头紧挨着填充。这个是默认值。第一个弹性项的main-start外边距边线被放置在该行的main-start边线，而后续弹性项依次平齐摆放。
+
+- flex-end：
+
+  弹性项目向行尾紧挨着填充。第一个弹性项的main-end外边距边线被放置在该行的main-end边线，而后续弹性项依次平齐摆放。
+
+- center：
+
+  弹性项目居中紧挨着填充。（如果剩余的自由空间是负的，则弹性项目将在两个方向上同时溢出）。
+
+- space-between：
+
+  弹性项目平均分布在该行上。如果剩余空间为负或者只有一个弹性项，则该值等同于flex-start。否则，第1个弹性项的外边距和行的main-start边线对齐，而最后1个弹性项的外边距和行的main-end边线对齐，然后剩余的弹性项分布在该行上，相邻项目的间隔相等。
+
+- space-around：
+
+  弹性项目平均分布在该行上，两边留有一半的间隔空间。如果剩余空间为负或者只有一个弹性项，则该值等同于center。否则，弹性项目沿该行分布，且彼此间隔相等（比如是20px），同时首尾两边和弹性容器之间留有一半的间隔（1/2*20px=10px）。
+
+##### align-items 属性
+
+- 设置或检索弹性盒子元素在侧轴（纵轴）方向上的对齐方式。
+
+###### 语法
+
+```css
+align-items: flex-start | flex-end | center | baseline | stretch
+```
+
+- flex-start：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴起始边界。
+- flex-end：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴结束边界。
+- center：弹性盒子元素在该行的侧轴（纵轴）上居中放置。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
+- baseline：如弹性盒子元素的行内轴与侧轴为同一条，则该值与'flex-start'等效。其它情况下，该值将参与基线对齐。
+- stretch：如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
+
+##### flex-wrap 属性
+
+- 用于指定弹性盒子的子元素换行方式。
+
+###### 语法
+
+```css
+flex-wrap: nowrap|wrap|wrap-reverse|initial|inherit;
+```
+
+- **nowrap** - 默认， 弹性容器为单行。该情况下弹性子项可能会溢出容器。
+- **wrap** - 弹性容器为多行。该情况下弹性子项溢出的部分会被放置到新行，子项内部会发生断行
+- **wrap-reverse** -反转 wrap 排列。
+
+##### align-content 属性
+
+- 用于修改 `flex-wrap` 属性的行为。类似于 `align-items`, 但它不是设置弹性子元素的对齐，而是设置各个行的对齐。
+
+###### 语法
+
+```css
+align-content: flex-start | flex-end | center | space-between | space-around | stretch
+```
+
+- `stretch` - 默认。各行将会伸展以占用剩余的空间。
+- `flex-start` - 各行向弹性盒容器的起始位置堆叠。
+- `flex-end` - 各行向弹性盒容器的结束位置堆叠。
+- `center` -各行向弹性盒容器的中间位置堆叠。
+- `space-between` -各行在弹性盒容器中平均分布。
+- `space-around` - 各行在弹性盒容器中平均分布，两端保留子元素与子元素之间间距大小的一半。
+
+##### 弹性子元素的属性
+
+###### 排序语法
+
+```css
+order: 
+```
+
+- `<integer>`：用整数值来定义排列顺序，数值小的排在前面。可以为负值。
+
+##### 对齐
+
+- 设置"margin"值为"auto"值，自动获取弹性容器中剩余的空间。
+- 设置垂直方向margin值为"auto"，可以使弹性子元素在弹性容器的两上轴方向都完全居中。
+
+##### align-self
+
+- 用于设置弹性元素自身在侧轴（纵轴）方向上的对齐方式。
+
+###### 语法
+
+```css
+align-self: auto | flex-start | flex-end | center | baseline | stretch
+```
+
+- auto：如果'align-self'的值为'auto'，则其计算值为元素的父元素的'align-items'值，如果其没有父元素，则计算值为'stretch'。
+- flex-start：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴起始边界。
+- flex-end：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴结束边界。
+- center：弹性盒子元素在该行的侧轴（纵轴）上居中放置。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
+- baseline：如弹性盒子元素的行内轴与侧轴为同一条，则该值与'flex-start'等效。其它情况下，该值将参与基线对齐。
+- stretch：如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
+
+##### flex 简写属性
+
+- 用于指定弹性子元素如何分配空间。
+- [ flex-grow ]：定义弹性盒子元素的扩展比率。
+- [ flex-shrink ]：定义弹性盒子元素的收缩比率。
+- [ flex-basis ]：定义弹性盒子元素的默认基准值。
+
+###### 语法
+
+```css
+flex: flex-grow flex-shrink flex-basis
+/* 或者使用关键字 */
+flex: auto | initial | none | inherit   
+```
+
+按顺序，关键字对应的简写值：
+
+- auto: 计算值为 1 1 auto
+- initial: 计算值为 0 1 auto
+- none：计算值为 0 0 auto
+- inherit：从父元素继承
+
+#### 16.  多媒体查询
+
+##### 多媒体查询语法
+
+- 由多种媒体组成，可以包含一个或多个表达式，表达式根据条件是否成立返回 true 或 false。
+
+```css
+@media not|only mediatype and (expressions) {
+    CSS 代码...;
+}
+```
+
+- **not:** not是用来排除掉某些特定的设备的，比如 @media not print（非打印设备）。
+- **only:** 用来定某种特别的媒体类型。对于支持Media Queries的移动设备来说，如果存在only关键字，移动设备的Web浏览器会忽略only关键字并直接根据后面的表达式应用样式文件。对于不支持Media Queries的设备但能够读取Media Type类型的Web浏览器，遇到only关键字时会忽略这个样式文件。
+- **all:** 所有设备，这个应该经常看到。
+
+##### 不同的媒体上使用不同的样式文件
+
+```css
+<link rel="stylesheet" media="mediatype and|not|only (expressions)" href="print.css">
+```
+
+#### 17. CSS 网格布局
+
+##### 网格元素
+
+- 由一个父元素及一个或多个子元素组成。
+
+##### display 属性
+
+- 将 display 属性设置为 grid 或 inline-grid 后，它就变成了一个网格容器，这个元素的所有直系子元素将成为网格元素。
+
+##### 网格轨道
+
+- 通过 **grid-template-columns** 和 **grid-template-rows** 属性来定义网格中的行和列。
+
+- 这些属性定义了网格的轨道，一个网格轨道就是网格中任意两条线之间的空间。
+
+###### fr 单位
+
+- 轨道可以使用任何长度单位进行定义。
+
+- 网格引入了 **fr** 单位来帮助我们创建灵活的网格轨道。一个 fr 单位代表网格容器中可用空间的一等份。
+
+###### 网格单元
+
+- 一个网格单元是在一个网格元素中最小的单位， 从概念上来讲其实它和表格的一个单元格很像。
+- 一旦一个网格元素被定义在一个父级元素当中，那么他的子级元素将会排列在每个事先定义好的网格单元中。
+
+###### 网格区域
+
+- 网格元素可以向行或着列的方向扩展一个或多个单元，并且会创建一个网格区域。网格区域的形状应该是一个矩形 - 也就是说你不可能创建出一个类似于"L"形的网格区域。
+
+##### 网格列
+
+- 网格元素的垂直线方向称为列（Column）。
+
+##### 网格行
+
+- 网格元素的水平线方向称为行（Row）。
+
+##### 网格间隔
+
+- 两个网格单元之间的网格横向间距或网格纵向间距。
+- 使用以下属性来调整间隙大小：
+  - grid-column-gap
+  - grid-row-gap
+  - grid-gap
+
+##### 网格线
+
+- 列与列，行与行之间的交接处就是网格线。
+
+- Grid 会为我们创建编号的网格线来让我们来定位每一个网格元素。
+
+#### 18.  CSS 网格容器
+
+- 将 **display** 属性设置为 **grid** 或 **inline-grid**。
+- 网格容器内放置着由列和行内组成的网格元素。
+
+##### grid-template-columns 属性
+
+- 定义了网格布局中的列的数量，它也可以设置每个列的宽度。
+- 属性值是一个以空格分隔的列表，其中每个值定义相对应列的宽度。
+
+##### grid-template-rows 属性
+
+- 设置每一行的高度
+- 属性值是一个以空格分隔的列表，其中每个值定义相对应行的高度。
+
+##### justify-content 属性
+
+- 用于对齐容器内的网格，设置如何分配顺着弹性容器主轴(或者网格行轴) 的元素之间及其周围的空间。
+- 网格的总宽度必须小于容器的宽度才能使 justify-content 属性生效。
+
+##### align-content 属性
+
+- 用于设置垂直方向上的网格元素在容器中的对齐方式。
+- 网格元素的总高度必须小于容器的高度才能使 align-content 属性生效。
+
+#### 19.  CSS 网格元素
+
+- 包含了一个或多个网格元素。
+- 默认情况下，网格容器的每一列和每一行都有一个网格元素，也可以设置网格元素跨越多个列或行，行和列为行号。
+
+##### grid-column 属性
+
+- 定义了网格元素列的开始和结束位置。
+- `grid-column` 是 `grid-column-start` 和 `grid-column-end` 属性的简写属性。
+
+##### gird-row 属性
+
+- 定义了网格元素行开始和结束的地方。
+- `grid-row` 是 `grid-row-start` 和 `grid-row-end` 属性的简写属性。
+
+##### grid-area 属性
+
+- `grid-area` 属性是 `grid-row-start` ， `grid-column-start` ， `grid-row-end` 以及 `grid-column-end` 属性的简写。
+
+##### 网格元素命名
+
+- grid-area 属性可以对网格元素进行命名。
+
+- 命名的网格元素可以通过容器的 grid-template-areas 属性来引用。
+
+  ```css
+  .item1 {
+    grid-area: myArea;
+  }
+  .grid-container {
+    /* 该示例表示，表格模板为一行有五个元素，且第一行有五个命名元素，后续行列数相同，元素依次填入。 */
+    grid-template-areas: 'myArea myArea myArea . .';
+  }
+  ```
+
+  - 每行由单引号内 **' '** 定义，以空格分隔。
+  - 第一行按照模板定义填写，后续行按照模板依次填入剩余元素。
+
+  - **.** 号表示没有名称的网格项。
+
+##### 网格元素的顺序
+
+- 网格布局允许我们将网格元素放置在我们喜欢的任何地方。
+
+### CSS 响应式设计
+
+#### 1.  Viewport
+
+- 用户的可视区域。
+
+##### 设置 Viewport
+
+```css
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+#### 2. 网络视图
+
+##### 创建响应式网格视图
+
+- 确保所有的 HTML 元素都有 **box-sizing** 属性且设置为 **border-box** 。
+- 确保边距和边框包含在元素的宽度和高度间。
+
+​	[实例](https://www.runoob.com/try/try.php?filename=tryresponsive_styles)
+
+#### 3.  媒体查询
+
+##### 添加断点
+
+```css
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="col-"] {
+        width: 100%;
+    }
+}
+```
+
+##### 方向：横屏/竖屏
+
+###### 语法
+
+```css
+orientation：portrait | landscape
+```
+
+- **portrait**：指定输出设备中的页面可见区域高度大于或等于宽度。
+- **landscape**：除 portrait 值情况外，都是 landscape 。
+
+#### 4.  图片
+
+##### width 属性
+
+- 如果 width 属性设置为100%，图片会根据上下范围实现响应式功能。
+
+##### max-width 属性
+
+- 如果 max-width 属性设置为100%，图片永远不会大于其原始大小。
+
+##### 网页中添加图片
+
+```css
+img {
+    width: 100%;    height: auto;
+}
+```
+
+##### 背景图片
+
+- `background-size` 属性设置为 `contain`，背景图片将按比例自适应内容区域，图片比例保持不变。
+- `background-size` 属性设置为 `100% 100%` ，背景图片将延展覆盖整个区域。
+- `background-size` 属性设置为 `cover` ，则会把背景图像扩展至足够大，以使背景图像完全覆盖背景区域。注意该属性保持了图片的比例因此 背景图像的某些部分无法显示在背景定位区域中。
+
+##### 不同设备显示不同图片
+
+- 使用媒体查询
+
+```css
+/* For width 400px and larger: */
+@media only screen and (min-width: 400px) {
+    body {
+        background-image: url('img_flowers.jpg');
+    }
+}
+```
+
+#### 5.  视频（Video）
+
+##### width 属性
+
+- 如果 width 属性设置为 100%，视频播放器会根据屏幕大小自动调整比例。
+
+##### max-width 属性
+
+- 如果 max-width 属性设置为 100%, 视频播放器会根据屏幕自动调整比例，但不会超过其原始大小。
+
+##### 在网页中添加视频
+
+```css
+video {
+    width: 100%;    height: auto;
+}
+```
+
+#### 6.  框架
+
+​	 [Bootstrap 教材](https://www.runoob.com/bootstrap/bootstrap-tutorial.html)
 
 ## 第三部分 JavaScript
 
