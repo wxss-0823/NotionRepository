@@ -3070,5 +3070,1808 @@ video {
 
 ## 第三部分 JavaScript
 
+### JavaScript 教程
 
+#### 1.  JavaScript 用法
 
+- 位于`<script>` 和 `</script>` 之间。
+
+- 可以在`<head>` 或 `<body>` 内。
+
+- 也可以外部引用脚本：
+
+  ```css
+  <script src="myScript.js"></script>
+  ```
+
+#### 2.  Chrome 浏览器中执行 JavaScript
+
+##### 1.  Console 窗口调试 JavaScript 代码
+
+##### 2.  Chrome snippets 小脚本
+
+#### 3.  JavaScript 输出
+
+##### 使用 window.alert()
+
+- 弹出警告框来显示数据。
+
+##### 操作 HTML 元素
+
+- 使用 `document.getElementById(*id*)` 方法获取元素。
+- 使用 `innerHTML` 来获取或插入元素内容。
+
+##### 写到 HTML 文档
+
+- `document.write()` 可以直接写在 HTML 文档中。
+
+##### 写到控制台
+
+- 使用 `console.log()` 显示 JavaScript 的值。
+
+#### 4.  JavaScript 语法
+
+##### JavaScript 字面量
+
+###### 数字（Number）字面量
+
+- 可以是整数或者是小数，或者是科学技术（e）。
+
+###### 字符串（String）字面量
+
+- 可以使用单引号或双引号。
+
+###### 表达式字面量
+
+- 用于计算。
+
+###### 数组（Array）字面量
+
+- 方括号 `[]` 定义一个数组。
+
+###### 对象（Object）字面量
+
+- 大括号 `{}` ，内部存放键值对。
+
+###### 函数（Function）字面量
+
+- 定义一个函数
+
+  ```javascript
+  function myFunction(a, b) { return a * b;}
+  ```
+
+##### JavaScript 变量
+
+- 用于存储数据值，用 `let` 定义。
+
+##### JavaScript 操作符
+
+- 使用 **算数运算符** 来计算值。
+
+##### JavaScript 语句
+
+- 用分号分隔。
+
+##### JavaScript 关键字
+
+- 保留一些关键字为自己使用。
+
+##### JavaScript 注释
+
+- 双斜杠 `//` 后面被忽略。
+
+##### JavaScript 数据类型
+
+- 数字、字符串、数组、对象。
+
+##### JavaScript 函数
+
+- 可重复引用。
+
+##### JavaScript 字母大小写
+
+- 大小写敏感。
+
+##### JavaScript 字符集
+
+- 使用 Unicode 字符集。
+
+#### 5.  JavaScript 语句
+
+##### 对代码行进行折行
+
+- 使用 `\` 。
+
+#### 6.  JavaScript 注释
+
+- 单行 `//`
+- 多行 `/**/`
+
+#### 7.  JavaScript 变量
+
+- 用于存储信息的”容器“。
+
+##### 一条语句，多个变量
+
+- 以 var 开头，使用逗号分隔。
+
+##### Value = undefined
+
+- 未使用值得变量为 undefined。
+
+##### 重新声明变量
+
+- 不会丢失原来的值。
+
+##### 使用 let 和 const
+
+- let - 仅在声明得代码块内有效。
+- const - 一经声明不可更改。
+
+#### 8.  JavaScript 数据类型
+
+- **值类型（基本类型）**：字符串（String）、数字(Number)、布尔(Boolean)、空（Null）、未定义（Undefined）、Symbol。
+
+- **引用数据类型（对象类型）**：对象(Object)、数组(Array)、函数(Function)，还有两个特殊的对象：正则（RegExp）和日期（Date）。
+
+##### 动态类型
+
+- 相同的变量可用作不同得类型。
+
+- 类型可使用 `typeof` 操作符来查看。
+
+##### 字符串
+
+- 存储字符的变量
+- 可以是单引号或者双引号。
+
+##### 数字
+
+- 只有一种数字类型。可以带小数点也可以不带。
+
+##### 布尔
+
+- `true` 或 `false`
+
+##### 数组
+
+- 下标从0开始。
+
+##### 对象
+
+- 对象由花括号分隔。在括号内部，对象的属性以名称和值对的形式 (name : value) 来定义。属性由逗号分隔。
+
+##### Undefined 和 Null
+
+- Undefined 这个值表示变量不含有值。
+
+- 可以通过将变量的值设置为 null 来清空变量。
+
+##### 声明变量类型
+
+- 使用 `new` 来声明其类型。
+
+#### 9.  JavaScript 对象
+
+- 拥有属性和方法的数据。
+
+##### JavaScript 对象
+
+- 在 JavaScript中，几乎所有的事物都是对象。
+
+##### 对象定义
+
+- 你可以使用字符来定义和创建 JavaScript 对象。
+
+##### 对象属性
+
+- 键值对通常写法为 **name : value** (键与值以冒号分割)。
+- 键值对在 JavaScript 对象通常称为 **对象属性**。
+
+##### 访问对象属性
+
+```javascript
+person.lastName;
+// 或者
+person["lastName"];
+```
+
+##### 对象方法
+
+```javascript
+// 键值对，值的类型为函数
+methodName : function() {
+    // 代码 
+}
+```
+
+##### 访问对象方法
+
+```javascript
+objectName.methodName()
+// 不加括号会返回函数的定义代码
+objectName.methodName
+```
+
+#### 10.  JavaScript 函数
+
+- 函数是由事件驱动的或者当它被调用时执行的可重复使用的代码块。
+
+##### JavaScript 函数语法
+
+- 函数就是包裹在花括号中的代码块，前面使用了关键词 function
+
+```javascript
+function functionname()
+{
+    // 执行代码
+}
+```
+
+##### 调用带参数的函数
+
+- 在调用函数时，您可以向其传递值，这些值被称为参数。
+- 这些参数可以在函数中使用。
+- 可以发送任意多的参数，由逗号 (,) 分隔：
+
+```javascript
+myFunction(argument1,argument2)
+function myFunction(var1,var2)
+{
+	// 代码
+}
+```
+
+##### 带有返回值的函数
+
+- 使用 return 语句时，函数会停止执行，并返回指定的值。
+
+###### 语法
+
+```javascript
+function myFunction()
+{
+  var x=5;
+  return x;
+}
+```
+
+##### 局部 JavaScript 变量
+
+- 在 JavaScript 函数内部声明的变量（使用 var）是*局部*变量，所以只能在函数内部访问它。（该变量的作用域是局部的）。
+
+- 可以在不同的函数中使用名称相同的局部变量，因为只有声明过该变量的函数才能识别出该变量。
+
+- 只要函数运行完毕，本地变量就会被删除。
+
+##### 全局 JavaScript 变量
+
+- 在函数外声明的变量是全局变量，网页上的所有脚本和函数都能访问它。
+
+##### JavaScript 变量的生存期
+
+- 局部变量会在函数运行以后被删除。
+
+- 全局变量会在页面关闭后被删除。
+
+##### 向未声明的 JavaScript 变量分配值
+
+- 把值赋给未使用 `var` 声明的变量，该变量将被自动作为 window 的一个属性。
+- 未声明的变量和声明的变量都可以作为属性调用，但是声明的变量不可删除，未声明的可以删除 `delete var2;` 。
+
+#### 11.  JavaScript 作用域
+
+##### JavaScript 局部作用域
+
+- 变量在函数内声明，变量为局部变量，具有局部作用域。
+
+- 局部变量：只能在函数内部访问。
+
+##### JavaScript 全局变量
+
+- 变量在函数外定义，即为全局变量。
+- 全局变量有 **全局作用域**: 网页中所有脚本和函数均可使用。 
+
+#### 12.  JavaScript 事件
+
+##### HTML 事件
+
+- HTML 事件可以是浏览器行为，也可以是用户行为。
+
+- 以下是 HTML 事件的实例：
+
+  - HTML 页面完成加载
+
+  - HTML input 字段改变时
+
+  - HTML 按钮被点击
+
+- 在事件触发时 JavaScript 可以执行一些代码。
+- HTML 元素中可以添加事件属性，使用 JavaScript 代码来添加 HTML 元素。
+
+```javascript
+<some-HTML-element some-event='JavaScript 代码'>
+```
+
+#### 13.  JavaScript 字符串
+
+##### 字符串长度
+
+- 可以使用内置属性 **length** 来计算字符串的长度。
+
+##### 特殊字符
+
+- 字符中还需要使用字符，通过转义字符 `\` 。
+
+##### 字符串可以是对象
+
+- 可以使用字符创建： **var firstName = "John"**
+
+- 可以使用 new 关键字将字符串定义为一个对象： **var firstName = new String("John")**
+
+- 不要创建 String 对象。它会拖慢执行速度，并可能产生其他副作用。
+
+##### [字符串属性和方法](https://www.runoob.com/jsref/jsref-obj-string.html)
+
+#### 14.  JavaScript 模板字符串
+
+- 一种方便的字符串语法，允许你在字符串中嵌入表达式和变量。
+
+- 使用反引号 **``** 作为字符串的定界符分隔的字面量
+
+##### 语法
+
+```javascript
+tagFunction`string text ${expression} string text`
+```
+
+- **string text**：将成为模板字面量的一部分的字符串文本。几乎允许所有字符，包括换行符和其他空白字符。但是，除非使用了标签函数，否则无效的转义序列将导致语法错误。
+- **expression**：要插入当前位置的表达式，其值被转换为字符串或传递给 tagFunction。
+- **tagFunction**：如果指定，将使用模板字符串数组和替换表达式调用它，返回值将成为模板字面量的值。
+
+#### 15.  JavaScript 运算符
+
+- **运算符 = 用于赋值。**
+- **运算符 + 用于加值。**
+
+#### 16.  JavaScript 比较 和 逻辑运算符
+
+- 绝对相等尽量使用 `===` ，值和类型都相等。
+
+#### 17.  JavaScript if...Else 语句
+
+- 用于基于不同的条件来执行不同的动作。
+- **if 语句** - 只有当指定条件为 true 时，使用该语句来执行代码
+- **if...else 语句** - 当条件为 true 时执行代码，当条件为 false 时执行其他代码
+- **if...else if....else 语句**- 使用该语句来选择多个代码块之一来执行
+- **switch 语句** - 使用该语句来选择多个代码块之一来执行
+
+#### 18.  JavaScript switch 语句
+
+- 用于基于不同的条件来执行不同的动作。
+
+```javascript
+switch(n)
+{
+    case 1:
+        执行代码块 1
+        break;
+    case 2:
+        执行代码块 2
+        break;
+    default:
+        与 case 1 和 case 2 不同时执行的代码
+}
+```
+
+- **default** 关键字 - 用来规定匹配不存在时做的事情。
+
+#### 19.  JavaScript 循环 
+
+- 循环可以将代码块执行指定的次数。
+
+##### for 循环
+
+```javascript
+for (语句 1; 语句 2; 语句 3)
+{
+    被执行的代码块
+}
+```
+
+- **语句 1** （代码块）开始前执行
+- **语句 2** 定义运行循环（代码块）的条件
+- **语句 3** 在循环（代码块）已被执行之后执行
+
+##### for/in 循环
+
+```javascript
+for (x in person)  // x 为属性名
+```
+
+##### while 循环
+
+```javascript
+while (条件)
+{
+    需要执行的代码
+}
+```
+
+##### do/while 循环
+
+- 该循环会在检查条件是否为真之前执行一次代码块，然后如果条件为真的话，就会重复这个循环。
+
+```javascript
+do
+{
+    需要执行的代码
+}
+while (条件);
+```
+
+#### 20.  JavaScript break 和 continue 语句
+
+- **break** 语句用于跳出循环。
+
+- **continue** 用于跳过循环中的一个迭代。
+
+##### break 语句
+
+- 跳出循环后，会继续执行该循环之后的代码（如果有的话）。
+
+##### continue 语句
+
+- 中断当前的循环中的迭代，然后继续循环下一个迭代。
+
+##### JavaScript 标签
+
+- 用于标注其他由大括号分界的程序体。
+
+```javascript
+label:
+statements
+```
+
+#### 21.  JavaScript typeof, null, 和 undefined
+
+##### typeof 操作符
+
+- 可以使用 typeof 操作符来检测变量的数据类型。
+
+##### null
+
+- 在 JavaScript 中 **null** 表示 "什么都没有"。
+
+- **null** 是一个只有一个值的特殊类型。表示一个空对象引用。
+
+##### undefined
+
+- 在 JavaScript 中, **undefined** 是一个没有设置值的变量。
+- **typeof** 一个没有值的变量会返回 **undefined**。
+
+##### undefined 和 null 的区别
+
+- **null** 是值。
+- **undefined** 是对象。
+
+#### 22.  JavaScript 类型转换
+
+##### constructor 属性
+
+- **constructor** 属性返回所有 JavaScript 变量的构造函数。
+
+##### 将数字转换为字符串
+
+- 全局方法 **String()** 可以将数字转换为字符串。
+-  **toString()** 也是有同样的效果。
+
+##### 将布尔值转换为字符串
+
+- 全局方法 **String()** 可以将布尔值转换为字符串。
+
+##### 将日期转换为字符串
+
+- 全局方法 String() 可以将日期对象转换为字符串。
+
+##### 将字符串转换为数字
+
+- 全局方法 **Number()** 可以将字符串转换为数字。
+
+##### 一元运算符 +
+
+- **Operator +** 可用于将变量转换为数字：
+
+##### 将布尔值转换为数字
+
+- 全局方法 **Number()** 可将布尔值转换为数字。
+
+##### 将日期转换为数字
+
+- 全局方法 **Number()** 可将日期转换为数字。
+
+##### 自动转换类型
+
+- 尝试操作一个 "错误" 的数据类型时，会自动转换为 "正确" 的数据类型。
+- 尝试输出一个对象或一个变量时 JavaScript 会自动调用变量的 toString() 方法。
+
+#### 23.  JavaScript 正则表达式
+
+##### 语法
+
+> /正则表达式主体/修饰符(可选)
+
+##### 使用字符串方法
+
+- **search()** 方法用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串，并返回子串的起始位置。
+
+- **replace()** 方法用于在字符串中用一些字符串替换另一些字符串，或替换一个与正则表达式匹配的子串。
+
+##### 使用 RegExp 对象
+
+- 一个预定义了属性和方法的正则表达式对象。
+
+###### 使用 test()
+
+- 用于检测一个字符串是否匹配某个模式。
+
+```javascript
+var patt = /e/;
+patt.test("The best things in life are free!");
+```
+
+- 返回 true
+
+###### 使用 exec()
+
+- 用于检索字符串中的正则表达式的匹配。
+
+```javascript
+/e/.exec("The best things in life are free!");
+```
+
+- 返回 e
+
+#### 24.  JavaScript 错误
+
+- **try** 语句测试代码块的错误。
+- **catch** 语句处理错误。
+- **throw** 语句创建自定义错误。
+- **finally** 语句在 try 和 catch 语句之后，无论是否有触发异常，该语句都会执行。
+
+##### JavaScript 抛出（throw）错误
+
+- 当错误发生时，当事情出问题时，JavaScript 引擎通常会停止，并生成一个错误消息。
+
+- 描述这种情况的技术术语是：JavaScript 将**抛出**一个错误。
+
+##### JavaScript try 和 catch
+
+- **try** 语句允许我们定义在执行时进行错误测试的代码块。
+
+- **catch** 语句允许我们定义当 try 代码块发生错误时，所执行的代码块。
+
+- JavaScript 语句 **try** 和 **catch** 是成对出现的。
+
+###### 语法
+
+```javascript
+try {
+    ...    //异常的抛出
+} catch(e) {
+    ...    //异常的捕获与处理
+} finally {
+    ...    //结束处理
+}
+```
+
+##### finally 语句
+
+- 不论之前的 try 和 catch 中是否产生异常都会执行该代码块。
+
+##### Throw 语句
+
+- 允许我们创建自定义错误。
+
+- 正确的技术术语是：创建或**抛出异常**（exception）。
+
+#### 25.  JavaScript 声明提升
+
+- 函数及变量的声明都将被提升到函数的最顶部。
+
+- 变量可以在使用后声明，也就是变量可以先使用再声明。
+
+##### JavaScript 初始化不会提升
+
+- 只有声明的变量会提升，初始化的不会。
+
+#### 26.  JavaScript 严格模式(use strict)
+
+##### 严格模式声明
+
+- 在脚本或函数的头部添加 **`"use strict"`** ；表达式来声明。
+
+##### 严格模式的限制
+
+- 不允许使用未声明的变量。
+
+- 不允许删除变量或对象。
+
+- 不允许删除函数。
+
+- 不允许变量重名。
+
+- 不允许使用八进制。
+
+- 不允许使用转义字符。
+
+- 不允许对只读属性赋值。
+
+- 不允许对一个使用getter方法读取的属性进行赋值。
+
+- 不允许删除一个不允许删除的属性。
+
+- 变量名不能使用 "eval" 字符串。
+
+- 变量名不能使用 "arguments" 字符串。
+
+- 不允许使用以下这种语句:
+
+  ```javascript
+  "use strict";
+  with (Math){x = cos(2)}; // 报错
+  ```
+
+- 在作用域 eval() 创建的变量不能被调用
+
+- 禁止this关键字指向全局对象。
+
+##### 保留关键字
+
+- implements
+- interface
+- let
+- package
+- private
+- protected
+- public
+- static
+- yield
+
+#### 27.  JavaScript 表单
+
+- 表单验证
+- 输入数字验证
+
+#### 28.  JavaScript this 关键字
+
+- 在方法中，this 表示该方法所属的对象。
+- 如果单独使用，this 表示全局对象。
+- 在函数中，this 表示全局对象。
+- 在函数中，在严格模式下，this 是未定义的(undefined)。
+- 在事件中，this 表示接收事件的元素。
+- 类似 call() 和 apply() 方法可以将 this 引用到任何对象。
+
+##### 显式函数绑定
+
+- 函数也是对象，对象则有方法，apply 和 call 就是函数对象的方法。这两个方法异常强大，他们允许切换函数执行的上下文环境（context），即 this 绑定的对象。
+- call - 允许使用对象1的方法，处理对象二的属性。
+
+```javascript
+var person1 = {
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+var person2 = {
+  firstName:"John",
+  lastName: "Doe",
+}
+person1.fullName.call(person2);  // 返回 "John Doe"
+```
+
+####  29.  JavaScript let 和 const
+
+##### 全局变量
+
+- 在函数外声明的变量作用域是全局的。
+
+##### 局部变量
+
+- 在函数内声明的变量作用域是局部的（函数内）。
+
+##### JavaScript 块级作用域(Block Scope)
+
+- var 关键字声明的变量不具备块级作用域的特性，它在 **{}** 外依然能被访问到。
+- let 声明的变量只在 let 命令所在的代码块 **{}** 内有效，在 **{}** 之外不能访问。
+
+##### 重新定义变量
+
+- 块中使用 let 声明变量。
+
+- 循环使用 let 声明变量。
+
+##### HTML 代码中使用全局变量
+
+- 使用 **var** 关键字声明的全局作用域变量属于 window 对象。
+- 使用 **let** 关键字声明的全局作用域变量不属于 window 对象。
+
+##### 重置变量
+
+- 使用 **var** 关键字声明的变量在任何地方都可以修改。
+- 在相同的作用域或块级作用域中，不能使用 **let** 关键字来重置 **var** 关键字声明的变量。
+- 在相同的作用域或块级作用域中，不能使用 **let** 关键字来重置 **let** 关键字声明的变量。
+- 在相同的作用域或块级作用域中，不能使用 **var** 关键字来重置 **let** 关键字声明的变量。
+- **let** 关键字在不同作用域，或不同块级作用域中是可以重新声明赋值的。
+
+##### 变量提升
+
+- var 关键字定义的变量可以在使用后声明，也就是变量可以先使用再声明。
+- let 关键字定义的变量则不可以在使用后声明，也就是变量需要先声明再使用。
+
+##### const 关键字
+
+- 用于声明一个或多个常量，声明时必须进行初始化，且初始化后值不可再修改。
+- 本质: const 定义的变量并非常量，并非不可变，它定义了一个常量引用一个值。使用 const 定义的对象或者数组，其实是可变的。
+
+##### 重置变量
+
+- 在相同的作用域或块级作用域中，不能使用 **const** 关键字来重置 **var** 和 **let**关键字声明的变量。
+- 在相同的作用域或块级作用域中，不能使用 **const** 关键字来重置 **const** 关键字声明的变量。
+- **const** 关键字在不同作用域，或不同块级作用域中是可以重新声明赋值的。
+
+##### 变量提升
+
+- const 关键字定义的变量则不可以在使用后声明，也就是变量需要先声明再使用。
+
+#### 30.  **JavaScript** **JSON**
+
+- JSON 是用于存储和传输数据的格式。
+- JSON 通常用于服务端向网页传递数据 。
+
+##### JSON 语法规则
+
+- 数据为 键/值 对。
+- 数据由逗号分隔。
+- 大括号保存对象
+- 方括号保存数组
+
+##### JSON 数据 - 一个名称对应一个值
+
+- JSON 数据格式为 键/值 对，就像 JavaScript 对象属性。
+
+- 键/值对包括字段名称（在双引号中），后面一个冒号，然后是值：
+
+##### JSON 对象
+
+- JSON 对象保存在大括号内。
+
+##### JSON 数组
+
+- JSON 数组保存在中括号内。
+
+##### JSON 字符串转换为 JavaScript 对象
+
+- 使用 JavaScript 内置函数 JSON.parse() 将字符串转换为 JavaScript 对象:
+
+#### 31.  javascript:void(0) 含义
+
+- 表示没有任何效果
+
+##### 语法
+
+```javascript
+javascript:void(func())
+```
+
+##### href="#"与href="javascript:void(0)"的区别
+
+- **#** 包含了一个位置信息，默认的锚是**#top** 也就是网页的上端。
+
+- **javascript:void(0)** 仅仅表示一个死链接。
+
+#### 32.  JavaScript 异步编程
+
+##### 回调函数
+
+​	回调函数就是一个函数，它是在我们启动一个异步任务的时候就告诉它：等你完成了这个任务之后要干什么。这样一来主线程几乎不用关心异步任务的状态了，他自己会善始善终。
+
+#### 33.  JavaScript Promise
+
+##### 构造 Promise
+
+```
+new Promise(function (resolve, reject) {
+    // 要做的事情...
+});
+```
+
+##### Promise 的构造函数
+
+- 用于创建 Promise 对象的内置构造函数。
+- 接受一个函数作为参数，该函数是同步的并且会被立即执行，所以我们称之为起始函数。起始函数包含两个参数 resolve 和 reject，分别表示 Promise 成功和失败的状态。
+- 起始函数执行成功时，它应该调用 resolve 函数并传递成功的结果。当起始函数执行失败时，它应该调用 reject 函数并传递失败的原因。
+- 返回一个 Promise 对象，该对象具有以下几个方法：
+  - then：用于处理 Promise 成功状态的回调函数。
+  - catch：用于处理 Promise 失败状态的回调函数。
+  - finally：无论 Promise 是成功还是失败，都会执行的回调函数。
+
+- resolve() 中可以放置一个参数用于向下一个 then 传递一个值，then 中的函数也可以返回一个值传递给 then。但是，如果 then 中返回的是一个 Promise 对象，那么下一个 then 将相当于对这个返回的 Promise 进行操作。
+- reject() 参数中一般会传递一个异常给之后的 catch 函数用于处理异常。
+- resolve 和 reject 的作用域只有起始函数，不包括 then 以及其他序列；
+- resolve 和 reject 并不能够使起始函数停止运行，别忘了 return。
+
+### JS 函数
+
+#### 1.  **JavaScript** **函数定义**
+
+##### 函数声明
+
+```javascript
+function functionName(parameters) {
+  // 执行的代码
+}
+```
+
+##### 函数表达式
+
+- 可以通过一个表达式定义。
+
+```javascript
+var x = function (a, b) {return a * b};
+```
+
+- 以上函数实际上是一个 **匿名函数** (函数没有名称)。
+- 函数存储在变量中，不需要函数名称，通常通过变量名来调用。
+
+##### Function() 构造函数
+
+- 同样可以通过内置的 JavaScript 函数构造器（Function()）定义。
+
+```javascript
+var myFunction = new Function("a", "b", "return a * b");
+var x = myFunction(4, 3);
+```
+
+##### 函数提升（Hoisting）
+
+- 提升（Hoisting）是 JavaScript 默认将当前作用域提升到前面去的行为。
+- 提升（Hoisting）应用在变量的声明与函数的声明。
+
+##### 自调用函数
+
+- 函数表达式可以 "自调用"。
+- 自调用表达式会自动调用。
+- 如果表达式后面紧跟 () ，则会自动调用。
+
+- 不能自调用声明的函数。
+
+```javascript
+(function () {
+    var x = "Hello!!";      // 我将调用自己
+})();
+```
+
+##### 函数可作为一个值使用
+
+```javascript
+function myFunction(a, b) {return a * b;}
+var x = myFunction(4, 3);
+```
+
+##### 函数是对象
+
+- 函数有 **属性** 和 **方法**。
+
+##### 箭头函数
+
+- 箭头函数表达式的语法比普通函数表达式更简洁。
+
+```javascript
+(参数1, 参数2, …, 参数N) => { 函数声明 }
+
+(参数1, 参数2, …, 参数N) => 表达式(单一)
+// 相当于：(参数1, 参数2, …, 参数N) =>{ return 表达式; }
+```
+
+- 有的箭头函数都没有自己的 **this**。 不适合定义一个 **对象的方法**。
+- 当我们使用箭头函数的时候，箭头函数会默认帮我们绑定外层 this 的值，所以在箭头函数中 this 的值和外层的 this 是一样的。
+- 箭头函数是不能提升的，所以需要在使用之前定义。
+- 使用 **const** 比使用 **var** 更安全，因为函数表达式始终是一个常量。
+- 如果函数部分只是一个语句，则可以省略 return 关键字和大括号 {}，这样做是一个比较好的习惯。
+
+#### 2.  JavaScript 函数参数
+
+- 对参数的值没有进行任何的检查。
+
+##### 函数显式参数(Parameters)与隐式参数(Arguments)
+
+- 函数显式参数在函数定义时列出。
+- 函数隐式参数在函数调用时传递给函数真正的值。
+
+##### 参数规则
+
+- JavaScript 函数定义显式参数时没有指定数据类型。
+- JavaScript 函数对隐式参数没有进行类型检测。
+- JavaScript 函数对隐式参数的个数没有进行检测。
+
+##### 默认参数
+
+- 如果函数在调用时未提供隐式参数，参数会默认设置为： **undefined**
+
+- 有时这是可以接受的，但是建议最好为参数设置一个默认值。
+
+##### ES6 函数可以自带参数
+
+ES6 支持函数带有默认参数，就判断 undefined 和 || 的操作：
+
+```javascript
+function myFunction(x, y = 10) {    
+    // y is 10 if not passed or undefined    
+    return x + y; 
+}  
+myFunction(0, 2) // 输出 2 
+myFunction(5); // 输出 15, y 参数的默认值
+```
+
+##### arguments 对象
+
+- 有个内置的对象 arguments 对象。
+
+- arguments 对象包含了函数调用的参数数组。
+
+##### 通过值传递参数
+
+- 在函数中调用的参数是函数的隐式参数。
+- 隐式参数通过值来传递：函数仅仅只是获取值。
+- 如果函数修改参数的值，不会修改显式参数的初始值（在函数外定义）。
+- 隐式参数的改变在函数外是不可见的。
+
+##### 通过对象传递参数
+
+- 可以引用对象的值。
+- 修改对象属性可作用于函数外部（全局变量）。
+- 修改对象属性在函数外是可见的。
+
+#### 3.  JavaScript 函数调用
+
+##### ***this*** 关键字
+
+- this指向函数执行时的当前对象。
+
+##### 作为一个函数调用
+
+###### 全局对象
+
+- 当函数没有被自身的对象调用时 **this** 的值就会变成全局对象。
+
+- 在 web 浏览器中全局对象是浏览器窗口（window 对象）。
+
+##### 函数作为方法调用
+
+- 可以将函数定义为对象的方法。
+
+##### 使用构造函数调用函数
+
+- 如果函数调用前使用了 **new** 关键字, 则是调用了构造函数。
+
+##### 作为函数方法调用函数
+
+- 函数是对象。有它的属性和方法。
+
+- **call()** 和 **apply()** 是预定义的函数方法。 两个方法可用于调用函数，两个方法的第一个参数必须是对象本身。
+
+  - 两个方法都使用了对象本身作为第一个参数。 两者的区别在于第二个参数： apply传入的是一个参数数组，也就是将多个参数组合成为一个数组传入，而call则作为call的参数传入（从第二个参数开始）。
+
+  - 在 JavaScript 严格模式(strict mode)下，在调用函数时第一个参数会成为 **this** 的值， 即使该参数不是一个对象。
+
+  - 在 JavaScript 非严格模式(non-strict mode)下，如果第一个参数的值是 null 或 undefined，它将使用全局对象替代。
+
+#### 4.  JavaScript 闭包
+
+​	闭包是一种保护私有变量的机制，在函数执行时形成私有的作用域，保护里面的私有变量不受外界干扰。
+
+​	直观的说就是形成一个不销毁的栈环境。
+
+### JS 类
+
+#### 1.  JavaScript 类(class)
+
+##### 类是用于创建对象的模板。
+
+- 使用 class 关键字来创建一个类，类体在一对大括号 **{}** 中，我们可以在大括号 **{}** 中定义类成员的位置，如方法或构造函数。
+
+- 每个类中包含了一个特殊的方法 **constructor()**，它是类的构造函数，这种方法用于创建和初始化一个由 **class** 创建的对象。
+  - 构造方法名为 constructor()。
+  - 构造方法在创建新对象时会自动执行。
+  - 构造方法用于初始化对象属性。
+  - 如果不定义构造方法，JavaScript 会自动添加一个空的构造方法。
+
+###### 语法
+
+```javascript
+class ClassName {
+  constructor() { ... }
+}
+```
+
+##### 使用类
+
+- 定义好类后，我们就可以使用 **new** 关键字来创建对象。
+
+##### 类表达式
+
+- 类表达式是定义类的另一种方法。类表达式可以命名或不命名。命名类表达式的名称是该类体的局部名称。
+
+##### 类的方法
+
+- 我们使用关键字 **class** 创建一个类，可以添加一个 **constructor()** 方法，然后添加任意数量的方法。
+
+#### 2.  JavaScript 类继承
+
+- 使用 extends 关键字。
+- **super()** 方法用于调用父类的构造函数。
+
+##### 使用原型链继承
+
+```javascript
+// 建立原型链，让 Dog 继承 Animal
+Dog.prototype = Object.create(Animal.prototype);
+Dog.prototype.constructor = Dog;
+```
+
+##### 使用 ES6 类继承
+
+- ES6 引入了 class 关键字，使得定义类和继承更加清晰，extends 关键字用于建立继承关系，super 关键字用于在子类构造函数中调用父类的构造函数。
+
+##### getter 和 setter
+
+- 类中我们可以使用 getter 和 setter 来获取和设置值，getter 和 setter 都需要在严格模式下执行。
+
+- getter 和 setter 可以使得我们对属性的操作变的很灵活。
+
+- 类中添加 getter 和 setter 使用的是 get 和 set 关键字。
+  - **`get`** 语法将对象属性绑定到查询该属性时将被调用的函数。
+  - **`set`** 语法将对象属性绑定到要调用的函数。
+
+```javascript
+class Runoob {
+  constructor(name) {
+    this._sitename = name;
+  }
+  set sitename(x) {
+    this._sitename = x;
+  }
+  get sitename() {
+    return this._sitename;
+  }
+}
+ 
+let noob = new Runoob("菜鸟教程");
+noob.sitename = "RUNOOB";
+document.getElementById("demo").innerHTML = noob.sitename;
+```
+
+##### 提升
+
+- 函数声明和类声明之间的一个重要区别在于, 函数声明会提升，类声明不会。
+
+#### 3.  JavaScript 静态方法
+
+- 静态方法是使用 static 关键字修饰的方法，又叫类方法，属于类的，但不属于对象，在实例化对象之前可以通过 **类名.方法名** 调用静态方法。
+
+- 静态方法不能在对象上调用，只能在类中调用。
+
+### JavaScript HTML DOM
+
+#### 1.  DOM 简介
+
+- 通过 HTML DOM，可访问 JavaScript HTML 文档的所有元素。
+
+#### 2.  DOM HTML 
+
+##### 改变 HTML 输出流
+
+- JavaScript 能够创建动态的 HTML 内容：
+
+##### 改变 HTML 内容
+
+- 修改 HTML 内容的最简单的方法是使用 innerHTML 属性。
+
+##### 改变 HTML 属性
+
+```javascript
+document.getElementById(id).attribute=新属性值
+```
+
+#### 3.  DOM CSS
+
+##### 改变 HTML 样式
+
+```javascript
+document.getElementById(id).style.property=新样式
+```
+
+##### 使用事件
+
+- 元素被点击。
+- 页面加载完成。
+- 输入框被修改。
+
+#### 4.  DOM 事件
+
+##### 对事件做出反应
+
+- 可以在事件发生时执行 JavaScript，比如当用户在 HTML 元素上点击时。
+
+```javascript
+onclick=JavaScript
+```
+
+##### HTML 事件属性
+
+- 需向 HTML 元素分配 事件，您可以使用事件属性。
+
+```javascript
+<button onclick="displayDate()">点这里</button>
+```
+
+##### 使用 HTML DOM 来分配事件
+
+- 允许使用 JavaScript 来向 HTML 元素分配事件：
+
+```javascript
+document.getElementById("myBtn").onclick=function(){displayDate()};
+```
+
+##### onload 和 onunload 事件
+
+- onload 和 onunload 事件会在用户进入或离开页面时被触发。
+
+- onload 事件可用于检测访问者的浏览器类型和浏览器版本，并基于这些信息来加载网页的正确版本。
+
+- onload 和 onunload 事件可用于处理 cookie。
+
+##### onchange 事件
+
+- 常结合对输入字段的验证来使用。
+
+##### onmouseover 和 onmouseout 事件
+
+- onmouseover 和 onmouseout 事件可用于在用户的鼠标移至 HTML 元素上方或移出元素时触发函数。
+
+##### onmousedown、onmouseup 以及 onclick 事件
+
+- onmousedown, onmouseup 以及 onclick 构成了鼠标点击事件的所有部分。
+- 首先当点击鼠标按钮时，会触发 onmousedown 事件。
+- 当释放鼠标按钮时，会触发 onmouseup 事件。
+- 最后，当完成鼠标点击时，会触发 onclick 事件。
+
+#### 5.  DOM EventListener
+
+##### addEventListener() 方法
+
+###### 语法
+
+```javascript
+element.addEventListener(event, function, useCapture);
+```
+
+- 用于向指定元素添加事件句柄。
+- 添加的事件句柄不会覆盖已存在的事件句柄。
+- 可以向一个元素添加多个事件句柄。
+- 可以向同个元素添加多个同类型的事件句柄，如：两个 "click" 事件。
+- 可以向任何 DOM 对象添加事件监听，不仅仅是 HTML 元素。如： window 对象。
+- 可以更简单的控制事件（冒泡与捕获）。
+- 当使用 addEventListener() 方法时, JavaScript 从 HTML 标记中分离开来，可读性更强， 在没有控制HTML标记时也可以添加事件监听。
+- 可以使用 removeEventListener() 方法来移除事件的监听。
+
+##### 向元素添加事件句柄
+
+```javascript
+element.addEventListener("click", function(){ alert("Hello World!"); });
+```
+
+##### 向同一个元素中添加多个事件句柄
+
+```javascript
+element.addEventListener("click",myFunction);element.addEventListener("click", mySecondFunction);
+```
+
+##### 向 Window 对象添加事件句柄
+
+```javascript
+window.addEventListener("resize", function(){ document.getElementById("demo").innerHTML = sometext;});
+```
+
+##### 传递参数
+
+- 当传递参数值时，使用"匿名函数"调用带参数的函数：
+
+```javascript
+element.addEventListener("click", function(){myFunction(p1, p2); });
+```
+
+##### 事件冒泡或事件捕获
+
+- 在 *冒泡* 中，内部元素的事件会先被触发，然后再触发外部元素。
+
+- 在 *捕获* 中，外部元素的事件会先被触发，然后才会触发内部元素的事件。
+
+###### 语法
+
+```javascript
+addEventListener(event, function, useCapture);
+```
+
+- 默认值为 false, 即冒泡传递，当值为 true 时, 事件使用捕获传递。
+
+##### removeEventListener() 方法
+
+- 移除由 addEventListener() 方法添加的事件句柄：
+
+```javascript
+element.removeEventListener("mousemove", myFunction);
+```
+
+#### 6.  DOM 元素 (节点)
+
+##### 创建新的 HTML 元素 (节点) - appendChild()
+
+- 先创建一个元素，然后在已存在的元素中添加它。
+
+##### 创建新的 HTML 元素 (节点) - insertBefore()
+
+- **appendChild()** 方法，它用于添加新元素到尾部。
+
+- **insertBefore()** 方法，将新元素添加到开始位置
+
+##### 移除已存在的元素
+
+- 要移除一个元素，你需要知道该元素的父元素。
+
+##### 替换 HTML 元素 - replaceChild()
+
+- 可以使用 replaceChild() 方法来替换 HTML DOM 中的元素。
+
+#### 7.  DOM 集合(Collection)
+
+##### HTMLCollection 对象
+
+- getElementsByTagName() 方法返回 [HTMLCollection](https://www.runoob.com/jsref/dom-htmlcollection.html) 对象。
+
+##### HTMLCollection 对象 length 属性
+
+- HTMLCollection 对象的 length 属性定义了集合中元素的数量。
+
+#### 8.  DOM 节点列表
+
+- **NodeList** 对象是一个从文档中获取的节点列表 (集合) 。
+
+- NodeList 对象类似 [HTMLCollection](https://www.runoob.com/js/js-htmldom-elements.html) 对象。
+
+##### NodeList 对象 length 属性
+
+- NodeList 对象 length 属性定义了节点列表中元素的数量。
+
+##### HTMLCollection 与 NodeList 的区别
+
+- [HTMLCollection](https://www.runoob.com/js/js-htmldom-collections.html) 是 HTML 元素的集合。NodeList 是一个文档节点的集合。
+- NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, ...) 来获取元素。
+- NodeList 与 HTMLCollection 都有 length 属性。
+- HTMLCollection 元素可以通过 name，id 或索引来获取。
+- NodeList 只能通过索引来获取。
+- 只有 NodeList 对象有包含属性节点和文本节点。
+
+### JS 高级教程
+
+#### 1.  JavaScript 对象
+
+- JavaScript 中的所有事物都是对象：字符串、数值、数组、函数...
+
+##### 创建 JavaScript 对象
+
+- 使用 Object 定义并创建对象的实例。
+- 使用函数来定义对象，然后创建新的对象实例。
+
+###### 使用 Object
+
+- 如果给定值是 null 或 undefined，将会创建并返回一个空对象。
+- 如果传进去的是一个基本类型的值，则会构造其包装类型的对象。
+- 如果传进去的是引用类型的值，仍然会返回这个值，经他们复制的变量保有和源对象相同的引用地址。
+- 当以非构造函数形式被调用时，Object 的行为等同于 new Object()。
+
+```javascript
+// 以构造函数形式来调用
+new Object([value])
+```
+
+###### 使用对象字面量
+
+```javascript
+var myObject = {
+    key1: value1,
+    key2: value2,
+    // 更多键值对...
+};
+```
+
+- **myObject:** 变量名，用于引用整个对象。
+- **key1, key2:** 属性名称，可以是字符串或标识符。
+- **value1, value2:** 属性的值，可以是任意 JavaScript 数据类型，包括数字、字符串、布尔值、函数、数组、甚至其他对象。
+
+###### 使用对象构造器
+
+```javascript
+function person(firstname,lastname,age,eyecolor)
+{
+    this.firstname=firstname;
+    this.lastname=lastname;
+    this.age=age;
+    this.eyecolor=eyecolor;
+}
+```
+
+###### 创建 JavaScript 对象实例
+
+一旦有了对象构造器，就可以创建新的对象实例，就像这样：
+
+```
+var myFather=new person("John","Doe",50,"blue");
+var myMother=new person("Sally","Rally",48,"green");
+```
+
+###### 把属性添加到 JavaScript 对象
+
+- 可以通过为对象赋值，向已有对象添加新属性：
+
+##### 把方法添加到 JavaScript 对象
+
+- 在构造器函数内部定义对象的方法。
+
+##### JavaScript 类
+
+- JavaScript 是面向对象的语言，但 JavaScript 不使用类。
+- 在 JavaScript 中，不会创建类，也不会通过类来创建对象（就像在其他面向对象的语言中那样）。
+- JavaScript 基于 prototype，而不是基于类的。
+
+##### JavaScript for...in 循环
+
+- 循环遍历对象的属性。
+
+###### 语法
+
+```javascript
+for (variable in object)
+{
+    执行的代码……
+}
+```
+
+##### JavaScript 的对象是可变的
+
+- 对象是可变的，它们是通过引用来传递的。
+
+#### 2.  JavaScript prototype
+
+- 所有的 JavaScript 对象都会从一个 prototype（原型对象）中继承属性和方法。
+
+##### prototype 继承
+
+所有的 JavaScript 对象都会从一个 prototype（原型对象）中继承属性和方法：
+
+- `Date` 对象从 `Date.prototype` 继承。
+- `Array` 对象从 `Array.prototype` 继承。
+- `Person` 对象从 `Person.prototype` 继承。
+
+##### 添加属性和方法
+
+- 使用 prototype 属性就可以给对象的构造函数添加新的属性：
+
+#### 3.  JavaScript Number 对象
+
+##### JavaScript 数字
+
+- 可以使用也可以不使用小数点来书写。
+
+##### 所有 JavaScript 数字均为 64 位
+
+- 其中 0 到 51 存储数字（片段），52 到 62 存储指数，63 位存储符号。
+
+##### 精度
+
+- 整数（不使用小数点或指数计数法）最多为 15 位。
+- 小数的最大位数是 17，但是浮点运算并不总是 100% 准确。
+
+##### 八进制和十六进制
+
+如果前缀为 0，则 JavaScript 会把数值常量解释为八进制数，如果前缀为 0 和 "x"，则解释为十六进制数。
+
+##### 无穷大（Infinity）
+
+- 当数字运算结果超过了所能表示的数字上限（溢出），结果为一个特殊的无穷大（infinity）值，以Infinity表示。
+- 同样地，当负数的值超过了所能表示的负数范围，结果为负无穷大，在中以-Infinity表示。
+
+##### NaN - 非数字值
+
+- NaN 属性是代表非数字值的特殊值。该属性用于指示某个值不是数字。可以把 Number 对象设置为该值，来指示其不是数字值。
+
+- 你可以使用 `isNaN()` 全局函数来判断一个值是否是 NaN 值。
+
+##### 数字可以是数字或者对象
+
+- 数字可以私有数据进行初始化，就像 x = 123;
+- JavaScript 数字对象初始化数据， var y = new Number(123);
+
+#### 4.  JavaScript 字符串（String） 对象
+
+##### JavaScript 字符串
+
+- 一个字符串用于存储一系列字符就像 "John Doe"。
+- 一个字符串可以使用单引号或双引号。
+
+##### 字符串（String）
+
+- 字符串（String）使用长度属性**length**来计算字符串的长度：
+
+##### 在字符串中查找字符串
+
+- 使用 indexOf() 来定位字符串中某一个指定的字符首次出现的位置：
+
+##### 内容匹配
+
+- **match()**函数用来查找字符串中特定的字符，并且如果找到的话，则返回这个字符。
+
+##### 替换内容
+
+- **replace()** 方法在字符串中用某些字符替换另一些字符。
+
+##### 字符串大小写转换
+
+- 字符串大小写转换使用函数 **toUpperCase()** / **toLowerCase()**。
+
+##### 字符串转为数组
+
+- 字符串使用**split()**函数转为数组。
+
+##### 特殊字符
+
+- 使用反斜线（\）插入特殊符号，如：撇号,引号等其他特殊符号。
+
+#### 5.  JavaScript Date（日期） 对象
+
+##### 创建日期
+
+- Date 对象用于处理日期和时间。 
+
+##### 设置日期
+
+- 通过使用针对日期对象的方法，我们可以很容易地对日期进行操作。
+
+```javascript
+var myDate=new Date();
+myDate.setFullYear(2010,0,14);// 第二个参数为月份， 0 到 11 之间的整数值，表示从一月到十二月
+```
+
+##### 两个日期比较
+
+- 日期对象也可用于比较两个日期。
+
+#### 6.  JavaScript Array（数组） 对象
+
+##### 创建一个数组
+
+1. 常规方式：
+
+```javascript
+var myCars=new Array();
+myCars[0]="Saab"; 
+myCars[1]="Volvo";
+myCars[2]="BMW";
+```
+
+2. 简洁方式：
+
+```javascript
+var myCars=new Array("Saab","Volvo","BMW");
+```
+
+3. 字面：
+
+```javascript
+var myCars=["Saab","Volvo","BMW"];
+```
+
+##### 访问数组
+
+- 通过指定数组名以及索引号码，可以访问某个特定的元素。
+
+##### 在一个数组中你可以有不同的对象
+
+- 所有的变量都是对象。数组元素是对象。函数是对象。
+
+- 因此，你可以在数组中有不同的变量类型。
+
+#### 7.  JavaScript Boolean（布尔） 对象
+
+##### 创建 Boolean 对象
+
+- Boolean 对象代表两个值:"true" 或者 "false"
+
+```javascript
+var myBoolean=new Boolean();
+```
+
+#### 8.  JavaScript Math（算数） 对象
+
+##### Math 对象
+
+- Math（算数）对象的作用是：执行普通的算数任务。
+
+- Math 对象提供多种算数值类型和函数。无需在使用这个对象之前对它进行定义。
+
+##### 算数值
+
+```javascript
+Math.E
+Math.PI
+Math.SQRT2
+Math.SQRT1_2
+Math.LN2
+Math.LN10
+Math.LOG2E
+Math.LOG10E
+```
+
+##### 算数方法
+
+- 除了可被 Math 对象访问的算数值以外，还有几个函数（方法）可以使用。
+
+#### 9.  JavaScript RegExp 对象
+
+​	RegExp：是正则表达式（regular expression）的简写。
+
+​	 [JavaScript RegExp 对象的参考手册](https://www.runoob.com/jsref/jsref-obj-regexp.html)
+
+### JS 浏览器BOM
+
+#### 1.  JavaScript Window
+
+##### Window 对象
+
+- 所有浏览器都支持 window 对象。它表示浏览器窗口。
+- 所有 JavaScript 全局对象、函数以及变量均自动成为 window 对象的成员。
+- 全局变量是 window 对象的属性。
+- 全局函数是 window 对象的方法。
+
+##### Window 尺寸
+
+- document.body.clientHeight
+- document.body.clientWidth
+
+##### 其他 Window 方法
+
+- window.open() - 打开新窗口
+- window.close() - 关闭当前窗口
+- window.moveTo() - 移动当前窗口
+- window.resizeTo() - 调整当前窗口的尺寸
+
+#### 2.  JavaScript Window Screen
+
+##### Window Screen
+
+- **window.screen**对象在编写时可以不使用 window 这个前缀。
+
+一些属性：
+
+- screen.availWidth - 可用的屏幕宽度
+- screen.availHeight - 可用的屏幕高度
+
+##### Window Screen 可用宽度
+
+- screen.availWidth 属性返回访问者屏幕的宽度，以像素计，减去界面特性，比如窗口任务栏。
+
+##### Window Screen 可用高度
+
+- screen.availHeight 属性返回访问者屏幕的高度，以像素计，减去界面特性，比如窗口任务栏。
+
+#### 3.  JavaScript Window Location
+
+##### Window Location
+
+- **window.location** 对象在编写时可不使用 window 这个前缀。 
+
+一些实例:
+
+- location.hostname 返回 web 主机的域名
+- location.pathname 返回当前页面的路径和文件名
+- location.port 返回 web 主机的端口 （80 或 443）
+- location.protocol 返回所使用的 web 协议（http: 或 https:）
+
+##### Window Location href
+
+- **`location.href`** 属性返回当前页面的 URL。
+
+##### Window Location pathname
+
+- **`location.pathname`** 属性返回 URL 的路径名。
+
+#### Window Location assign
+
+- **`location.assign()`** 方法加载新的文档。
+
+#### 4.  JavaScript Window History
+
+##### Window History
+
+- **window.history**对象在编写时可不使用 window 这个前缀。
+
+一些方法：
+
+- history.back() - 与在浏览器点击后退按钮相同
+- history.forward() - 与在浏览器中点击向前按钮相同
+
+##### Window history.back()
+
+- history.back() - 方法加载历史列表中的前一个 URL。
+
+##### Window history.forward()
+
+- history.forward() - 方法加载历史列表中的下一个 URL。
+
+#### 5.  JavaScript Window Navigator
+
+- window.navigator 对象包含有关访问者浏览器的信息。
+
+##### Window Navigator
+
+- **window.navigator** 对象在编写时可不使用 window 这个前缀。
+
+##### 警告!!!
+
+来自 navigator 对象的信息具有误导性，不应该被用于检测浏览器版本，这是因为：
+
+- navigator 数据可被浏览器使用者更改
+- 一些浏览器对测试站点会识别错误
+- 浏览器无法报告晚于浏览器发布的新操作系统
+
+#### 6.  JavaScript 弹窗
+
+##### 警告框
+
+- 警告框经常用于确保用户可以得到某些信息。
+- 当警告框出现后，用户需要点击确定按钮才能继续进行操作。
+
+###### 语法
+
+```javascript
+window.alert("sometext");
+```
+
+- **window.alert()** 方法可以不带上window对象，直接使用**alert()**方法。
+
+##### 确认框
+
+- 确认框通常用于验证是否接受用户操作。
+- 当确认框弹出时，用户可以点击 "确认" 或者 "取消" 来确定用户操作。
+- 当你点击 "确认", 确认框返回 true， 如果点击 "取消", 确认框返回 false。
+
+###### 语法
+
+```javascript
+window.confirm("sometext");
+```
+
+- **window.confirm()** 方法可以不带上window对象，直接使用**confirm()**方法。
+
+##### 提示框
+
+- 提示框经常用于提示用户在进入页面前输入某个值。
+- 当提示框出现后，用户需要输入某个值，然后点击确认或取消按钮才能继续操纵。
+- 如果用户点击确认，那么返回值为输入的值。如果用户点击取消，那么返回值为 null。
+
+###### 语法
+
+```javascript
+window.prompt("sometext","defaultvalue");
+```
+
+- **window.prompt()** 方法可以不带上window对象，直接使用**prompt()**方法。
+
+##### 换行
+
+- 弹窗使用 反斜杠 + "n"(\n) 来设置换行。
+
+#### 7.  JavaScript 计时事件
+
+##### JavaScript 计时事件
+
+- setInterval() - 间隔指定的毫秒数不停地执行指定的代码。
+- setTimeout() - 在指定的毫秒数后执行指定代码。
+
+##### setInterval() 方法
+
+- setInterval() 间隔指定的毫秒数不停地执行指定的代码
+
+###### 语法
+
+```javascript
+window.setInterval("javascript function",milliseconds);
+```
+
+##### setTimeout() 方法
+
+###### 语法
+
+```javascript
+myVar= window.setTimeout("javascript function", milliseconds);
+```
+
+- setTimeout() 方法会返回某个值。在上面的语句中，值被储存在名为 myVar 的变量中。假如你希望取消这个 setTimeout()，你可以使用这个变量名来指定它。
+
+- setTimeout() 的第一个参数是含有 JavaScript 语句的字符串。这个语句可能诸如 "alert('5 seconds!')"，或者对函数的调用，诸如 alertMsg。
+
+##### 停止执行
+
+- clearInterval() 方法用于停止 setInterval() 方法执行的函数代码。
+
+###### 语法
+
+```javascript
+window.clearInterval(intervalVariable)
+```
+
+- **window.clearInterval()** 方法可以不使用window前缀，直接使用函数**clearInterval()**。
+
+#### 8.  JavaScript Cookie
+
+- 用于存储 web 页面的用户信息。
+
+##### 使用 JavaScript 创建Cookie
+
+- 可以使用 **document.cookie** 属性来创建 、读取、及删除 cookie。
+
+```javascript
+document.cookie="username=John Doe";
+```
+
+- 可以为 cookie 添加一个过期时间（以 UTC 或 GMT 时间）。默认情况下，cookie 在浏览器关闭时删除。
+
+```javascript
+document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT";
+```
+
+- 可以使用 path 参数告诉浏览器 cookie 的路径。默认情况下，cookie 属于当前页面。
+
+```javascript
+document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+```
+
+##### 使用 JavaScript 读取 Cookie
+
+- 可以使用以下代码来读取 cookie：
+
+```javascript
+var x = document.cookie;
+```
+
+##### 使用 JavaScript 修改 Cookie
+
+- 修改 cookie 类似于创建 cookie：
+
+```javascript
+document.cookie="username=John Smith; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+```
+
+- 旧的 cookie 将被覆盖。
+
+##### 使用 JavaScript 删除 Cookie
+
+- 设置 expires 参数为以前的时间即可。
+
+##### Cookie 字符串
+
+- document.cookie 属性看起来像一个普通的文本字符串，其实它不是。
+- 在 document.cookie 中写入一个完整的 cookie 字符串, 当重新读取该 cookie 信息时，cookie 信息是以名/值对的形式展示的。
+- 如果设置了新的 cookie，旧的 cookie 不会被覆盖。 新 cookie 将添加到 document.cookie 中。
