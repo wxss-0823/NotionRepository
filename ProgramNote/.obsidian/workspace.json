@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Front-endNote.md",
+                "file": "CBasedNote.md",
                 "mode": "preview",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Front-endNote.md",
+                "file": "CBasedNote.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Front-endNote.md",
+                "file": "CBasedNote.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Front-endNote.md"
+                "file": "CBasedNote.md"
               }
             }
           }
@@ -148,5 +148,8 @@
     }
   },
   "active": "2a27abef1dff5898",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "Front-endNote.md",
+    "Git.md"
+  ]
 }

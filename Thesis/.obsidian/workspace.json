@@ -4,17 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "f993e921aa4507b4",
+        "id": "b9e9e558fb31ac26",
         "type": "tabs",
         "children": [
           {
-            "id": "f95fc515cd6e013d",
+            "id": "ba1e9513f7b6ea4b",
             "type": "leaf",
             "state": {
-              "type": "pdf",
-              "state": {
-                "file": "HPV/Thesis/HPV Vaccination and the Risk of Invasive.pdf"
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -83,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "HPV/Thesis/HPV Vaccination and the Risk of Invasive.pdf",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "HPV/Thesis/HPV Vaccination and the Risk of Invasive.pdf",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": false
               }
@@ -122,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "HPV/Thesis/HPV Vaccination and the Risk of Invasive.pdf"
-              }
+              "state": {}
             }
           }
         ],
@@ -145,10 +139,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "f95fc515cd6e013d",
+  "active": "c955cdd0fe0499e4",
   "lastOpenFiles": [
-    "HPV/Note/HPV Vaccination and the Risk of Invasive_Note.md",
     "HPV/Thesis/HPV Vaccination and the Risk of Invasive.pdf",
+    "HPV/Note/HPV Vaccination and the Risk of Invasive_Note.md",
     "HPV/HPV Vaccination and the Risk of Invasive.pdf",
     "HPV Vaccination and the Risk of Invasive_Note.md",
     "HPV Vaccination and the Risk of Invasive.pdf",
