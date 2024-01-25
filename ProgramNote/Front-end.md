@@ -1,8 +1,8 @@
-# HTML/CSS/JavaScript学习笔记
+# HTML/CSS/JavaScript 学习笔记
 
 ## 第一部分  HTML
 
-### HTML教程
+### HTML 教程
 
 #### 1.  HTML 简介
 
@@ -492,7 +492,7 @@ scheme`://`host.domain`:`port`/`path`/`filename
 
 
 
-### HTML5教程
+### HTML5 教程
 
 #### 1.  HTML5 新元素
 
