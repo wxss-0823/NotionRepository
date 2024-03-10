@@ -13,8 +13,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CBasedNote.md",
-                "mode": "preview",
+                "file": "Java.md",
+                "mode": "source",
                 "source": false
               }
             }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "CBasedNote.md",
+                "file": "Java.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "CBasedNote.md",
+                "file": "Java.md",
                 "linksCollapsed": true,
                 "unlinkedCollapsed": false
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CBasedNote.md"
+                "file": "Java.md"
               }
             }
           }
@@ -149,7 +149,13 @@
   },
   "active": "2a27abef1dff5898",
   "lastOpenFiles": [
-    "Front-endNote.md",
-    "Git.md"
+    "Python.md",
+    "Java.md",
+    "Git.md",
+    "Front-end.md",
+    "C++.md",
+    "C#.md",
+    "C.md",
+    "Front-endNote.md"
   ]
 }
