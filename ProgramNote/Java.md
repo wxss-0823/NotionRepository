@@ -1422,3 +1422,849 @@ class TreeNode {
     TreeNode(int x) { val = x; }
 }
 ```
+
+#### 2.  集合框架
+
+##### 集合接口
+
+| 序号 | 接口描述                                                     |
+| :--- | :----------------------------------------------------------- |
+| 1    | **Collection 接口**：Collection 是最基本的集合接口，一个 Collection 代表一组 Object，即 Collection 的元素, Java不提供直接继承自Collection的类，只提供继承于的子接口(如List和set)。Collection 接口存储一组不唯一，无序的对象。 |
+| 2    | **List 接口**：List接口是一个有序的 Collection，使用此接口能够精确的控制每个元素插入的位置，能够通过索引(元素在List中位置，类似于数组的下标)来访问List中的元素，第一个元素的索引为 0，而且允许有相同的元素。List 接口存储一组不唯一，有序（插入顺序）的对象。 |
+| 3    | **Set**：Set 具有与 Collection 完全一样的接口，只是行为上不同，Set 不保存重复的元素。Set 接口存储一组唯一，无序的对象。 |
+| 4    | **SortedSet**：继承于Set保存有序的集合。                     |
+| 5    | **Map**：Map 接口存储一组键值对象，提供key（键）到value（值）的映射。 |
+| 6    | **Map.Entry**：描述在一个Map中的一个元素（键/值对）。是一个 Map 的内部接口。 |
+| 7    | **SortedMap**：继承于 Map，使 Key 保持在升序排列。           |
+| 8    | **Enumeration**：这是一个传统的接口和定义的方法，通过它可以枚举（一次获得一个）对象集合中的元素。这个传统接口已被迭代器取代。 |
+
+###### Set和List的区别
+
+- Set 接口实例存储的是**无序**的，**不重复**的数据。List 接口实例存储的是**有序**的，可以重复的元素
+- Set **检索效率低下**，**删除和插入效率高**，插入和删除不会引起元素位置改变 
+- List 和数组类似，可以动态增长，根据实际存储的数据的长度自动增长 List 的长度。**查找元素效率高**，**插入删除效率低**，因为会引起其他元素位置改变
+
+##### 集合实现类
+
+| 序号 | 类描述                                                       |
+| :--- | :----------------------------------------------------------- |
+| 1    | **AbstractCollection**：实现了大部分的集合接口。             |
+| 2    | **AbstractList**：继承于AbstractCollection 并且实现了大部分List接口。 |
+| 3    | **AbstractSequentialList**：继承于 AbstractList ，提供了对数据元素的链式访问而不是随机访问。 |
+| 4    | [**LinkedList**](https://www.runoob.com/java/java-linkedlist.html)：该类实现了List接口，允许有null（空）元素。主要用于创建链表数据结构，该类没有同步方法，如果多个线程同时访问一个List，则必须自己实现访问同步，解决方法就是在创建List时候构造一个同步的List。LinkedList 查找效率低。 |
+| 5    | **[ArrayList](https://www.runoob.com/java/java-arraylist.html)**：该类也是实现了List的接口，实现了可变大小的数组，随机访问和遍历元素时，提供更好的性能。该类也是非同步的,在多线程的情况下不要使用。ArrayList 增长当前长度的50%，插入删除效率低。 |
+| 6    | **AbstractSet**：继承于AbstractCollection 并且实现了大部分Set接口。 |
+| 7    | [**HashSet**](https://www.runoob.com/java/java-hashset.html)：该类实现了Set接口，不允许出现重复元素，不保证集合中元素的顺序，允许包含值为null的元素，但最多只能一个。 |
+| 8    | **LinkedHashSet**：具有可预知迭代顺序的 `Set` 接口的哈希表和链接列表实现。 |
+| 9    | **TreeSet**：该类实现了Set接口，可以实现排序等功能。         |
+| 10   | **AbstractMap**：实现了大部分的Map接口。                     |
+| 11   | [**HashMap**](https://www.runoob.com/java/java-hashmap.html)：HashMap 是一个散列表，它存储的内容是键值对(key-value)映射。 该类实现了Map接口，根据键的HashCode值存储数据，具有很快的访问速度，最多允许一条记录的键为null，不支持线程同步。 |
+| 12   | **TreeMap**：继承了AbstractMap，并且使用一颗树。             |
+| 13   | **WeakHashMap**：继承AbstractMap类，使用弱密钥的哈希表。     |
+| 14   | **LinkedHashMap**：继承于HashMap，使用元素的自然顺序对元素进行排序. |
+| 15   | **IdentityHashMap**：继承AbstractMap类，比较文档时使用引用相等。 |
+
+##### 通过java.util包中定义的类
+
+| 序号 | 类描述                                                       |
+| :--- | :----------------------------------------------------------- |
+| 1    | Vector 该类和ArrayList非常相似，但是该类是同步的，可以用在多线程的情况，该类允许设置默认的增长长度，默认扩容方式为原来的2倍。 |
+| 2    | Stack 栈是Vector的一个子类，它实现了一个标准的后进先出的栈。 |
+| 3    | Dictionary Dictionary 类是一个抽象类，用来存储键/值对，作用和Map类相似。 |
+| 4    | Hashtable Hashtable 是 Dictionary(字典) 类的子类，位于 java.util 包中。 |
+| 5    | Properties Properties 继承于 Hashtable，表示一个持久的属性集，属性列表中每个键及其对应值都是一个字符串。 |
+| 6    | BitSet 一个Bitset类创建一种特殊类型的数组来保存位值。BitSet中数组大小会随需要增加。 |
+
+##### 集合算法
+
+| 序号 | 算法描述                                               |
+| :--- | :----------------------------------------------------- |
+| 1    | Collection Algorithms 这里是一个列表中的所有算法实现。 |
+
+##### 如何使用迭代器
+
+| 序号 | 迭代器方法描述                                               |
+| :--- | :----------------------------------------------------------- |
+| 1    | [使用 Java Iterator](https://www.runoob.com/java/java-iterator.html) 这里通过实例列出 Iterator 和 ListIterator 接口提供的所有方法。 |
+
+#### 3.  ArrayList
+
+##### 添加元素
+
+- 可以使用 `add()` 方法
+
+##### 访问元素
+
+- 可以使用 `get()` 方法
+
+##### 修改元素
+
+- 可以使用 `set()` 方法
+
+##### 删除元素
+
+- 可以使用 `remove()` 方法
+
+##### 计算大小
+
+- 可以使用 `size()` 方法
+
+##### 迭代数组列表
+
+- 可以使用 for 来迭代数组列表中的元素
+
+- 也可以使用 for-each 来迭代元素
+
+##### 其他的引用类型
+
+如果要存储其他类型，而 `<E>` 只能为引用数据类型，这时需要使用到基本类型的包装类。
+
+| 基本类型 | 引用类型  |
+| :------- | :-------- |
+| boolean  | Boolean   |
+| byte     | Byte      |
+| short    | Short     |
+| int      | Integer   |
+| long     | Long      |
+| float    | Float     |
+| double   | Double    |
+| char     | Character |
+
+##### ArrayList 排序
+
+-  sort() 方法可以对字符或数字列表进行排序
+
+##### ArrayList 方法
+
+| 方法                                                         | 描述                                          |
+| :----------------------------------------------------------- | :-------------------------------------------- |
+| [add()](https://www.runoob.com/java/java-arraylist-add.html) | 将元素插入到指定位置的 arraylist 中           |
+| [addAll()](https://www.runoob.com/java/java-arraylist-addall.html) | 添加集合中的所有元素到 arraylist 中           |
+| [clear()](https://www.runoob.com/java/java-arraylist-clear.html) | 删除 arraylist 中的所有元素                   |
+| [clone()](https://www.runoob.com/java/java-arraylist-clone.html) | 复制一份 arraylist                            |
+| [contains()](https://www.runoob.com/java/java-arraylist-contains.html) | 判断元素是否在 arraylist                      |
+| [get()](https://www.runoob.com/java/java-arraylist-get.html) | 通过索引值获取 arraylist 中的元素             |
+| [indexOf()](https://www.runoob.com/java/java-arraylist-indexof.html) | 返回 arraylist 中元素的索引值                 |
+| [removeAll()](https://www.runoob.com/java/java-arraylist-removeall.html) | 删除存在于指定集合中的 arraylist 里的所有元素 |
+| [remove()](https://www.runoob.com/java/java-arraylist-remove.html) | 删除 arraylist 里的单个元素                   |
+| [size()](https://www.runoob.com/java/java-arraylist-size.html) | 返回 arraylist 里元素数量                     |
+| [isEmpty()](https://www.runoob.com/java/java-arraylist-isempty.html) | 判断 arraylist 是否为空                       |
+| [subList()](https://www.runoob.com/java/java-arraylist-sublist.html) | 截取部分 arraylist 的元素                     |
+| [set()](https://www.runoob.com/java/java-arraylist-set.html) | 替换 arraylist 中指定索引的元素               |
+| [sort()](https://www.runoob.com/java/java-arraylist-sort.html) | 对 arraylist 元素进行排序                     |
+| [toArray()](https://www.runoob.com/java/java-arraylist-toarray.html) | 将 arraylist 转换为数组                       |
+| [toString()](https://www.runoob.com/java/java-arraylist-tostring.html) | 将 arraylist 转换为字符串                     |
+| [ensureCapacity](https://www.runoob.com/java/java-arraylist-surecapacity.html)() | 设置指定容量大小的 arraylist                  |
+| [lastIndexOf()](https://www.runoob.com/java/java-arraylist-lastindexof.html) | 返回指定元素在 arraylist 中最后一次出现的位置 |
+| [retainAll()](https://www.runoob.com/java/java-arraylist-retainall.html) | 保留 arraylist 中在指定集合中也存在的那些元素 |
+| [containsAll()](https://www.runoob.com/java/java-arraylist-containsall.html) | 查看 arraylist 是否包含指定集合中的所有元素   |
+| [trimToSize()](https://www.runoob.com/java/java-arraylist-trimtosize.html) | 将 arraylist 中的容量调整为数组中的元素个数   |
+| [removeRange()](https://www.runoob.com/java/java-arraylist-removerange.html) | 删除 arraylist 中指定索引之间存在的元素       |
+| [replaceAll()](https://www.runoob.com/java/java-arraylist-replaceall.html) | 将给定的操作内容替换掉数组中每一个元素        |
+| [removeIf()](https://www.runoob.com/java/java-arraylist-removeif.html) | 删除所有满足特定条件的 arraylist 元素         |
+| [forEach()](https://www.runoob.com/java/java-arraylist-foreach.html) | 遍历 arraylist 中每一个元素并执行特定操作     |
+
+#### 4.  LinkedList
+
+​	链表（Linked list）是一种常见的基础数据结构，是一种线性表，但是并不会按线性的顺序存储数据，而是在每一个节点里存到下一个节点的地址。
+
+**以下情况使用 ArrayList :**
+
+- 频繁访问列表中的某一个元素。
+- 只需要在列表末尾进行添加和删除元素操作。
+
+**以下情况使用 LinkedList :**
+
+- 你需要通过循环迭代来访问列表中的某些元素。
+- 需要频繁的在列表开头、中间、末尾等位置进行添加和删除元素操作。
+
+​	更多的情况下，使用 ArrayList 访问列表中的随机元素更加高效，但以下几种情况 LinkedList 提供了更高效的方法。
+
+##### 在列表开头添加元素
+
+- 使用 addFirst() 在头部添加元素
+
+##### 在列表结尾添加元素
+
+- 使用 addLast() 在尾部添加元素
+
+##### 在列表开头移除元素
+
+- 使用 removeFirst() 移除头部元素
+
+##### 在列表结尾移除元素
+
+- 使用 removeLast() 移除尾部元素
+
+##### 获取列表开头的元素
+
+- 使用 getFirst() 获取头部元素
+
+##### 获取列表结尾的元素：
+
+- 使用 getLast() 获取尾部元素
+
+##### 迭代元素
+
+-  可以使用 for 配合 size() 方法来迭代列表中的元素
+
+- 也可以使用 for-each 来迭代元素
+
+##### 常用方法
+
+| 方法                                           | 描述                                                         |
+| :--------------------------------------------- | :----------------------------------------------------------- |
+| public boolean add(E e)                        | 链表末尾添加元素，返回是否成功，成功为 true，失败为 false。  |
+| public void add(int index, E element)          | 向指定位置插入元素。                                         |
+| public boolean addAll(Collection c)            | 将一个集合的所有元素添加到链表后面，返回是否成功，成功为 true，失败为 false。 |
+| public boolean addAll(int index, Collection c) | 将一个集合的所有元素添加到链表的指定位置后面，返回是否成功，成功为 true，失败为 false。 |
+| public void addFirst(E e)                      | 元素添加到头部。                                             |
+| public void addLast(E e)                       | 元素添加到尾部。                                             |
+| public boolean offer(E e)                      | 向链表末尾添加元素，返回是否成功，成功为 true，失败为 false。 |
+| public boolean offerFirst(E e)                 | 头部插入元素，返回是否成功，成功为 true，失败为 false。      |
+| public boolean offerLast(E e)                  | 尾部插入元素，返回是否成功，成功为 true，失败为 false。      |
+| public void clear()                            | 清空链表。                                                   |
+| public E removeFirst()                         | 删除并返回第一个元素。                                       |
+| public E removeLast()                          | 删除并返回最后一个元素。                                     |
+| public boolean remove(Object o)                | 删除某一元素，返回是否成功，成功为 true，失败为 false。      |
+| public E remove(int index)                     | 删除指定位置的元素。                                         |
+| public E poll()                                | 删除并返回第一个元素。                                       |
+| public E remove()                              | 删除并返回第一个元素。                                       |
+| public boolean contains(Object o)              | 判断是否含有某一元素。                                       |
+| public E get(int index)                        | 返回指定位置的元素。                                         |
+| public E getFirst()                            | 返回第一个元素。                                             |
+| public E getLast()                             | 返回最后一个元素。                                           |
+| public int indexOf(Object o)                   | 查找指定元素从前往后第一次出现的索引。                       |
+| public int lastIndexOf(Object o)               | 查找指定元素最后一次出现的索引。                             |
+| public E peek()                                | 返回第一个元素。                                             |
+| public E element()                             | 返回第一个元素。                                             |
+| public E peekFirst()                           | 返回头部元素。                                               |
+| public E peekLast()                            | 返回尾部元素。                                               |
+| public E set(int index, E element)             | 设置指定位置的元素。                                         |
+| public Object clone()                          | 克隆该列表。                                                 |
+| public Iterator descendingIterator()           | 返回倒序迭代器。                                             |
+| public int size()                              | 返回链表元素个数。                                           |
+| public ListIterator listIterator(int index)    | 返回从指定位置开始到末尾的迭代器。                           |
+| public Object[] toArray()                      | 返回一个由链表元素组成的数组。                               |
+| public T[] toArray(T[] a)                      | 返回一个由链表元素转换类型而成的数组。                       |
+
+#### 5.  HashSet
+
+##### 基础性质
+
+- **HashSet** 基于 **HashMap** 来实现的，是一个不允许有重复元素的集合。
+
+- **HashSet** 允许有 null 值。
+- **HashSet** 是无序的，即不会记录插入的顺序。
+- **HashSet** 不是线程安全的， 如果多个线程尝试同时修改 **HashSet**，则最终结果是不确定的。 您必须在多线程访问时显式同步对 HashSet 的并发访问。
+- **HashSet** 实现了 Set 接口。
+
+##### 基本类型的包装类
+
+| 基本类型 | 引用类型  |
+| :------- | :-------- |
+| boolean  | Boolean   |
+| byte     | Byte      |
+| short    | Short     |
+| int      | Integer   |
+| long     | Long      |
+| float    | Float     |
+| double   | Double    |
+| char     | Character |
+
+##### 添加元素
+
+- 使用 `add()` 方法
+
+##### 判断元素是否存在
+
+- 使用 `contains()` 方法来判断元素是否存在于集合当中
+
+##### 删除元素
+
+- 使用 `remove()` 方法来删除集合中的元素
+- 删除集合中的所有元素使用 `cleat()` 方法
+
+##### 计算大小
+
+- 计算 **HashSet** 中的元素数量可以使用 `size()` 方法
+
+##### 迭代 HashSet
+
+- 可以使用 **for-each** 来迭代 **HashSet** 中的元素
+
+#### 6.  HashMap
+
+##### 基础性质
+
+- **HashMap** 是一个散列表，它存储的内容是键值对(key-value)映射
+- **HashMap** 实现了 Map 接口，根据键的 HashCode 值存储数据，具有很快的访问速度，最多允许一条记录的键为 null，不支持线程同步
+- **HashMap** 是无序的，即不会记录插入的顺序
+- **HashMap** 继承于**AbstractMap**，实现了 **Map**、**Cloneable**、**java.io.Serializable** 接口
+
+##### 基本类型对应的包装类表如下
+
+| 基本类型 | 引用类型  |
+| :------- | :-------- |
+| boolean  | Boolean   |
+| byte     | Byte      |
+| short    | Short     |
+| int      | Integer   |
+| long     | Long      |
+| float    | Float     |
+| double   | Double    |
+| char     | Character |
+
+##### 添加元素
+
+- 添加键值对(key-value)可以使用 `put()` 方法
+
+##### 访问元素
+
+- 可以使用 `get(key)` 方法来获取 key 对应的 value
+
+##### 删除元素
+
+- 可以使用 `remove(key)` 方法来删除 key 对应的键值对(key-value)
+- 删除所有键值对(key-value)可以使用 clear 方法
+
+##### 计算大小
+
+- 计算 **HashMap** 中的元素数量可以使用 `size()` 方法
+
+##### 迭代 HashMap
+
+- 可以使用 for-each 来迭代 **HashMap** 中的元素。
+
+- 如果只想获取 **key**，可以使用 `keySet()` 方法，然后可以通过 get(key) 获取对应的 value；如果只想获取 **value**，可以使用 `values()` 方法
+
+##### 常用方法列表如下
+
+| 方法                                                         | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [clear()](https://www.runoob.com/java/java-hashmap-clear.html) | 删除 hashMap 中的所有键/值对                                 |
+| [clone()](https://www.runoob.com/java/java-hashmap-clone.html) | 复制一份 hashMap                                             |
+| [isEmpty()](https://www.runoob.com/java/java-hashmap-isempty.html) | 判断 hashMap 是否为空                                        |
+| [size()](https://www.runoob.com/java/java-hashmap-size.html) | 计算 hashMap 中键/值对的数量                                 |
+| [put()](https://www.runoob.com/java/java-hashmap-put.html)   | 将键/值对添加到 hashMap 中                                   |
+| [putAll()](https://www.runoob.com/java/java-hashmap-putall.html) | 将所有键/值对添加到 hashMap 中                               |
+| [putIfAbsent()](https://www.runoob.com/java/java-hashmap-putifabsent.html) | 如果 hashMap 中不存在指定的键，则将指定的键/值对插入到 hashMap 中 |
+| [remove()](https://www.runoob.com/java/java-hashmap-remove.html) | 删除 hashMap 中指定键 key 的映射关系                         |
+| [containsKey()](https://www.runoob.com/java/java-hashmap-containskey.html) | 检查 hashMap 中是否存在指定的 key 对应的映射关系             |
+| [containsValue()](https://www.runoob.com/java/java-hashmap-containsvalue.html) | 检查 hashMap 中是否存在指定的 value 对应的映射关系           |
+| [replace()](https://www.runoob.com/java/java-hashmap-replace.html) | 替换 hashMap 中是指定的 key 对应的 value                     |
+| [replaceAll()](https://www.runoob.com/java/java-hashmap-replaceall.html) | 将 hashMap 中的所有映射关系替换成给定的函数所执行的结果      |
+| [get()](https://www.runoob.com/java/java-hashmap-get.html)   | 获取指定 key 对应对 value                                    |
+| [getOrDefault()](https://www.runoob.com/java/java-hashmap-getordefault.html) | 获取指定 key 对应对 value，如果找不到 key ，则返回设置的默认值 |
+| [forEach()](https://www.runoob.com/java/java-hashmap-foreach.html) | 对 hashMap 中的每个映射执行指定的操作                        |
+| [entrySet()](https://www.runoob.com/java/java-hashmap-entryset.html) | 返回 hashMap 中所有映射项的集合集合视图                      |
+| [keySet](https://www.runoob.com/java/java-hashmap-keyset.html)() | 返回 hashMap 中所有 key 组成的集合视图                       |
+| [values()](https://www.runoob.com/java/java-hashmap-values.html) | 返回 hashMap 中存在的所有 value 值                           |
+| [merge()](https://www.runoob.com/java/java-hashmap-merge.html) | 添加键值对到 hashMap 中                                      |
+| [compute()](https://www.runoob.com/java/java-hashmap-compute.html) | 对 hashMap 中指定 key 的值进行重新计算                       |
+| [computeIfAbsent()](https://www.runoob.com/java/java-hashmap-computeifabsent.html) | 对 hashMap 中指定 key 的值进行重新计算，如果不存在这个 key，则添加到 hasMap 中 |
+| [computeIfPresent()](https://www.runoob.com/java/java-hashmap-computeifpresent.html) | 对 hashMap 中指定 key 的值进行重新计算，前提是该 key 存在于 hashMap 中 |
+
+#### 7.  Iterator
+
+##### 基础性质
+
+- Java迭代器（Iterator）是 Java 集合框架中的一种机制，是一种用于遍历集合（如列表、集合和映射等）的接口
+
+- 它提供了一种统一的方式来访问集合中的元素，而不需要了解底层集合的具体实现细节。
+- Java Iterator（迭代器）不是一个集合，它是一种用于访问集合的方法，可用于迭代 [ArrayList](https://www.runoob.com/java/java-arraylist.html) 和 [HashSet](https://www.runoob.com/java/java-hashset.html) 等集合。
+- Iterator 是 Java 迭代器最简单的实现，ListIterator 是 Collection API 中的接口， 它扩展了 Iterator 接口。
+
+##### 常用方法
+
+- **next()** - 返回迭代器的下一个元素，并将迭代器的指针移到下一个位置
+- **hasNext()** - 用于判断集合中是否还有下一个元素可以访问
+- **remove()** - 从集合中删除迭代器最后访问的元素（可选操作）
+
+#### 8.  Object
+
+##### 基础性质
+
+- Java Object 类是所有类的父类，也就是说 Java 的所有类都继承了 Object，**子类可以使用 Object 的所有方法**
+- Object 类位于 java.lang 包中，编译时会自动导入，我们创建一个类时，如果没有明确继承一个父类，那么它就会自动继承 Object，成为 Object 的子类
+
+##### 类的构造函数
+
+| 序号 |      构造方法 & 描述       |
+| :--- | :------------------------: |
+| 1    | **Object()**构造一个新对象 |
+
+##### 类的方法
+
+| 序号 |                         方法 & 描述                          |
+| :--- | :----------------------------------------------------------: |
+| 1    | [protected Object clone()](https://www.runoob.com/java/java-object-clone.html)创建并返回一个对象的拷贝 |
+| 2    | [boolean equals(Object obj)](https://www.runoob.com/java/java-object-equals.html)比较两个对象是否相等 |
+| 3    | [protected void finalize()](https://www.runoob.com/java/java-object-finalize.html)当 GC (垃圾回收器)确定不存在对该对象的有更多引用时，由对象的垃圾回收器调用此方法 |
+| 4    | [Class getClass()](https://www.runoob.com/java/java-object-getclass.html)获取对象的运行时对象的类 |
+| 5    | [int hashCode()](https://www.runoob.com/java/java-object-hashcode.html)获取对象的 hash 值 |
+| 6    | [void notify()](https://www.runoob.com/java/java-object-notify.html)唤醒在该对象上等待的某个线程 |
+| 7    | [void notifyAll()](https://www.runoob.com/java/java-object-notifyall.html)唤醒在该对象上等待的所有线程 |
+| 8    | [String toString()](https://www.runoob.com/java/java-object-tostring.html)返回对象的字符串表示形式 |
+| 9    | [void wait()](https://www.runoob.com/java/java-object-wait.html)让当前线程进入等待状态。直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法 |
+| 10   | [void wait(long timeout)](https://www.runoob.com/java/java-object-wait-timeout.html)让当前线程处于等待(阻塞)状态，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过参数设置的timeout超时时间 |
+| 11   | [void wait(long timeout, int nanos)](https://www.runoob.com/java/java-object-wait-nanos.html)与 wait(long timeout) 方法类似，多了一个 nanos 参数，这个参数表示额外时间（以纳秒为单位，范围是 0-999999）。 所以超时的时间还需要加上 nanos 纳秒 |
+
+#### 9.  泛型
+
+​	泛型提供了编译时类型安全检测机制，该机制允许程序员在编译时检测到非法的类型。泛型的本质是参数化类型，也就是说所操作的数据类型被指定为一个参数。
+
+##### 泛型方法
+
+​	该方法在调用时可以接收不同类型的参数。根据传递给泛型方法的参数类型，编译器适当地处理每一个方法调用。
+
+- 所有泛型方法声明都有一个类型参数声明部分（由尖括号分隔），该类型参数声明部分在方法返回类型之前（在下面例子中的 **<E>**）。
+- 每一个类型参数声明部分包含一个或多个类型参数，参数间用逗号隔开。一个泛型参数，也被称为一个类型变量，是用于指定一个泛型类型名称的标识符。
+- 类型参数能被用来声明返回值类型，并且能作为泛型方法得到的实际参数类型的占位符。
+- 泛型方法体的声明和其他方法一样。注意类型参数只能代表引用型类型，不能是原始类型（像 **int、double、char** 等）。
+
+###### java 中泛型标记符
+
+- **E** - Element (在集合中使用，因为集合中存放的是元素)
+- **T** - Type（Java 类）
+- **K** - Key（键）
+- **V** - Value（值）
+- **N** - Number（数值类型）
+- **？** - 表示不确定的 java 类型
+
+###### 有界的类型参数
+
+- 可能有时候，你会想限制那些被允许传递到一个类型参数的类型种类范围。例如，一个操作数字的方法可能只希望接受Number或者Number子类的实例。这就是有界类型参数的目的。
+
+- 要声明一个有界的类型参数，首先列出类型参数的名称，后跟extends关键字，最后紧跟它的上界。
+
+##### 泛型类
+
+- 泛型类的声明和非泛型类的声明类似，除了在类名后面添加了类型参数声明部分。
+
+- 和泛型方法一样，泛型类的类型参数声明部分也包含一个或多个类型参数，参数间用逗号隔开。一个泛型参数，也被称为一个类型变量，是用于指定一个泛型类型名称的标识符。因为他们接受一个或多个参数，这些类被称为参数化的类或参数化的类型。
+
+##### 类型通配符
+
+- 类型通配符一般是使用 **?** 代替具体的类型参数。例如 **List<?>** 在逻辑上是 **List<String>,List<Integer>** 等所有 **List<具体类型实参>** 的父类。
+
+- 类型通配符上限通过形如List来定义，如此定义就是通配符泛型值接受Number及其下层子类类型。
+
+- 类型通配符下限通过形如 **List<? super Number>** 来定义，表示类型只能接受 **Number** 及其上层父类类型，如 **Object** 类型的实例。
+
+#### 10.  序列化
+
+- Java 序列化是一种将对象转换为字节流的过程，以便可以将对象保存到磁盘上，将其传输到网络上，或者将其存储在内存中，以后再进行反序列化，将字节流重新转换为对象。
+
+- 序列化在 Java 中是通过 **java.io.Serializable** 接口来实现的，该接口没有任何方法，只是一个标记接口，用于标识类可以被序列化。
+
+- 当你序列化对象时，你把它包装成一个特殊文件，可以保存、传输或存储。反序列化则是打开这个文件，读取序列化的数据，然后将其还原为对象，以便在程序中使用。
+
+- 序列化是一种用于保存、传输和还原对象的方法，它使得对象可以在不同的计算机之间移动和共享，这对于分布式系统、数据存储和跨平台通信非常有用。
+
+##### 基本概念
+
+- 要使一个类可序列化，需要让该类实现 java.io.Serializable 接口，这告诉 Java 编译器这个类可以被序列化。
+
+##### 序列化对象
+
+- **序列化对象：** 使用 ObjectOutputStream 类来将对象序列化为字节流。
+
+##### 反序列化对象
+
+- **反序列化对象：** 使用 ObjectInputStream 类来从字节流中反序列化对象。
+
+#### 11.  网络编程
+
+​	网络编程是指编写运行在多个设备（计算机）的程序，这些设备都通过网络连接起来。
+
+​	java.net 包中 J2SE 的 API 包含有类和接口，它们提供低层次的通信细节。你可以直接使用这些类和接口，来专注于解决问题，而不用关注通信细节。java.net 包中提供了**两种常见的网络协议**的支持：
+
+- **TCP**：TCP（英语：Transmission Control Protocol，传输控制协议） 是一种面向连接的、可靠的、基于字节流的传输层通信协议，TCP 层是位于 IP 层之上，应用层之下的中间层。TCP 保障了两个应用程序之间的可靠通信。通常用于互联网协议，被称 TCP / IP。
+- **UDP**：UDP （英语：User Datagram Protocol，用户数据报协议），位于 OSI 模型的传输层。一个无连接的协议。提供了应用程序之间要发送数据的数据报。由于UDP缺乏可靠性且属于无连接协议，所以应用程序通常必须容许一些丢失、错误或重复的数据包。
+
+##### Socket 编程
+
+> ​	java.net.Socket 类代表一个套接字，并且 java.net.ServerSocket 类为服务器程序提供了一种来监听客户端，并与他们建立连接的机制。套接字使用TCP提供了两台计算机之间的通信机制。 客户端程序创建一个套接字，并尝试连接服务器的套接字。当连接建立时，服务器会创建一个 Socket 对象。客户端和服务器现在可以通过对 Socket 对象的写入和读取来进行通信。
+
+以下步骤在两台计算机之间使用套接字建立TCP连接时会出现：
+
+- 服务器实例化一个 ServerSocket 对象，表示通过服务器上的端口通信。
+- 服务器调用 ServerSocket 类的 accept() 方法，该方法将一直等待，直到客户端连接到服务器上给定的端口。
+- 服务器正在等待时，一个客户端实例化一个 Socket 对象，指定服务器名称和端口号来请求连接。
+- Socket 类的构造函数试图将客户端连接到指定的服务器F和端口号。如果通信被建立，则在客户端创建一个 Socket 对象能够与服务器进行通信。
+- 在服务器端，accept() 方法返回服务器上一个新的 socket 引用，该 socket 连接到客户端的 socket。
+
+连接建立后，通过使用 I/O 流在进行通信，每一个socket都有一个输出流和一个输入流，客户端的输出流连接到服务器端的输入流，而客户端的输入流连接到服务器端的输出流。TCP 是一个双向的通信协议，因此数据可以通过两个数据流在同一时间发送。
+
+##### ServerSocket 类的方法
+
+> 服务器应用程序通过使用 java.net.ServerSocket 类以获取一个端口，并且侦听客户端请求。
+
+###### ServerSocket 类有四个构造方法
+
+| **序号** | **方法描述**                                                 |
+| -------- | ------------------------------------------------------------ |
+| 1        | **public ServerSocket(int port) throws IOException** 创建绑定到特定端口的服务器套接字。 |
+| 2        | **public ServerSocket(int port, int backlog) throws IOException** 利用指定的 backlog 创建服务器套接字并将其绑定到指定的本地端口号。 |
+| 3        | **public ServerSocket(int port, int backlog, InetAddress address) throws IOException** 使用指定的端口、侦听 backlog 和要绑定到的本地 IP 地址创建服务器。 |
+| 4        | **public ServerSocket() throws IOException** 创建非绑定服务器套接字。 |
+
+​	创建非绑定服务器套接字。 如果 ServerSocket 构造方法没有抛出异常，就意味着你的应用程序已经成功绑定到指定的端口，并且侦听客户端请求。
+
+###### ServerSocket 类的常用方法
+
+| **序号** | **方法描述**                                                 |
+| -------- | ------------------------------------------------------------ |
+| 1        | **public int getLocalPort()**  返回此套接字在其上侦听的端口。 |
+| 2        | **public Socket accept() throws IOException** 侦听并接受到此套接字的连接。 |
+| 3        | **public void setSoTimeout(int timeout)**  通过指定超时值启用/禁用 SO_TIMEOUT，以毫秒为单位。 |
+| 4        | **public void bind(SocketAddress host, int backlog)** 将 ServerSocket 绑定到特定地址（IP 地址和端口号）。 |
+
+##### Socket 类的方法
+
+> java.net.Socket 类代表客户端和服务器都用来互相沟通的套接字。客户端要获取一个 Socket 对象通过实例化 ，而服务器获得一个 Socket 对象则通过 accept() 方法的返回值。
+
+###### Socket 类有五个构造方法
+
+| **序号** | **方法描述**                                                 |
+| -------- | ------------------------------------------------------------ |
+| 1        | **public Socket(String host, int port) throws UnknownHostException, IOException.** 创建一个流套接字并将其连接到指定主机上的指定端口号。 |
+| 2        | **public Socket(InetAddress host, int port) throws IOException** 创建一个流套接字并将其连接到指定 IP 地址的指定端口号。 |
+| 3        | **public Socket(String host, int port, InetAddress localAddress, int localPort) throws IOException.** 创建一个套接字并将其连接到指定远程主机上的指定远程端口。 |
+| 4        | **public Socket(InetAddress host, int port, InetAddress localAddress, int localPort) throws IOException.** 创建一个套接字并将其连接到指定远程地址上的指定远程端口。 |
+| 5        | **public Socket()** 通过系统默认类型的 SocketImpl 创建未连接套接字 |
+
+​	当 Socket 构造方法返回，并没有简单的实例化了一个 Socket 对象，它实际上会尝试连接到指定的服务器和端口。
+
+##### 服务端与客户端通用方法
+
+| **序号** | **方法描述**                                                 |
+| -------- | ------------------------------------------------------------ |
+| 1        | **public void connect(SocketAddress host, int timeout) throws IOException** 将此套接字连接到服务器，并指定一个超时值。 |
+| 2        | **public InetAddress getInetAddress()**  返回套接字连接的地址。 |
+| 3        | **public int getPort()** 返回此套接字连接到的远程端口。      |
+| 4        | **public int getLocalPort()** 返回此套接字绑定到的本地端口。 |
+| 5        | **public SocketAddress getRemoteSocketAddress()** 返回此套接字连接的端点的地址，如果未连接则返回 null。 |
+| 6        | **public InputStream getInputStream() throws IOException** 返回此套接字的输入流。 |
+| 7        | **public OutputStream getOutputStream() throws IOException** 返回此套接字的输出流。 |
+| 8        | **public void close() throws IOException** 关闭此套接字。    |
+
+------
+
+##### InetAddress 类的方法
+
+这个类表示互联网协议(IP)地址。下面列出了 Socket 编程时比较有用的方法：
+
+| **序号** | **方法描述**                                                 |
+| -------- | ------------------------------------------------------------ |
+| 1        | **static InetAddress getByAddress(byte[] addr)** 在给定原始 IP 地址的情况下，返回 InetAddress 对象。 |
+| 2        | **static InetAddress getByAddress(String host, byte[] addr)** 根据提供的主机名和 IP 地址创建 InetAddress。 |
+| 3        | **static InetAddress getByName(String host)** 在给定主机名的情况下确定主机的 IP 地址。 |
+| 4        | **String getHostAddress()**  返回 IP 地址字符串（以文本表现形式）。 |
+| 5        | **String getHostName()**   获取此 IP 地址的主机名。          |
+| 6        | **static InetAddress getLocalHost()** 返回本地主机。         |
+| 7        | **String toString()** 将此 IP 地址转换为 String。            |
+
+#### 12.   多线程编程
+
+> Java 给多线程编程提供了内置的支持。 一条线程指的是进程中一个单一顺序的控制流，一个进程中可以并发多个线程，每条线程并行执行不同的任务。
+>
+> 多线程是多任务的一种特别的形式，但多线程使用了更小的资源开销。
+>
+> 进程：一个进程包括由操作系统分配的内存空间，包含一个或多个线程。一个线程不能独立的存在，它必须是进程的一部分。一个进程一直运行，直到所有的非守护线程都结束运行后才能结束。
+>
+> 多线程能满足程序员编写高效率的程序来达到充分利用 CPU 的目的。
+
+##### 线程的生命周期
+
+- 新建状态:
+
+  使用 **new** 关键字和 **Thread** 类或其子类建立一个线程对象后，该线程对象就处于新建状态。它保持这个状态直到程序 **start()** 这个线程。
+
+- 就绪状态:
+
+  当线程对象调用了start()方法之后，该线程就进入就绪状态。就绪状态的线程处于就绪队列中，要等待JVM里线程调度器的调度。
+
+- 运行状态:
+
+  如果就绪状态的线程获取 CPU 资源，就可以执行 **run()**，此时线程便处于运行状态。处于运行状态的线程最为复杂，它可以变为阻塞状态、就绪状态和死亡状态。
+
+- 阻塞状态:
+
+  如果一个线程执行了sleep（睡眠）、suspend（挂起）等方法，失去所占用资源之后，该线程就从运行状态进入阻塞状态。在睡眠时间已到或获得设备资源后可以重新进入就绪状态。可以分为三种：
+
+  - 等待阻塞：运行状态中的线程执行 wait() 方法，使线程进入到等待阻塞状态。
+  - 同步阻塞：线程在获取 synchronized 同步锁失败(因为同步锁被其他线程占用)。
+  - 其他阻塞：通过调用线程的 sleep() 或 join() 发出了 I/O 请求时，线程就会进入到阻塞状态。当sleep() 状态超时，join() 等待线程终止或超时，或者 I/O 处理完毕，线程重新转入就绪状态。
+
+- 死亡状态:
+
+  一个运行状态的线程完成任务或者其他终止条件发生时，该线程就切换到终止状态。
+
+##### 线程的优先级
+
+- 每一个 Java 线程都有一个优先级，这样有助于操作系统确定线程的调度顺序。
+
+- Java 线程的优先级是一个整数，其取值范围是 `1(Thread.MIN_PRIORITY ) - 10(Thread.MAX_PRIORITY )`
+
+- 默认情况下，每一个线程都会分配一个优先级 NORM_PRIORITY（5）。
+
+- 具有较高优先级的线程对程序更重要，并且应该在低优先级的线程之前分配处理器资源。但是，线程优先级不能保证线程执行的顺序，而且非常依赖于平台。
+
+##### 创建一个线程
+
+Java 提供了三种创建线程的方法：
+
+- 通过实现 Runnable 接口；
+- 通过继承 Thread 类本身；
+- 通过 Callable 和 Future 创建线程。
+
+##### 通过实现 Runnable 接口来创建线程
+
+​	创建一个线程，最简单的方法是创建一个实现 Runnable 接口的类。为了实现 Runnable，一个类只需要执行一个方法调用 run()，声明如下：
+
+```java
+public void run()
+```
+
+​	你可以重写该方法，重要的是理解的 run() 可以调用其他方法，使用其他类，并声明变量，就像主线程一样。在创建一个实现 Runnable 接口的类之后，你可以在类中实例化一个线程对象。Thread 定义了几个构造方法，下面的这个是我们经常使用的：
+
+```java
+Thread(Runnable threadOb,String threadName);
+```
+
+​	这里，threadOb 是一个实现 Runnable 接口的类的实例，并且 threadName 指定新线程的名字。新线程创建之后，你调用它的 start() 方法它才会运行。
+
+```java
+void start();
+```
+
+##### 通过继承Thread来创建线程
+
+​	创建一个线程的第二种方法是创建一个新的类，该类继承 Thread 类，然后创建一个该类的实例。继承类必须重写 run() 方法，该方法是新线程的入口点。它也必须调用 start() 方法才能执行。该方法尽管被列为一种多线程实现方式，但是本质上也是实现了 Runnable 接口的一个实例。
+
+##### Thread 方法
+
+###### Thread 对象调用的方法
+
+| **序号** |                         **方法描述**                         |
+| :------- | :----------------------------------------------------------: |
+| 1        | **public void start()** 使该线程开始执行；**Java** 虚拟机调用该线程的 run 方法 |
+| 2        | **public void run()** 如果该线程是使用独立的 Runnable 运行对象构造的，则调用该 Runnable 对象的 run 方法；否则，该方法不执行任何操作并返回 |
+| 3        | **public final void setName(String name)** 改变线程名称，使之与参数 name 相同 |
+| 4        | **public final void setPriority(int priority)**  更改线程的优先级 |
+| 5        | **public final void setDaemon(boolean on)** 将该线程标记为守护线程或用户线程 |
+| 6        | **public final void join(long millisec)** 等待该线程终止的时间最长为 millis 毫秒 |
+| 7        |             **public void interrupt()** 中断线程             |
+| 8        | **public final boolean isAlive()** 测试线程是否处于活动状态  |
+
+###### Thread 静态方法
+
+| **序号** |                         **方法描述**                         |
+| :------- | :----------------------------------------------------------: |
+| 1        | **public static void yield()** 暂停当前正在执行的线程对象，并执行其他线程 |
+| 2        | **public static void sleep(long millisec)** 在指定的毫秒数内让当前正在执行的线程休眠（暂停执行），此操作受到系统计时器和调度程序精度和准确性的影响 |
+| 3        | **public static boolean holdsLock(Object x)** 当且仅当当前线程在指定的对象上保持监视器锁时，才返回 true |
+| 4        | **public static Thread currentThread()** 返回对当前正在执行的线程对象的引用 |
+| 5        | **public static void dumpStack()** 将当前线程的堆栈跟踪打印至标准错误流 |
+
+##### 通过 Callable 和 Future 创建线程
+
+- 创建 Callable 接口的实现类，并实现 call() 方法，该 call() 方法将作为线程执行体，并且有返回值。
+- 创建 Callable 实现类的实例，使用 FutureTask 类来包装 Callable 对象，该 FutureTask 对象封装了该 Callable 对象的 call() 方法的返回值。
+- 使用 FutureTask 对象作为 Thread 对象的 target 创建并启动新线程。
+- 调用 FutureTask 对象的 get() 方法来获得子线程执行结束后的返回值。
+
+##### 创建线程的三种方式的对比
+
+- 采用实现 Runnable、Callable 接口的方式创建多线程时，线程类只是实现了 Runnable 接口或 Callable 接口，还可以继承其他类。
+- 使用继承 Thread 类的方式创建多线程时，编写简单，如果需要访问当前线程，则无需使用 Thread.currentThread() 方法，直接使用 this 即可获得当前线程。
+
+##### 线程的几个主要概念
+
+- 线程同步
+- 线程间通信
+- 线程死锁
+- 线程控制：挂起、停止和恢复
+
+##### 多线程的使用
+
+- 有效利用多线程的关键是理解程序是并发执行而不是串行执行的。例如：程序中有两个子系统需要并发执行，这时候就需要利用多线程编程。
+
+- 通过对多线程的使用，可以编写出非常高效的程序。不过请注意，如果你创建太多的线程，程序执行的效率实际上是降低了，而不是提升了。
+
+- 请记住，上下文的切换开销也很重要，如果你创建了太多的线程，CPU 花费在上下文的切换的时间将多于执行程序的时间！
+
+#### 13.  Applet 基础
+
+​	Applet 是一种 Java 程序。它一般运行在支持 Java 的 Web 浏览器内。因为它有完整的 Java API支持,所以Applet 是一个全功能的 Java 应用程序。如下所示是独立的 Java 应用程序和 applet 程序之间重要的不同：
+
+- Java 中 Applet 类继承了 java.applet.Applet 类。
+- Applet 类没有定义 main()，所以一个 Applet 程序不会调用 main() 方法。
+- Applet 被设计为嵌入在一个 HTML 页面。
+- 当用户浏览包含 Applet 的 HTML 页面，Applet 的代码就被下载到用户的机器上。
+- 要查看一个 Applet 需要 JVM。 JVM 可以是 Web 浏览器的一个插件，或一个独立的运行时环境。
+- 用户机器上的 JVM 创建一个 Applet 类的实例，并调用 Applet 生命周期过程中的各种方法。
+- Applet 有 Web 浏览器强制执行的严格的安全规则，Applet 的安全机制被称为沙箱安全。
+- Applet 需要的其他类可以用 Java 归档（JAR）文件的形式下载下来。
+
+##### Applet的生命周期
+
+Applet 类中的四个方法给我们提供了一个框架，可以在该框架上开发小程序：
+
+- **init:** 该方法的目的是为你的 Applet 提供所需的任何初始化。在 Applet 标记内的 param 标签被处理后调用该方法。
+- **start:** 浏览器调用 init 方法后，该方法被自动调用。每当用户从其他页面返回到包含 Applet 的页面时，则调用该方法。
+- **stop:** 当用户从包含 Applet 的页面移除的时候，该方法自动被调用。因此，可以在相同的 Applet 中反复调用该方法。
+- **destroy:** 此方法仅当浏览器正常关闭时调用。因为 Applet 只有在 HTML 网页上有效，所以你不应该在用户离开包含 Applet 的页面后遗漏任何资源。
+- **paint:** 该方法在 start() 方法之后立即被调用，或者在 Applet 需要重绘在浏览器的时候调用。paint() 方法实际上继承于 java.awt。
+
+##### Applet 类
+
+​	每一个 Applet 都是 java.applet.Applet 类的子类，基础的 Applet 类提供了供衍生类调用的方法,以此来得到浏览器上下文的信息和服务。这些方法做了如下事情：
+
+- 得到 Applet 的参数
+- 得到包含 Applet 的 HTML 文件的网络位置
+- 得到 Applet 类目录的网络位置
+- 打印浏览器的状态信息
+- 获取一张图片
+- 获取一个音频片段
+- 播放一个音频片段
+- 调整此 Applet 的大小
+
+​	除此之外，Applet 类还提供了一个接口，该接口供 Viewer 或浏览器来获取 Applet 的信息，并且来控制 Applet 的执行。Viewer 可能是：
+
+- 请求 Applet 作者、版本和版权的信息
+- 请求 Applet 识别的参数的描述
+- 初始化 Applet
+- 销毁 Applet
+- 开始执行 Applet
+- 结束执行 Applet
+
+​	Applet 类提供了对这些方法的默认实现，这些方法可以在需要的时候重写。"Hello，World"applet 都是按标准编写的。唯一被重写的方法是 paint 方法。
+
+##### Applet 的调用
+
+​	Applet 是一种 Java 程序。它一般运行在支持 Java 的 Web 浏览器内。因为它有完整的 Java API 支持,所以 Applet 是一个全功能的 Java 应用程序。
+
+##### 获得applet参数
+
+- CheckerApplet 在 `init()` 方法里得到它的参数。也可以在 `paint()` 方法里得到它的参数。然而，在 Applet 开始得到值并保存了设置，而不是每一次刷新的时候都得到值，这样是很方便，并且高效的。
+
+- Applet viewer 或者浏览器在 Applet 每次运行的时候调用 `init()` 方法。在加载 Applet 之后，Viewer 立即调用 `init()` 方法（Applet.init()什么也没做），重写该方法的默认实现，添加一些自定义的初始化代码。
+
+- Applet.getParameter() 方法通过给出参数名称得到参数值。如果得到的值是数字或者其他非字符数据，那么必须解析为字符串类型。
+
+##### 指定 applet 参数
+
+​	如下的例子是一个HTML文件，其中嵌入了 CheckerApplet 类。HTML文件通过使用 <param> 标签的方法给 applet 指定了两个参数。
+
+```html
+<applet code="CheckerApplet.class" width="480" height="320">
+<param name="color" value="blue">
+<param name="squaresize" value="30">
+</applet>
+```
+
+##### 生存现状
+
+​	**目前已经被主流浏览器淘汰，不建议学习。**
+
+#### 14.  文档注释
+
+- 单行注释：**//** 
+- 多行注释：**/\* \*/**
+- 文档注释：以 **/\**** 开始，以 ***/** 结束
+
+##### javadoc 标签
+
+| **标签**      |                        **描述**                        |                           **示例**                           |
+| :------------ | :----------------------------------------------------: | :----------------------------------------------------------: |
+| @author       |                    标识一个类的作者                    |                     @author description                      |
+| @deprecated   |                 指名一个过期的类或成员                 |                   @deprecated description                    |
+| {@docRoot}    |                指明当前文档根目录的路径                |                        Directory Path                        |
+| @exception    |                  标志一个类抛出的异常                  |            @exception exception-name explanation             |
+| {@inheritDoc} |                  从直接父类继承的注释                  |      Inherits a comment from the immediate surperclass.      |
+| {@link}       |               插入一个到另一个主题的链接               |                      {@link name text}                       |
+| {@linkplain}  |  插入一个到另一个主题的链接，但是该链接显示纯文本字体  |          Inserts an in-line link to another topic.           |
+| @param        |                   说明一个方法的参数                   |              @param parameter-name explanation               |
+| @return       |                     说明返回值类型                     |                     @return explanation                      |
+| @see          |               指定一个到另一个主题的链接               |                         @see anchor                          |
+| @serial       |                   说明一个序列化属性                   |                     @serial description                      |
+| @serialData   | 说明通过writeObject( ) 和 writeExternal( )方法写的数据 |                   @serialData description                    |
+| @serialField  |             说明一个ObjectStreamField组件              |              @serialField name type description              |
+| @since        |               标记当引入一个特定的变化时               |                        @since release                        |
+| @throws       |                 和 @exception标签一样.                 | The @throws tag has the same meaning as the @exception tag.  |
+| {@value}      |         显示常量的值，该常量必须是static属性。         | Displays the value of a constant, which must be a static field. |
+| @version      |                      指定类的版本                      |                        @version info                         |
+
+##### 文档注释
+
+- 在开始的 **/\**** 之后，第一行或几行是关于类、变量和方法的主要描述。
+
+- 之后，你可以包含一个或多个各种各样的 **@** 标签。每一个 **@** 标签必须在一个新行的开始或者在一行的开始紧跟星号 *****。
+
+- 多个相同类型的标签应该放成一组。例如，如果你有三个 **@see** 标签，可以将它们一个接一个的放在一起。
+
+```java
+/*** 这个类绘制一个条形图
+* @author runoob
+* @version 1.2
+*/
+```
+
+##### javadoc 输出什么
+
+- javadoc 工具将你 Java 程序的源代码作为输入，输出一些包含你程序注释的HTML文件。
+
+- 每一个类的信息将在独自的HTML文件里。javadoc 也可以输出继承的树形结构和索引。
+
+- 由于 javadoc 的实现不同，工作也可能不同，你需要检查你的 Java 开发系统的版本等细节，选择合适的 Javadoc 版本。
+
+#### 15.  MySQL 连接
+
+- 创建 JDBC 驱动名和数据库 URL；
+- 使用 `Class.forName()` 注册 JDBC 驱动；
+- 使用 `DriverManager.getConnection()` 打开链接；
+- 使用 `createstatement()` 实例化 statement 对象，用于将 SQL 命令发送到数据库执行；
+- 使用 `excuteQuery()` 进行 SQL 语言的查询操作；
+- 返回值用 `ResultSet` 存储，为集合形式，可以做后续数据处理。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
