@@ -666,3 +666,136 @@ printf  format-string  [arguments...]
 | -f 文件名 | 如果文件存在且为普通文件则为真       |
 | -c 文件名 | 如果文件存在且为字符型特殊文件则为真 |
 | -b 文件名 | 如果文件存在且为块特殊文件则为真     |
+
+## 9.  Shell 流程控制
+
+> 和 Java、PHP 等语言不一样，sh 的流程控制不可为空，
+>
+> 如果 else 分支没有语句执行，就不要写这个 else。
+
+### if else
+
+```shell
+# 一般格式
+if condition1
+then
+    command1
+elif condition2 
+then 
+    command2
+else
+    commandN
+fi
+
+# 写成一行
+if [ condition ]; then command; fi
+```
+
+**注意:** 
+
+- **if else** 的 **[...]** 判断语句中大于使用 **-gt**，小于使用 **-lt**。
+- 如果使用 **((...))** 作为判断语句，大于和小于可以直接使用 **>** 和 **<**。
+
+### for 循环
+
+```shell
+# 一般格式
+for var in item1 item2 ... itemN
+do
+    command1
+    command2
+    ...
+    commandN
+done
+
+# 写成一行
+for var in item1 item2 ... itemN; do command1; command2… done;
+```
+
+**注意：** 
+
+- 当变量值在列表里，for 循环即执行一次所有命令，使用变量名获取列表中的当前取值。命令可为任何有效的 shell 命令和语句。in 列表可以包含替换、字符串和文件名。
+
+- in列表是可选的，如果不用它，for循环使用命令行的位置参数。
+
+### while 语句
+
+```shell
+# 一般流程
+while condition
+do
+    command
+done
+```
+
+### 无限循环
+
+```shell
+while :
+do
+    command
+done
+
+# 或者
+while true
+do
+    command
+done
+
+# 或者
+for (( ; ; ))
+```
+
+### until 循环
+
+> until 循环执行一系列命令直至条件为 true 时停止。
+>
+> until 循环与 while 循环在处理方式上刚好相反。
+>
+> 一般 while 循环优于 until 循环，但在某些时候—也只是极少数情况下，until 循环更加有用。
+
+```shell
+# 一般格式
+until condition
+do
+    command
+done
+```
+
+### case ... esac
+
+```shell
+case 值 in
+模式1)
+    command1
+    command2
+    ...
+    commandN
+    ;;
+模式2)
+    command1
+    command2
+    ...
+    commandN
+    ;;
+esac
+```
+
+### 跳出循环
+
+> 在循环过程中，有时候需要在未达到循环结束条件时强制跳出循环，Shell 使用两个命令来实现该功能：**break** 和 **continue**。
+
+#### break 命令
+
+​	**break** 命令允许跳出所有循环（终止执行后面的所有循环）。
+
+#### continue
+
+​	**continue** 命令与 **break** 命令类似，只有一点差别，它不会跳出所有循环，仅仅跳出当前循环。
+
+
+
+
+
+
+
