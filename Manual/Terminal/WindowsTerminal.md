@@ -61,7 +61,7 @@ Get-PSReadLineOption
 ### 创建新文件
 
 ```shell
-type nul>[]
+type nul>[filename]
 ```
 
 
