@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "Manual/Terminal/WindowsTerminal.md",
                 "mode": "preview",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "Manual/Terminal/WindowsTerminal.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "Manual/Terminal/WindowsTerminal.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "Manual/Terminal/WindowsTerminal.md"
               }
             }
           }
@@ -148,6 +148,7 @@
   },
   "active": "57410c8a4842cd8d",
   "lastOpenFiles": [
+    "README.md",
     "ProgramNote/Python.md",
     "ProgramNote/Java.md",
     "ProgramNote/Git.md",
