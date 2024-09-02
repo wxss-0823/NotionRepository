@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "c14e1470d2b8eb2b",
+        "id": "3bd3473cb487608b",
         "type": "tabs",
         "children": [
           {
-            "id": "57410c8a4842cd8d",
+            "id": "a8b50fff2d37b8c1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Manual/Terminal/WindowsTerminal.md",
-                "mode": "preview",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Manual/Terminal/WindowsTerminal.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Manual/Terminal/WindowsTerminal.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Manual/Terminal/WindowsTerminal.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -138,17 +130,25 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "markdown-importer:打开 Markdown 格式转换器": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
-      "command-palette:打开命令面板": false
+      "command-palette:打开命令面板": false,
+      "pkmer:Open Pkmer Market": false,
+      "handwritten-notes:Create empty handwritten note": false
     }
   },
-  "active": "57410c8a4842cd8d",
+  "active": "00f003f8b06de0f4",
   "lastOpenFiles": [
+    "handwritten-notes/New note.pdf",
+    "handwritten-notes",
+    "未命名 1.canvas",
+    "未命名.canvas",
     "README.md",
+    "Manual/Terminal/WindowsTerminal.md",
     "ProgramNote/Python.md",
     "ProgramNote/Java.md",
     "ProgramNote/Git.md",
