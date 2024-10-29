@@ -18,27 +18,42 @@ ssh-keygen -t rsa –C "youremail@example.com"
 
 - 关联远程仓库
 
-```
+```shell
 # 在github新建SSH Key，并粘贴id_rsa.pub的内容
 # 添加远程仓库
 git remote add origin "http://....git"
 ```
 
+- 配置用户和邮箱
+
+```shell
+git config --global user.email "you@example.com"  
+git config --global user.name "Your Name"
+```
+
+​	或者在 .git/config 中添加：
+
+```text
+[user]
+	name = wxss
+	email = 2198993328@qq.com
+```
+
 - 克隆仓库到本地
 
-```
+```shell
 git clone "url"
 ```
 
 - 查询状态
 
-```
+```shell
 git status
 ```
 
 - 本地文件上传过程
 
-```
+```shell
 # Git将文件分为四个部分，工作区、暂存区、仓库区和远程仓库
 # 将指定文件或者所有文件从工作区添加至暂存区
 git add filename/.
