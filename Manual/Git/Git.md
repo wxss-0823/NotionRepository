@@ -13,7 +13,7 @@ git init
 ```shell
 # 使用rsa算法生成密钥
 ssh-keygen -t rsa –C "youremail@example.com"
-# 命令行执行后会在.ssh中生成两个文件id_rsa（私钥）和id_rsa.pub（公钥）
+# 命令行执行后会在/Users/[yourusername]/.ssh中生成两个文件id_rsa（私钥）和id_rsa.pub（公钥）
 ```
 
 - 关联远程仓库
@@ -62,3 +62,6 @@ git pull origin main
 - `! [remote rejected] master -> master (pre-receive hook declined)`
   `error: failed to push some refs to 'https://github.com/wxss-0823/MathCodes.git'`
   - 超出了github允许的50.00 MB，上传大文件详见[Git Large File Storage](https://git-lfs.github.com. )
+
+- `fatal: unable to auto-detect email address (got 'Wang Xishengshun@DESKTOP-WXSS.(none)')`
+  - 未配置 github 用户名和邮箱
