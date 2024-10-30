@@ -39,6 +39,15 @@ git config --global user.name "Your Name"
 	email = 2198993328@qq.com
 ```
 
+- 配置代理
+
+```shell
+# 为 http 与 https 设置去全局代理
+git config --global -
+# 添加远程仓库
+git remote add origin "http://....git"
+```
+
 - 克隆仓库到本地
 
 ```shell
@@ -80,3 +89,5 @@ git pull origin main
 
 - `fatal: unable to auto-detect email address (got 'Wang Xishengshun@DESKTOP-WXSS.(none)')`
   - 未配置 github 用户名和邮箱
+- `fatal: unable to access 'https://github.com/xxx/******.git/': Failed to connect to github.com port 443 after 21090 ms: Couldn't connect to server`
+  - 使用代理问题，需要指定 `Static Host` 和 `Port`
