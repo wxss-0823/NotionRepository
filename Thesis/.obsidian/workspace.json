@@ -1,0 +1,161 @@
+{
+  "main": {
+    "id": "1c1cf78b0bdf8af1",
+    "type": "split",
+    "children": [
+      {
+        "id": "b9e9e558fb31ac26",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ba1e9513f7b6ea4b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f3ee5bdb8d7ccffa",
+    "type": "split",
+    "children": [
+      {
+        "id": "6f35cf2bb5f58774",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c955cdd0fe0499e4",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "c22215bd3e7a5217",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "0defce7b808ca7fb",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "46a44c6a852e09a1",
+    "type": "split",
+    "children": [
+      {
+        "id": "0b78810bd26685e5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ebf1c798d2312c84",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          },
+          {
+            "id": "175bbab062e50087",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          },
+          {
+            "id": "54e4174adb5bbd3a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "d6b4adfdd89ff30d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "c955cdd0fe0499e4",
+  "lastOpenFiles": [
+    "HPV/Thesis/HPV Vaccination and the Risk of Invasive.pdf",
+    "HPV/Note/HPV Vaccination and the Risk of Invasive_Note.md",
+    "HPV/HPV Vaccination and the Risk of Invasive.pdf",
+    "HPV Vaccination and the Risk of Invasive_Note.md",
+    "HPV Vaccination and the Risk of Invasive.pdf",
+    "HPV/Overview.md",
+    "HPV/Note",
+    "未命名 3",
+    "HPV/Thesis",
+    "未命名 2",
+    "未命名 1",
+    "未命名",
+    "2024-01-04.md",
+    "未命名.md",
+    "未命名.canvas",
+    "未命名 1.canvas"
+  ]
+}

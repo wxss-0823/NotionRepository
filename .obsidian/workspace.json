@@ -1,0 +1,162 @@
+{
+  "main": {
+    "id": "ead5e8aeb9011a77",
+    "type": "split",
+    "children": [
+      {
+        "id": "3bd3473cb487608b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a8b50fff2d37b8c1",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4037a02977ff8a04",
+    "type": "split",
+    "children": [
+      {
+        "id": "7345cfafb7e4cd43",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "00f003f8b06de0f4",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bb162077fc4dca99",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "5c80e616eeef34cb",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "90901c608f9f7167",
+    "type": "split",
+    "children": [
+      {
+        "id": "bce2efed2fe09253",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c3dfaba7bf70014c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "294df82c774ab677",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "2f40c29bab398c09",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "92e69d7197014c2b",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "markdown-importer:打开 Markdown 格式转换器": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "pkmer:Open Pkmer Market": false,
+      "handwritten-notes:Create empty handwritten note": false
+    }
+  },
+  "active": "00f003f8b06de0f4",
+  "lastOpenFiles": [
+    "handwritten-notes/New note.pdf",
+    "handwritten-notes",
+    "未命名 1.canvas",
+    "未命名.canvas",
+    "README.md",
+    "Manual/Terminal/WindowsTerminal.md",
+    "ProgramNote/Python.md",
+    "ProgramNote/Java.md",
+    "ProgramNote/Git.md",
+    "ProgramNote/Front-end.md",
+    "ProgramNote/C++.md",
+    "ProgramNote/C#.md",
+    "ProgramNote/C.md",
+    "Illustration/插画.md",
+    "Bigdata/MySQL/初始化配置文件步骤.md"
+  ]
+}
