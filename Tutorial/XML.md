@@ -521,3 +521,179 @@ for (i=0;i<x.length;i++)
 
 ##### 添加节点
 
+- `appendChild()` ：向一个已有的节点添加一个子节点，新节点会添加（追加）到任何已有的子节点之后；
+- `insertBefore()` ：在指定节点之前插入节点；
+- `setAtttribute()` ：如果属性不存在，则会创建一个新属性；
+- `insertData()` ：将数据插入已有的文本节点中；
+  - `offset` ：在何处开始插入字符（以 0 开始）；
+  - `string` ：要插入的字符串；
+
+##### 克隆节点
+
+- `cloneNode()` ：创建指定节点的副本；
+  - `true|false` ：是否复制指定节点的全部属性和子节点。
+
+### 4.5. XMLHttpRequest 对象
+
+> - 在不重新加载页面的情况下更新网页；
+> - 在页面已加载后从服务器请求数据；
+> - 在页面已加载后从服务器接收数据；
+> - 在后台向服务器发送数据。
+
+#### 4.5.1. 创建对象
+
+```javascript
+// 现代浏览器
+xmlhttp=new XMLHttpRequest();
+// 旧版本的 Internet Explorer
+xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+```
+
+#### 4.5.2. 发送请求
+
+- `open(method,url,async)` ：规定请求类型；
+  - `method` ：请求的类型，`GET` 或 `POST`；
+  - `url` ：文件在服务器上的位置；
+    `async `：`true`（异步）或 `false`（同步）；
+- `send(string)` ：发送请求到服务器；
+  - `string`：仅用于 POST 请求
+
+**注意：**
+
+1. `GET` 比 `POST` 简单并且快速，可用于大多数情况下，但是 `POST` 比 `GET` 更强大更安全；
+
+2. 下面的情况下必须使用 `POST` 请求：
+
+   - 缓存的文件不是一个选项（更新服务器上的文件或数据库）；
+
+   - 发送到服务器的数据量较大（`POST` 没有大小的限制）；
+
+   - 发送用户输入（可以包含未知字符）；
+
+3. 异步是指，Javascript 不需要等待服务器响应，等待服务器响应中，执行其他脚本，响应准备时，处理响应；
+
+#### 4.5.3. 服务器响应
+
+- `responseText` ：获取响应数据作为字符串；
+- `responseXML` ：返回 XML 文档对象，可以使用 DOM 节点树的方法和属性解析该对象；
+- `onreadystatechange` ：在每次 `readyState` 变化时触发；
+- `readyState` ：存放服务器响应的状态，范围 0 ~ 4；
+  - **0 ：**请求未初始化；
+  - **1 ：**服务器建立连接；
+  - **2 ：**收到请求；
+  - **3 ：**处理请求；
+  - **4 ：**请求完成和响应准备就绪；
+- `status` ：网页的状态；
+  - **200 ：**”OK“；
+  - **404 ：**找不到页面。
+
+### 4.6. 节点类型
+
+#### 4.6.1.  节点描述
+
+| 节点类型              | 描述                                                   | 子类                                                         |
+| :-------------------- | :----------------------------------------------------- | :----------------------------------------------------------- |
+| Document              | 代表整个文档（DOM 树的根节点）                         | Element (max. one), ProcessingInstruction, Comment, DocumentType |
+| DocumentFragment      | 代表"轻量级"的 Document 对象，它可以保留文档中的一部分 | Element, ProcessingInstruction, Comment, Text, CDATASection, Entity参考手册 |
+| DocumentType          | 为文档中定义的实体提供了一个接口                       | None                                                         |
+| ProcessingInstruction | 代表一个处理指令                                       | None                                                         |
+| EntityReference       | 代表一个实体引用                                       | Element, ProcessingInstruction, Comment, Text, CDATASection, EntityReference |
+| Element               | 表示一个元素                                           | Element, Text, Comment, ProcessingInstruction, CDATASection, EntityReference |
+| Attr                  | 代表一个属性                                           | Text, EntityReference                                        |
+| Text                  | 代表元素或属性的文本内容                               | None                                                         |
+| CDATASection          | 代表文档中的 CDATA 区段（文本不会被解析器解析）        | None                                                         |
+| Comment               | 代表一个注释                                           | None                                                         |
+| Entity                | 代表一个实体                                           | Element, ProcessingInstruction, Comment, Text, CDATASection, EntityReference |
+| Notation              | 定义一个在 DTD 中声明的符号                            | None                                                         |
+
+#### 4.6.2. 节点返回值
+
+| 节点类型              | 返回的节点名称     | 返回的节点值 |
+| :-------------------- | :----------------- | :----------- |
+| Document              | #document          | null         |
+| DocumentFragment      | #document fragment | null         |
+| DocumentType          | 文档类型名称       | null         |
+| Entity参考手册        | 实体引用名称       | null         |
+| Element               | 元素名称           | null         |
+| Attr                  | 属性名称           | 属性值       |
+| ProcessingInstruction | 目标               | 节点的内容   |
+| Comment               | #comment           | 注释文本     |
+| Text                  | #text              | 节点的内容   |
+| CDATASection          | #cdata-section     | 节点的内容   |
+| Entity                | 实体名称           | null         |
+| Notation              | 符号名称           | null         |
+
+#### 4.6.3. 节点类型常量
+
+| 节点类型 | 命名常量                    |
+| :------- | :-------------------------- |
+| 1        | ELEMENT_NODE                |
+| 2        | ATTRIBUTE_NODE              |
+| 3        | TEXT_NODE                   |
+| 4        | CDATA_SECTION_NODE          |
+| 5        | ENTITY_REFERENCE_NODE       |
+| 6        | ENTITY_NODE                 |
+| 7        | PROCESSING_INSTRUCTION_NODE |
+| 8        | COMMENT_NODE                |
+| 9        | DOCUMENT_NODE               |
+| 10       | DOCUMENT_TYPE_NODE          |
+| 11       | DOCUMENT_FRAGMENT_NODE      |
+| 12       | NOTATION_NODE               |
+
+### 4.7. XML DOM 对象
+
+#### 4.7.1. Node 对象
+
+[详细手册](https://www.runoob.com/dom/dom-node.html)
+
+#### 4.7.2. NodeList 对象
+
+[详细手册](https://www.runoob.com/dom/dom-nodelist.html)
+
+#### 4.7.3. NamedNodeMap 对象
+
+[详细手册](https://www.runoob.com/dom/dom-namednodemap.html)
+
+#### 4.7.4. Document 对象
+
+[详细手册](https://www.runoob.com/dom/dom-document.html)
+
+#### 4.7.5. DocumentImplementation 对象
+
+[详细手册](https://www.runoob.com/dom/dom-documentimplementation.html)
+
+#### 4.7.6. DocumentType 对象
+
+[详细手册](https://www.runoob.com/dom/dom-documenttype.html)
+
+#### 4.7.7. ProcessingInstruction 对象
+
+[详细手册](https://www.runoob.com/dom/dom-processinginstruction.html)
+
+#### 4.7.8. Element 对象
+
+[详细手册](https://www.runoob.com/dom/dom-element.html)
+
+#### 4.7.9. Attr 对象
+
+[详细手册](https://www.runoob.com/dom/dom-attribute.html)
+
+#### 4.7.10. Text 对象
+
+[详细手册](https://www.runoob.com/dom/dom-text.html)
+
+#### 4.7.11. CDATASection 对象
+
+[详细手册](https://www.runoob.com/dom/dom-cdatasection.html)
+
+#### 4.7.12. Comment 对象
+
+[详细手册](https://www.runoob.com/dom/dom-comment.html)
+
+#### 4.7.13. XMLHttpRequest 对象
+
+[详细手册](https://www.runoob.com/dom/dom-http.html)
+
+#### 4.7.14. Parse Error 对象
+
+[详细手册](https://www.runoob.com/dom/dom-errors.html)
