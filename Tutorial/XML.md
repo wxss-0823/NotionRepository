@@ -697,3 +697,117 @@ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 #### 4.7.14. Parse Error 对象
 
 [详细手册](https://www.runoob.com/dom/dom-errors.html)
+
+## 5. XPath
+
+
+
+## 6. XML XSLT
+
+​	XSL 指扩展样式表语言（**EXtensible Stylesheet Language**）, 它是一个 XML 文档的样式表语言。XSLT 指 XSL 转换，用于将 XML 文档转换为其他文档，比如 XHTML。
+
+### 6.1.  XSLT 转换
+
+#### 6.1.1. 样式表声明
+
+```html
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www...">
+<!-- 或者 -->
+<xsl:transform version="1.0"
+xmlns:xsl="http://www...">
+```
+
+​	并且把样式表链接到 XML 文档：
+
+```xml
+<?xml-stylesheet type="text/xsl" href="filename.xsl"?>
+```
+
+### 6.2. XSLT 元素
+
+#### 6.2.1. \<xsl:template>
+
+​	`<xsl:template>`  元素用于关联 XML 元素与模板。`match` 属性的值时 XPath 表达式，用来限定模板生效的范围。
+
+#### 6.2.2 \<xsl:value-of>
+
+​	`<xsl:value-of>` 元素用于提取某个 XML 元素的值，并把值添加到转换的输出流中。
+
+#### 6.2.3. \<xsl:for-each>
+
+​	`<xsl:for-each>` 元素可用于选取指定的节点集中的每个 XML 元素，允许在 XSLT 中循环。
+
+```html
+<xsl:for-each select="XPath">
+  ...
+</xsl:for-each>
+```
+
+​	可以添加一个选择属性的判别式，用于过滤输出结果：
+
+```html
+<xsl:for-each select="XPath[attribute="value"]">
+  ...
+</xsl:for-each>
+```
+
+**注意：**合法的运算符有：
+
+- `=`  ：等于；
+- `!=` ：不等于；
+- `&lt` ：小于；
+- `&gt` ：大于。
+
+#### 6.2.4. \<xsl:sort>
+
+​	`<xsl:sort>` 用于对输出结果进行排序。如果某个地方需要对输出结果排序，那么只需要在指定地方放置 `<xsl:sort>` 元素，并指定排序标签。
+
+#### 6.2.5. \<xsl:if> 
+
+​	`<xsl:if>` 元素用于放置针对 XML 文件内容的条件测试。
+
+```html
+<xsl:if test="expression">
+...如果条件成立则输出...
+</xsl:if>
+```
+
+**注意：**必需包含 **test** 属性，其值包含了需要求值的表达式。
+
+#### 6.2.6. \<xsl:choose>
+
+​	`<xsl:choose>` 元素用于结合 `<xsl:when>` 和 `<xsl:otherwise>` 来表达多重条件测试。
+
+```html
+<xsl:choose>
+<xsl:when test="expression">
+... some output ...
+</xsl:when>
+<xsl:otherwise>
+... some output ....
+</xsl:otherwise>
+</xsl:choose>
+```
+
+#### 6.2.7. \<xsl:apply-templates>
+
+​	`<xsl:apply-templates>` 元素可把一个模板应用于当前的元素或者当前元素的子节点。
+
+#### 6.2.8. 更多
+
+- [XSLT 元素参考手册](https://www.runoob.com/xsl/xsl-w3celementref.html) ；
+- [XSLT 函数参考手册](https://www.runoob.com/xsl/xsl-functions.html) 。
+
+
+
+
+
+
+
+
+
+
+
+
+
