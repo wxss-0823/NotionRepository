@@ -700,7 +700,110 @@ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 
 ## 5. XPath
 
+​	XPath 是一门在 XML 文档中查找信息的语言。
 
+### 5.1. XPath 节点 & 节点关系
+
+#### 5.1.1 节点
+
+​	在 XPath 中，有七种类型的节点：元素、属性、文本、命名空间、处理指令、注释以及文档（根）节点。XML 文档是被作为节点树来对待的。树的根被称为文档节点或者根节点。
+
+##### 基本值
+
+​	或称原子值（Atomic value），基本值是无父或无子的节点。
+
+##### 项目
+
+​	Item，项目是基本值或者节点。
+
+#### 5.1.2. 节点关系
+
+##### 父（Parent）
+
+​	每个元素以及属性都有一个父。
+
+##### 子（Children）
+
+​	元素节点可有零个、一个或多个子。
+
+##### 同胞（Sibling）
+
+​	拥有相同的父的节点。
+
+##### 先辈（Ancestor）
+
+​	某节点的父、父的父，等等。
+
+##### 后代（Descendant）
+
+​	某个节点的子，子的子，等等。
+
+### 5.2. XPath 语法
+
+#### 5.2.1. 选取节点
+
+​	XPath 使用路径表达式在 XML 文档中选取节点。节点是通过沿着路径或者 step 来选取的。 
+
+| 表达式   | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| nodename | 选取此节点的所有子节点。                                     |
+| /        | 从根节点选取（取子节点）。                                   |
+| //       | 从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置（取子孙节点）。 |
+| .        | 选取当前节点。                                               |
+| ..       | 选取当前节点的父节点。                                       |
+| @        | 选取属性。                                                   |
+
+#### 5.2.2. 谓语（Predicates）
+
+​	谓语用来查找某个特定的节点或者包含某个指定的值的节点，谓语被嵌在方括号中。
+
+#### 5.2.3. 选取未知节点
+
+​	XPath 通配符可用来选取未知的 XML 元素。
+
+| 通配符 | 描述                 |
+| :----- | :------------------- |
+| *      | 匹配任何元素节点。   |
+| @*     | 匹配任何属性节点。   |
+| node() | 匹配任何类型的节点。 |
+
+#### 5.2.4. 选取若干路径
+
+​	通过在路径表达式中使用 `|` 运算符，可以选取若干个路径。
+
+### 5.3. XPath 轴（Axes）
+
+​	轴可定义相对于当前节点的节点集。
+
+| 轴名称             | 结果                                                     |
+| :----------------- | :------------------------------------------------------- |
+| ancestor           | 选取当前节点的所有先辈（父、祖父等）。                   |
+| ancestor-or-self   | 选取当前节点的所有先辈（父、祖父等）以及当前节点本身。   |
+| attribute          | 选取当前节点的所有属性。                                 |
+| child              | 选取当前节点的所有子元素。                               |
+| descendant         | 选取当前节点的所有后代元素（子、孙等）。                 |
+| descendant-or-self | 选取当前节点的所有后代元素（子、孙等）以及当前节点本身。 |
+| following          | 选取文档中当前节点的结束标签之后的所有节点。             |
+| following-sibling  | 选取当前节点之后的所有兄弟节点                           |
+| namespace          | 选取当前节点的所有命名空间节点。                         |
+| parent             | 选取当前节点的父节点。                                   |
+| preceding          | 选取文档中当前节点的开始标签之前的所有节点。             |
+| preceding-sibling  | 选取当前节点之前的所有同级节点。                         |
+| self               | 选取当前节点。                                           |
+
+### 5.4. XPath 运算符
+
+| 运算符 | 描述           |
+| :----- | :------------- |
+| `|`    | 计算两个节点集 |
+| `+`    | 加法           |
+| `-`    | 减法           |
+| `*`    | 乘法           |
+| `div`  | 除法           |
+| `=`    | 等于           |
+| `!=`   | 不等于         |
+| `<`    | 小于           |
+| `<=`   | 小于或等于     |
 
 ## 6. XML XSLT
 
@@ -798,6 +901,159 @@ xmlns:xsl="http://www...">
 
 - [XSLT 元素参考手册](https://www.runoob.com/xsl/xsl-w3celementref.html) ；
 - [XSLT 函数参考手册](https://www.runoob.com/xsl/xsl-functions.html) 。
+
+## 7. XQuery
+
+​	XQuery 之于 XML 作用就类似于 SQL 之于数据库的作用。XQuery 被设计用来查询 XML 数据。
+
+### 7.1 XQuery 选取节点
+
+#### 7.1.1. 函数
+
+​	XQuery 使用函数来提取 XML 文档中的数据。`doc()` 用于打开 xml 文件
+
+```xquery
+doc("books.xml")
+```
+
+#### 7.1.2. 路径表达式
+
+​	XQuery 使用路径表达式在 XML 文档中通过元素进行导航。
+
+```xquery
+doc("books.xml")/bookstore/book/title
+```
+
+#### 7.1.3. 谓语
+
+​	XQuery 使用谓语来限定从 XML 文档所提取的数据。
+
+```xquery
+doc("books.xml")/bookstore/book[price<30]
+```
+
+### 7.2. XQuery FLWOR 表达式
+
+​	FLWOR 是 **"For, Let, Where, Order by, Return"** 的只取首字母缩写。
+
+- **for ：** 语句把 bookstore 元素下的所有 book 元素提取到名为 $x 的变量中；
+
+  ```xquery
+  for $x in doc("books.xml")/bookstore/book
+  ```
+
+- **where ：** 语句选取了 price 元素值大于 30 的 book 元素；
+
+  ```xquery
+  where $x/price>30
+  ```
+
+- **order by ：** 语句定义了排序次序。将根据 title 元素进行排序；
+
+  ```xquery
+  order by $x/title
+  ```
+
+- **return ：** 语句规定返回什么内容。在此返回的是 title 元素。
+
+  ```xquery
+  return $x/title
+  ```
+
+### 7.3. XQuery 语法
+
+#### 7.3.1. XQuery 基础语法
+
+- XQuery 对大小写敏感；
+- XQuery 的元素、属性以及变量必须是合法的 XML 名称；
+- XQuery 字符串值可使用单引号或双引号；
+- XQuery 变量由 `$`，例如 `$bookstore`；
+- XQuery 注释被 `: ... :` 分割，例如，`(: XQuery 注释 :)`。
+
+#### 7.3.2. XQuery 条件表达式
+
+​	`If-Then-Else` 可以在 XQuery 中使用。
+
+```xquery
+for $x in doc("books.xml")/bookstore/book
+return if ($x/@category="CHILDREN")
+then <child>{data($x/title)}</child>
+else <adult>{data($x/title)}</adult>
+```
+
+#### 7.3.3. XQuery 比较
+
+​	在 XQuery 中，有两种方法来比较值。
+
+1. 通用比较：`=`，`!=`，`<`，`<=`，`>`，`>=`；
+2. 值的比较：`eq`，`ne`，`lt`，`le`，`gt`，`ge`。
+
+**注意：** 对于第一种比较，可以返回所有满足条件的值；对于第二种比较，如果返回结果大于 1 ，则会发生错误。
+
+### 7.4. XQuery 添加元素和属性
+
+​	XQuery 可以向 html 添加元素和属性。
+
+```html
+<ul>
+{
+for $x in doc("books.xml")/bookstore/book
+order by $x/title
+return <li>{data($x/title)}. Category: {data($x/@category)}</li>
+}
+</ul>
+```
+
+## 8. XLink & XPointer
+
+### 8.1. XLink & XPointer 简介
+
+​	XLink 定义了一套标准的在 XML 文档中创建超级链接的方法。XPointer 使超级链接可以指向 XML 文档中更多具体的部分（片断）。
+
+#### 8.1.1. XLink
+
+- XLink 是 XML 链接语言（**XML Linking Language**）的缩写；
+- XLink 是用于在 XML 文档中创建超级链接的语言；
+- XLink 类似于 HTML 链接 - 但是更为强大；
+- XML 文档中的任何元素均可成为 XLink；
+- XLink 支持简易链接，也支持可将多重资源链接在一起的扩展链接；
+- 通过 XLink，链接可在被链接文件外进行定义；
+- XLink 是 W3C 推荐标准。
+
+#### 8.1.2. XPointer
+
+- XPointer 是 XML 指针文件（**XML Pointer Language**）的缩写；
+- XPointer 使超级链接可以指向 XML 文档中更多具体的部分（片断）；
+- XPointer 使用 XPath 表达式在 XML 文档中进行定位；
+- XPointer 是 W3C 推荐标准。
+
+### 8.2. XLink & XPointer 语法
+
+#### 8.2.1. XLink
+
+​	在 XML 文档中定义超级链接的方法是在元素上放置可用作超级链接的标记。
+
+```xml
+<?xml version="1.0"?>
+<homepages xmlns:xlink="http://www.w3.org/1999/xlink">
+<homepage xlink:type="simple"
+xlink:href="http://www.github.com">Visit github</homepage>
+<homepage xlink:type="simple"
+xlink:href="http://www.qq.com">Visit qq</homepage>
+</homepages>
+```
+
+​	`xmlns` 表示 XLink 的命名空间是 `http://www.w3.org/1999/xlink`；`xlink:type` 和 `xlink:href` 表示命名空间的类型和链接属性。
+
+#### 8.2.2. XPointer
+
+​	可以在 `xlink:href` 属性中把 XPointer 部分添加到 URL 后面，这样就可以导航（通过 XPath 表达式）到文档中某个具体的位置了。
+
+```html
+href="http://www.example.com/cdlist.xml#id('rock').child(5,item)"
+```
+
+​	上面的代码表示，XLink 会约束超链接至网页 `http://www.example.com/`，而 XPointer 可以约束超链接精确到页面内的名为 `cdlist.xml` 的 xml 文件中属性 `id` 为 `rock` 的项目中的第五个，实现精确的指向。 
 
 
 
