@@ -1199,11 +1199,29 @@ http://www.test.com/cgi-bin/hello.py?key1=value1&key2=value2
 - GET 请求有长度限制；
 - GET 请求只应当用于取回数据。
 
+#### 3.2. 使用 POST 方法传递数据
 
+​	使用 POST 方法向服务器传递数据是更安全可靠的，一些敏感信息，如：**用户密码**等，需要使用 POST 传输数据。POST 方法只需要修改对应属性 `method='post'` 即可。
 
+### 4. CGI 中使用 Cookie
 
+​	在 http 协议一个很大的缺点就是不对用户身份的进行判断，这样给编程人员带来很大的不便， 而 cookie 功能的出现弥补了这个不足。cookie 就是在客户访问脚本的同时，通过客户的浏览器，在客户硬盘上写入纪录数据 ，当下次客户访问脚本时取回数据信息，从而达到身份判别的功能，cookie 常用在身份校验中。
 
+#### 4.1 cookie 语法
 
+​	http cookie 的发送是通过 http 头部来实现的，他早于文件的传递，头部 set-cookie 的语法如下：
+
+```html
+Set-cookie:name=name;expires=date;path=path;domain=domain;secure 
+```
+
+- **name=name:** 需要设置 cookie 的值（name不能使用 `;` 和 `,` 号），有多个name值时用 `;` 分隔；
+- **expires=date:** cookie 的有效期限，格式：`expires="Wdy,DD-Mon-YYYY HH:MM:SS"`；
+- **path=path:** 设置 cookie 支持的路径，如果 path 是一个路径，则 cookie 对这个目录下的所有文件及子目录生效；
+- **domain=domain:** 对 cookie 生效的域名；
+- **secure:** 如果给出此标志，表示 cookie 只能通过 SSL 协议的 https 服务器来传递。
+
+**注意：**cookie 的接收是通过设置环境变量 HTTP_COOKIE 来实现的，CGI 程序可以通过检索该变量获取 cookie 信息。
 
 ## 常用语法小记
 
