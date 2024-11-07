@@ -750,7 +750,24 @@ ch := make(chan int)
 ch := make(chan int, size)
 ```
 
-#### 16.2.2. Select 语句
+#### 16.2.2. 遍历通道与关闭通道
+
+​	通过 `range` 关键字来实现遍历读取到的数据，类似于与数组或切片。
+
+```go
+c := make(chan int, 10)
+for i := range c {
+	// ... 
+}
+```
+
+​	当通过不再接收数据时，可以选择关闭通道节省资源。
+
+```go
+close(c)
+```
+
+#### 16.2.3. Select 语句
 
 ​	`select` 语句使得一个 `goroutine` 可以等待多个通信操作。`select` 会阻塞，直到其中的某个 `case` 可以继续执行。
 
