@@ -677,25 +677,82 @@ interface_variable.(type_name)
 
 ​	类型转换用于将一个接口类型的值转换为另一个接口类型。
 
+```go
+type_name(variable)
 ```
-T(value)
+
+## 14. Go 语言接口
+
+​	接口可以将不同的类型绑定到一组公共的方法上，从而实现多态和灵活的设计。Go 语言中的接口是隐式实现的，如果一个类型实现了一个接口定义的所有方法，那么它就自动地实现了该接口。
+
+```go
+/* 定义接口 */
+type interface_name interface {
+   method_name1 [return_type]
+   method_name2 [return_type]
+   method_name3 [return_type]
+   ...
+   method_namen [return_type]
+}
+
+/* 定义结构体 */
+type struct_name struct {
+   /* variables */
+}
+
+/* 实现接口方法 */
+func (struct_name_variable struct_name) method_name1() [return_type] {
+   /* 方法实现 */
+}
+...
+func (struct_name_variable struct_name) method_namen() [return_type] {
+   /* 方法实现*/
+}
 ```
 
+## 15. Go 错误处理
 
+​	Go 语言通过内置的错误接口提供了非常简单的错误处理机制。
 
+```go
+type error interface {
+    Error() string
+}
+```
 
+## 16. Go 并发
 
+​	并发是指程序同时执行多个任务的能力。Go 语言支持并发，通过 `goroutines` 和 `channels` 提供了一种简洁且高效的方式来实现并发。
 
+### 16.1. goroutine
 
+​	`goroutine` 是轻量级线程，`goroutine` 的调度是由 Golang 运行时进行管理的。
 
+```go
+go function_name( [variable_list] )
+```
 
+### 16.2. 通道（channel）
 
+​	通道（channel）是用来传递数据的一个数据结构。通道可用于两个 `goroutine` 之间通过传递一个指定类型的值来同步运行和通讯。使用 `make` 函数创建一个 `channel`，使用 `<-` 操作符发送和接收数据。如果未指定方向，则为双向通道。
 
+```go
+ch := make(chan int)
+```
 
+**注意：**默认情况下，通道是不带缓冲区的。发送端发送数据，同时必须有接收端相应的接收数据。
 
+#### 16.2.1. 通道缓冲区
 
+​	通道可以设置缓冲区，通过 `make` 的第二个参数指定缓冲区大小。
 
+```go
+ch := make(chan int, size)
+```
 
+#### 16.2.2. Select 语句
+
+​	`select` 语句使得一个 `goroutine` 可以等待多个通信操作。`select` 会阻塞，直到其中的某个 `case` 可以继续执行。
 
 
 
