@@ -1448,9 +1448,190 @@ let mut file = OpenOptions::new().read(true).write(true).open("D:\\text.txt")?;
 file.write(b"COVER")?;
 ```
 
+## 18. Rust 集合与字符串
 
+### 18.1. 向量
 
+​	向量（Vector）是一个存放多值的单数据结构，该结构将相同类型的值线性的存放在内存中。
 
+```rust
+let vector: Vec<i32> = Vec::new(); // 创建类型为 i32 的空向量
+let vector = vec![1, 2, 4, 8];     // 通过数组创建向量
+```
+
+​	 `push` 方法用于追加单个元素。
+
+```rust
+vector.push(12);
+```
+
+​	 `append` 方法用于将一个向量拼接到另一个向量尾部。
+
+```rust
+v1.append(&mut v2);
+```
+
+​	`get` 方法用于取出向量中的值。
+
+```rust
+vector.get(1);
+```
+
+​	由于向量的长度无法从逻辑上判断，`get` 方法无法保证一定取到值，因此返回值是 `Option` 枚举类，有可能为空。
+
+### 18.2. 字符串
+
+#### 18.2.1. 字符串方法
+
+##### 字符串转换
+
+```rust
+let one = 1.to_string();         // 整数到字符串
+let float = 1.3.to_string();     // 浮点数到字符串
+let slice = "slice".to_string(); // 字符串切片到字符串
+```
+
+##### 字符串追加
+
+```rust
+s.push_str("oob");	// 追加字符串切片
+s.push("!");	// 追加字符
+```
+
+##### 字符串拼接
+
+```rust
+s3 = s1 + s2;
+```
+
+​	或者可以使用 `format!` 宏。
+
+```rust
+let s = format!("{}-{}-{}", s1, s2, s3);
+```
+
+##### 字符串长度
+
+```rust
+// 统计字符串字节长度
+let len = s.len();
+// 统计字符串字符长度
+let len = s.chars().count();
+```
+
+​	例如，同样的两个字符串”你好“，`len` 统计结果为 6，这是因为中文是 `UTF-8` 编码的，每个字符 3 个字节，一共 6 个字节；而 `chars().count()` 统计结果为 2，因为是两个字符。统计字符的速度比统计字节的速度慢得多。
+
+##### 字符串取单个字符
+
+```rust
+let a = s.chars().nth(2);
+```
+
+**注意：**`nth` 函数是从迭代器中取出某值的方法，不要在遍历中这样使用，因为 `UTF-8` 每个字符的长度不一定相等。
+
+### 18.3. 映射表
+
+​	映射表（Map）在其他语言中广泛存在。其中应用最普遍的就是键值散列映射表（Hash Map）。`insert` 方法和 `get` 方法是映射表最常用的两个方法。
+
+```rust
+use std::collections::HashMap;
+
+let mut map = HashMap::new();
+
+map.insert("color", "red");
+map.insert("size", "10 m^2");
+
+println!("{}", map.get("color").unwrap());
+```
+
+​	Rust 的映射表是十分方便的数据结构，当使用 `insert` 方法添加新的键值对的时候，如果已经存在相同的键，会直接覆盖对应的值。如果需要在确认当前不存在某个键时才执行的插入动作：
+
+```rust
+map.entry("color").or_insert("red")
+```
+
+## 19. Rust 面向对象
+
+​	面向对象的编程语言通常实现了数据的封装与继承并能基于数据调用方法。Rust 不是面向对象的编程语言，但这些功能都得以实现。
+
+### 19.1. 封装
+
+​	封装就是对外显示的策略，在 Rust 中可以通过模块的机制来实现最外层的封装，并且每一个 Rust 文件都可以看作一个模块，模块内的元素可以通过 `pub` 关键字对外明示，可以使用结构体或枚举类来实现类的功能。
+
+### 19.2. 继承
+
+​	继承是多态（Polymorphism）思想的实现，多态指的是编程语言可以处理多种类型数据的代码。在 Rust 中，通过特性（trait）实现多态。但是特性无法实现属性的继承，只能实现类似于"接口"的功能，所以想继承一个类的方法最好在"子类"中定义"父类"的实例。
+
+​	总结地说，Rust **没有**提供跟继承有关的语法糖，也没有官方的继承手段，但灵活的语法依然**可以实现**相关的功能。
+
+## 20. Rust 并发编程
+
+​	安全高效的处理并发是 Rust 诞生的目的之一，主要解决的是服务器高负载承受能力。
+
+### 20.1. 线程
+
+​	线程（thread）是一个程序中独立运行的一个部分。线程不同于进程（process）的地方是线程是程序以内的概念，程序往往是在一个进程中执行的，在有操作系统的环境中进程往往被交替地调度得以执行；线程则在进程以内由程序进行调度。由于线程并发很有可能出现并行的情况，所以在并行中可能遇到的死锁、延宕错误常出现于含有并发机制的程序。为了解决这些问题，很多其它语言（如 Java、C#）采用特殊的运行时（runtime）软件来协调资源，但这样无疑极大地降低了程序的执行效率。
+
+​	Rust 不依靠运行时环境，但 Rust 在语言本身就设计了包括所有权机制在内的手段来尽可能地把最常见的错误消灭在编译阶段，这一点其他语言不具备。
+
+#### 20.1.1. 创建线程
+
+​	Rust 中通过 `std::thread::spawn()` 函数创建新线程。
+
+```rust
+std::thread::spawn(spawn_function);
+```
+
+#### 20.1.2. join 方法
+
+​	`join` 方法可以使子线程运行结束后再停止运行程序。
+
+```rust
+let handle = thread::spawn(|| {
+	// ...
+});
+
+handle.join().unwrap();
+```
+
+#### 20.1.3. move 方法
+
+​	在子线程中尝试使用当前函数的资源，这一定是**错误**的。因为所有权机制禁止这种危险情况的产生，它将破坏所有权机制销毁资源的一定性。可以使用闭包的 `move` 关键字，强制转移资源的所有权至子线程中。
+
+```rust
+use std::thread;
+
+fn main() {
+    let s = "hello";
+   	// 如果没有 move 关键字，相当于在子线程中使用主线程的函数
+    let handle = thread::spawn(move || {
+        println!("{}", s);
+    });
+
+    handle.join().unwrap();
+}
+```
+
+#### 20.1.4.消息传递
+
+​	Rust 中一个实现消息传递并发的主要工具是通道（channel），通道有两部分组成，一个发送者（transmitter）和一个接收者（receiver）。`std::sync::mpsc` 包含了消息传递的方法。
+
+```rust
+use std::thread;
+use std::sync::mpsc;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        let val = String::from("hi");
+        tx.send(val).unwrap();
+    });
+
+    let received = rx.recv().unwrap();
+    println!("Got: {}", received);
+}
+```
 
 
 
