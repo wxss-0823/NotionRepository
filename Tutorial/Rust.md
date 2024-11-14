@@ -1633,25 +1633,122 @@ fn main() {
 }
 ```
 
+## 21. Rust 宏
 
+​	Rust 宏（Macros）是一种在编译时生成代码的强大工具，它允许你在编写代码时创建自定义语法扩展。宏在 Rust 中有两种类型：声明式宏（Declarative Macros）和过程宏（Procedural Macros）。
 
+### 21.1. 声明式宏
 
+​	使用 `macro_rules!` 关键字来定义声明式宏。
 
+```rust
+macro_rules! my_macro {
+    // 模式匹配和展开
+    ($arg:expr) => {
+        // 生成的代码
+        // 使用 $arg 来代替匹配到的表达式
+    };
+}
+```
 
+### 21.2. 过程宏
 
+​	过程宏是一种更为灵活和强大的宏，允许在编译时通过自定义代码生成过程来操作抽象语法树（AST）。过程宏在功能上更接近于函数，但是它们在编写和使用上更加复杂。
 
+- **派生宏（Derive Macros）：**用于自动实现 `trait`（比如 `Copy`、`Debug`）的宏；
+- **属性宏（Attribute Macros）：**用于在声明上附加额外的元数据，如 `#[derive(Debug)]`。
 
+​	过程宏的实现通常需要使用 `proc_macro` 库提供的功能，例如 `TokenStream` 和 `TokenTree`，以便更直接地操纵源代码。
 
+## 22. Rust 智能指针
 
+​	智能指针（Smart pointers）是一种在 Rust 中常见的数据结构，它们提供了额外的功能和安全性保证，以帮助管理内存和数据；是一种封装了对动态分配内存的所有权和生命周期管理的数据类型。
 
+### 22.1. Box\<T> 智能指针
 
+​	`Box<T>` 是 Rust 中最简单的智能指针之一，它允许在堆上分配一块内存，并将值存储在这个内存中，由于 Rust 的所有权规则，使用 Box 可以在**堆**上创建具有已知大小的数据。
 
+```rust
+let b = Box::new(5);
+```
 
+### 22.2. Rc\<T> 智能指针
 
+​	`Rc<T>`（引用计数指针）允许多个所有者共享数据，它使用引用计数来跟踪数据的所有者数量，并在所有者数量为零时释放数据。`Rc<T>` 适用于**单线程环境**下的数据共享。
 
+```rust
+use std::rc::Rc;
 
+let data = Rc::new(5);
+let data_clone = Rc::clone(&data);
+```
 
+### 22.3. Arc\<T> 智能指针
 
+​	`Arc<T>`（原子引用计数指针）与 `Rc<T>` 类似，但是可以安全地在**多线程环境**中共享数据，因为它使用原子操作来更新引用计数。
+
+```rust
+use std::sync::Arc;
+
+let data = Arc::new(5);
+let data_clone = Arc::clone(&data);
+```
+
+### 22.4. RefCell\<T> 智能指针
+
+​	`RefCell<T>` 允许在运行时检查借用规则，它使用内部可变性来提供了一种安全的内部可变性模式，允许在不可变引用的情况下修改数据。但是，`RefCell<T>` 只能用于**单线程环境**。
+
+```rust
+use std::cell::RefCell;
+
+let data = RefCell::new(5);
+let mut borrowed_data = data.borrow_mut();
+*borrowed_data = 10;
+```
+
+### 22.5. Mutex\<T> 智能指针
+
+​	`Mutex<T>` 是一个互斥锁，它保证了在任何时刻只有一个线程可以访问 `Mutex` 内部的数据。
+
+```rust
+use std::sync::Mutex;
+
+let m = Mutex::new(5);
+let mut data = m.lock().unwrap();
+```
+
+### 22.6. RwLock\<T> 智能指针
+
+​	`RwLock<T>` 是一种读取/写入锁，允许多个读取者同时访问数据，但在写入时是排他的。
+
+```rust
+use std::sync::RwLock;
+
+let lock = RwLock::new(5);
+let read_guard = lock.read().unwrap();
+```
+
+### 22.7. Weak\<T> 智能指针
+
+​	`Weak<T>` 是 `Rc<T>` 的非拥有智能指针，它不增加引用计数，用于解决循环引用问题。
+
+```rust
+use std::rc::{Rc, Weak};
+
+let five = Rc::new(5);
+let weak_five = Rc::downgrade(&five);
+```
+
+### 22.8. 智能指针的生命周期管理
+
+​	智能指针可以帮助管理数据的生命周期，当智能指针被销毁时，它们会自动释放内存，从而避免了内存泄漏和野指针的问题。此外，智能指针还允许在创建时指定特定的析构函数，以实现自定义的资源管理。
+
+## 23. Rust 异步编程
+
+​	异步编程是一种在 Rust 中处理非阻塞操作的方式，允许程序在执行长时间的 I/O 操作时不被阻塞，而是在等待的同时可以执行其他任务。实现方法包括 `async` 和 `await` 关键字、`futures` 和异步运行时（如 `tokio`、`async-std` 等），以及其他辅助工具。
+
+- **Future：**`Future` 是 Rust 中表示异步操作的抽象。它是一个可能还没有完成的计算，将来某个时刻会返回一个值或一个错误。
+- **async/await：**`async` 关键字用于定义一个异步函数，它返回一个 `Future`。`await` 关键字用于暂停当前 `Future` 的执行，直到它完成。
 
 
 
