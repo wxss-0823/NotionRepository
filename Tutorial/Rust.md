@@ -1750,5 +1750,84 @@ let weak_five = Rc::downgrade(&five);
 - **Future：**`Future` 是 Rust 中表示异步操作的抽象。它是一个可能还没有完成的计算，将来某个时刻会返回一个值或一个错误。
 - **async/await：**`async` 关键字用于定义一个异步函数，它返回一个 `Future`。`await` 关键字用于暂停当前 `Future` 的执行，直到它完成。
 
+### 23.1. 异步函数
 
+#### 23.1.1. async 关键字
+
+​	用于定义异步函数，即返回 `Future` 或 `impl Future` 类型的函数。异步函数执行时会返回一个未完成的 `Future` 对象，它表示一个尚未完成的计算或操作。异步函数可以包含 `await` 表达式，用于等待其他异步操作的完成。
+
+```rust
+async fn hello() -> String {
+    "Hello, world!".to_string()
+}
+```
+
+#### 23.1.2. await 关键字
+
+​	`await` 关键字用于等待异步操作的完成，并获取其结果。`await` 表达式只能在异步函数或异步块中使用，它会暂停当前的异步函数执行，等待被等待的 `Future` 完成，然后继续执行后续的代码。
+
+```rust
+async fn print_hello() {
+  let result = hello().await;
+  println!("{}", result);
+}
+```
+
+#### 23.1.3. 异步函数返回值
+
+​	异步函数的返回值类型通常是 `impl Future<Output = T>`，其中 `T` 是异步操作的结果类型。由于异步函数的返回值是一个 `Future`，因此可以使用 `.await` 来等待异步操作的完成，并获取其结果。
+
+#### 23.1.4. 异步块
+
+​	除了定义异步函数外，Rust 还提供了异步块的语法，可以在同步代码中使用异步操作。异步块由 `async { }` 构成，其中可以包含异步函数调用和 `await` 表达式。
+
+```rust
+async {
+    let result1 = hello().await;
+    let result2 = add(1, 2).await;
+    println!("Result: {}, {}", result1, result2);
+};
+```
+
+#### 23.1.5. 异步任务执行
+
+​	在 Rust 中，异步任务通常需要在执行上下文中运行，可以使用 `tokio::main`、`async-std` 的 `task::block_on` 或 `futures::executor::block_on` 等函数来执行异步任务。这些函数会接受一个异步函数或异步块，并在当前线程或执行环境中执行它。
+
+#### 23.1.6. 错误处理
+
+​	`await` 后面跟一个 `?` 操作符可以传播错误。如果 `await` 的 `Future` 完成时返回了一个错误，那么这个错误会被传播到调用者。
+
+### 23.2. 异步其他用法
+
+#### 23.2.1. 异步 trait 方法
+
+​	Rust 允许为 `trait` 定义异步方法。这使得可以为不同类型的对象定义异步操作。
+
+```rust
+trait MyAsyncTrait {
+    async fn async_method(&self) -> Result<(), MyError>;
+}
+
+impl MyAsyncTrait for MyType {
+    async fn async_method(&self) -> Result<(), MyError> {
+        // 异步逻辑
+    }
+}
+```
+
+#### 23.2.2. 异步上下文
+
+​	在 Rust 中，异步代码通常在异步运行时（如 `Tokio` 或 `async-std`）中执行。这些运行时提供了调度和执行异步任务的机制。`#[tokio::main]` 属性宏将 `main` 函数包装在一个异步运行时中。
+
+#### 23.2.3. 异步宏
+
+​	Rust 提供了一些异步宏，如 `tokio::spawn`，用于在异步运行时中启动新的异步任务。
+
+#### 23.2.4. 异步 I/O
+
+​	Rust 的标准库提供了异步 I/O 操作，如 `tokio::fs::File` 和 `async_std::fs::File`。
+
+#### 23.2.5. 异步通道
+
+​	Rust 的一些异步运行时提供了异步通道（如 `tokio::sync::mpsc`），允许在异步任务之间传递消息。
 
