@@ -790,12 +790,6 @@ class Child extends Parent {
 
 
 
-## 3. PHP 表单
-
-### 3.1. 表单 & 用户输入
-
-​	PHP 中的 `$_GET` 和 `$_POST` 变量用于检索表单中的信息，比如用户输入。
-
 
 
 
