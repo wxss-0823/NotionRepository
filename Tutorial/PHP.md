@@ -784,39 +784,365 @@ class Child extends Parent {
 
 ## 2. PHP 高级教程
 
+### 2.1. 多维数组
 
+​	多维数组是包含一个或多个数组的数组，在多维数组中，主数组中的每一个元素也可以是一个数组，子数组中的每一个元素也可以是一个数组。
 
+```php
+array (
+	array (elements...),
+  array (elements...),
+  ...
+)
+```
 
+### 2.2. date() 函数
 
+​	用于格式化时间/日期。
 
+```php
+string date ( string $format [, int $timestamp])
+```
 
+- `format`：必须，规定时间戳的格式；
+- `timestamp`：可选，规定时间戳，默认是当前的日期和时间。
 
+### 2.3. include 和 require 语句
 
+​	可以在服务器执行 PHP 文件之前在该文件中插入一个文件的内容。`include` 和 `require` 语句用于在执行流中插入写在其他文件中的有用的代码。
 
+- `require`：生成一个致命错误（`E_COMPILE_ERROR`），在错误发生后脚本会停止执行；
+- `include`：生成一个警告（`E_WARNING`），在错误发生后脚本会继续执行。
 
+**注意：**`include` 一般用于流控制，在程序执行中即时的引入文件；而 `require` 一般用与程序开头，用于声明运行必须的文件。
 
+```php
+include 'filename';
+// 或者
+require 'filename';
+```
 
+### 2.4. 文件处理
 
+#### 2.4.1. 打开文件
 
+​	`fopen()` 函数用于在 PHP 中打开文件。第一个参数指定目标文件位置，第二个参数指定访问模式。
 
+```php
+$file = fopen("welcome.txt", "r");
+```
 
+| 模式 | 描述                                                         |
+| ---- | ------------------------------------------------------------ |
+| r    | 只读，在文件开头开始                                         |
+| r+   | 读写，在文件开头开始                                         |
+| w    | 只写，打开并清空文件内容；如果不存在，则创建文件             |
+| w+   | 读写，打开并清空文件内容；如果不存在，则创建文件             |
+| a    | 追加，打开并向文件末尾进行写操作，如果文件不存在，则创建文件 |
+| a+   | 读追加，通过向文件末尾写内容，保持文件内容                   |
+| x    | 只写，创建新文件，如果文件已存在，则返回 `FALSE` 和一个错误  |
+| x+   | 读写，创建新文件，如果文件已存在，则返回 `FALSE` 和一个错误  |
 
+**注意：**如果 `fopen()` 函数无法打开指定文件，则返回 `0(false)`。
 
+#### 2.4.2. 关闭文件
 
+​	`fclose()` 函数用于关闭打开的文件。
 
+```php
+$file = fopen("test.txt", "r");
+fclose($file);
+```
 
+#### 2.4.3. 检测文件末尾
 
+​	`feof()` 函数用于检测是否已到达文件末尾（EOF）。
 
+```php
+if (feof($file)) echo "文件末尾";
+```
 
+#### 2.4.4. 逐行读取文件
 
+​	`fgets()` 函数用于从文件中逐行读取文件。
 
+```php
+$file = fopen("test.txt", "r");
+while (!feof($file)) {
+  echo fgets($file). "<br>";
+}
+fclose($file);
+```
 
+#### 2.4.5. 逐字符读取文件
 
+​	`fgetc()` 函数用于从文件中逐字符地读取文件。
 
+```php
+$file = fopen("test.txt", "r");
+while (!feof($file)) {
+  echo fgetc($file);
+}
+fclose($file);
+```
 
+#### 2.4.6. 文件上传
 
+​	首先，需要编写一个 HTML 表单用于选择上传的文件；其次，需要编写一个服务器端处理脚本，限定上传文件的类型，大小等；最后，将临时保存在服务器的文件拷贝到指定目录下，完成文件的上传。
 
+### 2.5. Cookie
 
+#### 2.5.1. 创建 Cookie
+
+​	`setcookie()` 函数用于设置 Cookie。
+
+**注释：**`setcookie()` 函数必须位于 `<html>` 标签之前。
+
+```php
+setcookie(name, value, expire, path, domain);
+```
+
+#### 2.5.1. 取回 Cookie
+
+​	PHP 的 `$_COOKIE` 变量用于取回 Cookie 的值。
+
+```php
+echo $_COOKIE["user"];
+print_r($_COOKIE);
+```
+
+#### 2.5.2. 删除 Cookie
+
+​	当删除 Cookie 时，应当使过期日期变更为过去的时间点。
+
+### 2.6. Session
+
+​	用于存储关于用户会话的消息，或者更改用户会话的设置。
+
+​	由于 HTTP 地址无法保持状态，Web 服务器并不知道用户是谁以及用户做了什么。PHP `session` 解决了这个问题，它通过在服务器上存储用户信息以便随后使用（比如用户名称、购买商品等）。然而，会话信息是临时的，在用户离开网站后将被删除；如果需要永久存储信息，可以把数据存储在数据库中。
+
+#### 2.6.1. 开始 Session
+
+```php
+<?php session_start(); ?>
+```
+
+**注意：**`session_start()` 函数必须位于 `<html>` 标签之前。
+
+#### 2.6.2. 存储 Session
+
+```php
+$_SESSION["view"] = 1;
+```
+
+#### 2.6.3. 销毁 Session
+
+​	如果希望删除某些 `session` 数据，可以使用 `unset()` 或 `session_destory()` 函数。
+
+```php
+unset($_SESSION["view"]);
+```
+
+**注意：**`session_destory()` 将重置 `session`，会失去所有已存储的 `session` 数据。
+
+### 2.7. 发送电子邮件
+
+#### 2.7.1. mail() 函数
+
+​	用于从脚本中发送电子邮件。
+
+```php
+mail (to, subject, message, headers, parameters)
+```
+
+| 参数       | 描述                                             |
+| ---------- | ------------------------------------------------ |
+| to         | 必须，规定 email 接收者                          |
+| subject    | 必须，规定 email 的主题                          |
+| message    | 必须，定义要发送的内容，应使用 LF(\n) 来分隔各行 |
+| headers    | 可选，规定附加的标题                             |
+| parameters | 可选，对邮件发送程序规定额外的参数。             |
+
+#### 2.7.2. Secure E-mails
+
+##### E-mail 注入
+
+​	黑客可能利用邮件地址栏输入框，注入别的邮件地址，是个人邮件信息被传播到其他地址。
+
+##### 防止注入
+
+​	可以进行输入验证，防止邮件地址注入。
+
+### 2.8. 错误处理
+
+​	在 PHP 中，默认的错误处理很简单。一条错误消息会被发送到浏览器，这条消息带有文件名、行号以及描述错误的消息。
+
+#### 2.8.1. die() 语句
+
+​	输出一段错误信息，并终止程序。
+
+#### 2.8.2. 自定义错误处理器
+
+​	该函数必须有能力处理至少两个参数 (`error level` 和 `error message`)，但是可以接受最多五个参数（可选的：`file`，`line-number` 和 `error context`）。
+
+```php
+error_function(error_level, error_message, error_file, error_line, error_context);
+```
+
+- `error_level`：必须，为用户定义的错误规定错误报告级别；
+- `error_message`：必须，为用户定义的错误规定错误消息；
+- `error_file`：可选，规定错误发生的文件名；
+- `error_line`：可选，规定错误发生的行号；
+- `error_context`：可选，规定一个数组，包含了当错误发生时的在用的每个变量及他们的值。
+
+##### 错误报告级别
+
+| 值   | 常量                | 描述                                   |
+| :--- | :------------------ | :------------------------------------- |
+| 2    | E_WARNING           | 非致命的 run-time 错误，不暂停脚本执行 |
+| 8    | E_NOTICE            | run-time 通知                          |
+| 256  | E_USER_ERROR        | 致命的用户生成的错误                   |
+| 512  | E_USER_WARNING      | 非致命的用户生成的警告                 |
+| 1024 | E_USER_NOTICE       | 用户生成的通知                         |
+| 4096 | E_RECOVERABLE_ERROR | 可捕获的致命错误                       |
+| 8191 | E_ALL               | 所有错误和警告                         |
+
+##### 设置错误处理程序
+
+```php
+set_error_handler("error_function");
+```
+
+#### 2.8.3. 触发错误
+
+​	由 `trigger_error()` 函数完成，用于在脚本执行时，发生用户输入无效的情况。
+
+#### 2.8.4. 错误记录
+
+​	在默认的情况下，根据在 `php.ini` 中的 `error_log` 配置，PHP 向服务器的记录系统或文件发送错误记录。
+
+​	通过使用 `error_log()` 函数，可以向服务器记录文件以外的指定文件发送错误记录。
+
+### 2.9. 异常处理
+
+​	用于在指定的错误发生时改变脚本的正常流程。
+
+#### 2.9.1. Try & Catch
+
+- `Try`：使用异常的函数应该位于 `try` 代码块内；
+
+- `Throw`：规定如何触发异常。每一个 `throw` 必须对应至少一个 `catch`；
+
+- `Catch`：捕获异常，并创建一个包含异常信息的对象。
+
+#### 2.9.2. 自定义 Exception 类
+
+​	该类必须是 `exception` 类的一个扩展，可向其添加自定义的函数。
+
+#### 2.9.3. 多个异常
+
+​	可以使用多个 `if..else` 代码块，或一个 `switch` 代码块，或者嵌套多个异常。这些异常能够使用不同的 `exception` 类，并返回不同的错误消息。
+
+#### 2.9.4. 重新抛出异常
+
+​	当异常被抛出时，可以在一个 `catch` 代码块中再次抛出异常。
+
+#### 2.9.5. 设置顶层异常处理器
+
+​	`set_exception_handler()` 函数可设置处理所有未捕获异常的用户定义函数。
+
+### 2.10. 过滤器
+
+#### 2.10.1. 函数和过滤器
+
+- `filter_var()`：通过一个指定的过滤器来过滤单一的变量；
+- `filter_var_array()`：通过相同的或不同的过滤器来过滤多个变量；
+- `filter_input`：获取一个输入变量，并对它进行过滤；
+- `filter_input_array`：获取多个输入变量，并通过相同的或不同的过滤器对它们进行过滤。
+
+```php
+<?php
+$int = 123;
+ 
+if(!filter_var($int, FILTER_VALIDATE_INT))
+{
+    echo("不是一个合法的整数");
+}
+else
+{
+    echo("是个合法的整数");
+}
+?>
+```
+
+#### 2.10.2. 选项和标志
+
+​	选项和标志用于向指定的过滤器添加额外的过滤选项，不同的过滤器有不同的选项和标志。
+
+#### 2.10.3. 验证输入
+
+​	可以用 `filter_input()` 函数过滤来自表单的输入数据。
+
+#### 2.10.4. 净化输入
+
+​	可以用 `filter_input()` 函数来净化输入数据。
+
+#### 2.10.5. Validating & Sanitizing
+
+`Validating` 过滤器：
+
+- 用于验证用户输入；
+- 严格的格式规则（比如 URL 或 E-Mail 验证）；
+- 如果成功则返回预期的类型，如果失败则返回 `FALSE`。
+
+`Sanitizing` 过滤器：
+
+- 用于允许或禁止字符串中指定的字符；
+- 无数据格式规则；
+- 始终返回字符串。
+
+#### 2.10.6. 过滤多个输入
+
+​	表单通常由多个输入字段组成。为了避免对 `filter_var` 或 `filter_input` 函数重复调用，可以使用 `filter_var_array` 或 `filter_input_array` 函数。
+
+#### 2.10.7. Filter Callback
+
+​	通过使用 `FILTER_CALLBACK` 过滤器，可以调用自定义的函数，把它作为一个过滤器来使用。
+
+```php
+// 回调名为 convertSpace 的自定义函数
+filter_var($string, FILTER_CALLBACK, array("options"=>"convertSpace"))
+```
+
+### 2.11. JSON
+
+#### 2.11.1. JSON 函数
+
+| 函数            | 描述                                          |
+| :-------------- | :-------------------------------------------- |
+| json_encode     | 对变量进行 JSON 编码                          |
+| json_decode     | 对 JSON 格式的字符串进行解码，转换为 PHP 变量 |
+| json_last_error | 返回最后发生的错误                            |
+
+#### 2.11.2. json_encode
+
+```php
+string json_encode ( $value [, $options = 0 ] )
+```
+
+- **value**：要编码的值，该函数只对 UTF-8 编码的数据有效。
+- **options**：由常量组成的二进制掩码。
+
+#### 2.11.3. json_decode
+
+```php
+mixed json_decode ($json_string [,$assoc = false [, $depth = 512 [, $options = 0 ]]])
+```
+
+- **json_string**：待解码的 JSON 字符串，必须是 UTF-8 编码数据；
+- **assoc**：当该参数为 TRUE 时，将返回数组，FALSE 时返回对象；
+- **depth**：整数类型的参数，它指定递归深度；
+- **options**：二进制掩码，目前只支持 `JSON_BIGINT_AS_STRING` 。
 
 
 
