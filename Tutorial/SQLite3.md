@@ -1549,3 +1549,133 @@ CREATE TABLE table_name(
 
 ### 2.16. SQLite 注入
 
+​	如果站点允许用户通过网页输入，并将输入内容插入到 SQLite 数据库中，这个时候就面临着一个被称为 SQL 注入的安全问题。注入通常在请求用户输入时发生，比如需要用户输入姓名，但用户却输入了一个 SQLite 语句，而这语句就会在不知不觉中在数据库上运行。
+
+#### 2.16.1. 防止 SQL 注入
+
+​	在脚本语言中，比如 PERL 和 PHP，可以巧妙地处理所有的转义字符。编程语言 PHP 提供了字符串函数 `SQLite3::escapeString($string)` 和 `sqlite_escape_string()` 来转义对于 SQLite 来说比较特殊的输入字符。
+
+### 2.17. SQLite Explain
+
+​	在 SQLite 语句之前，可以使用 `EXPLAIN` 关键字或 `EXPLAIN QUERY PLAN` 短语，用于查询语句的执行过程。
+
+- 来自 `EXPLAIN` 和 `EXPLAIN QUERY PLAN` 的输出只用于交互式分析和排除故障；
+- 输出格式的细节可能会随着 SQLite 版本的不同而有所变化；
+- 应用程序不应该使用 `EXPLAIN` 或 `EXPLAIN QUERY PLAN`，因为其确切的行为是可变的且只有部分会被记录。
+
+```sqlite
+EXPLAIN [SQLite Query]
+EXPLAIN QUERY PALN [SQLite Query]
+```
+
+### 2.18. SQLite Vaccum
+
+​	`VACUUM` 命令通过**复制**主数据库中的内容到一个**临时**数据库文件，然后**清空**主数据库，并从副本中**重新载入**原始的数据库文件。
+
+- 能够消除空闲页，把表中的数据排列为连续的，并清理数据库文件结构；
+
+- 如果表中没有明确的整型主键（`INTEGER PRIMARY KEY`），`VACUUM` 命令可能会改变表中条目的行 ID（ROWID）；
+- `VACUUM` 命令只适用于主数据库，附加的数据库文件不能使用 `VACUUM` 命令；
+
+- 如果有一个活动的事务，`VACUUM` 命令就会失败；
+- `VACUUM` 命令是一个用于内存数据库的操作；
+- 由于 `VACUUM` 命令从头开始重新创建数据库文件，所以也可以用于修改数据库特定的配置参数。
+
+#### 2.18.1. 手动 VACUUM
+
+```sqlite
+-- 在特定数据库上运行
+VACUUM;
+-- 在特定表上运行
+VACUUM table_name;
+```
+
+#### 2.18.2. 自动 VACUUM
+
+​	SQLite 的 `Auto-VACUUM` 与 `VACUUM` 不大一样，它只是把空闲页移到数据库末尾，从而减小数据库大小。通过这样做，它可以明显地把数据库**碎片化**，而 `VACUUM` 则是**反碎片化**。所以 `Auto-VACUUM` 只会让数据库更小。
+
+```sqlite
+PRAGMA auto_vacuum = NONE;  				-- 0 means disable auto vacuum
+PRAGMA auto_vacuum = INCREMENTAL;   -- 1 means enable incremental vacuum
+PRAGMA auto_vacuum = FULL;  				-- 2 means enable full auto vacuum
+```
+
+### 2.19. SQLite 日期 & 时间
+
+| 函数                                                    | 描述                                                         |
+| :------------------------------------------------------ | :----------------------------------------------------------- |
+| `date(timestring, modifier, modifier, ...)`             | 以 YYYY-MM-DD 格式返回日期                                   |
+| `time(timestring, modifier, modifier, ...)`             | 以 HH:MM:SS 格式返回时间                                     |
+| `datetime(timestring, modifier, modifier, ...)`         | 以 YYYY-MM-DD HH:MM:SS 格式返回                              |
+| `julianday(timestring, modifier, modifier, ...)`        | 这将返回从格林尼治时间的公元前 4714 年 11 月 24 日正午算起的天数 |
+| `strftime(format, timestring, modifier, modifier, ...)` | 这将根据第一个参数指定的格式字符串返回格式化的日期           |
+
+#### 2.19.1. 时间字符串
+
+| 序号 | 时间字符串              |
+| :--- | :---------------------- |
+| 1    | YYYY-MM-DD              |
+| 2    | YYYY-MM-DD HH:MM        |
+| 3    | YYYY-MM-DD HH:MM:SS.SSS |
+| 4    | MM-DD-YYYY HH:MM        |
+| 5    | HH:MM                   |
+| 6    | YYYY-MM-DD**T**HH:MM    |
+| 7    | HH:MM:SS                |
+| 8    | YYYYMMDD HHMMSS         |
+| 9    | now                     |
+
+#### 2.19.2. 修饰符（Modifier）
+
+​	时间字符串后边可跟着零个或多个的修饰符，这将改变有上述五个函数返回的日期和/或时间。修饰符应从左到右使用。
+
+| Modifier                | 描述                                   |
+| ----------------------- | -------------------------------------- |
+| `[+|-]NNN days`         | 当前日期加/减 NNN 天                   |
+| `[+|-]NNN hours`        | 当前日期加/减 NNN 小时                 |
+| `[+|-]NNN minutes`      | 当前日期加/减 NNN 分钟                 |
+| `[+|-]NNN.NNNN seconds` | 当前日期加/减 NNN.NNNN 秒              |
+| `[+|-]NNN months`       | 当前日期加/减 NNN 月                   |
+| `[+|-]NNN years`        | 当前日期加/减 NNN 年                   |
+| `start of month`        | 当前日期的月初                         |
+| `start of year`         | 当前日期的年初                         |
+| `start of day`          | 当天日期的 12 点                       |
+| `weekday N`             | 当前日期的下一个星期 N                 |
+| `unixepoch`             | 1970 年 1 月 1 日 00:00:00.0000000 UTC |
+| `localtime`             | 本地时间                               |
+| `utc`                   | 当前日期的 UTC 时间                    |
+
+#### 2.19.3. 格式化
+
+​	SQLite 提供了非常方便的函数 `strftime()` 来格式化任何日期和时间。
+
+| 替换 | 描述                              |
+| :--- | :-------------------------------- |
+| %d   | 一月中的第几天，01-31             |
+| %f   | 带小数部分的秒，SS.SSS            |
+| %H   | 小时，00-23                       |
+| %j   | 一年中的第几天，001-366           |
+| %J   | 儒略日数，DDDD.DDDD               |
+| %m   | 月，00-12                         |
+| %M   | 分，00-59                         |
+| %s   | 从 1970-01-01 算起的秒数          |
+| %S   | 秒，00-59                         |
+| %w   | 一周中的第几天，0-6 (0 is Sunday) |
+| %W   | 一年中的第几周，01-53             |
+| %Y   | 年，YYYY                          |
+| %%   | % symbol                          |
+
+### 2.20. SQLite 常用函数
+
+| 函数               | 描述                         |
+| :----------------- | ---------------------------- |
+| `COUNT()`          | 用来计算一个数据库表中的行数 |
+| `MAX()`            | 选择某列的最大值             |
+| `MIN()`            | 选择某列的最小值             |
+| `AVG()`            | 计算某列的平均值             |
+| `SUM()`            | 为一个数值列计算总和         |
+| `RANDOM()`         | 返回一个伪随机整数           |
+| `ABS()`            | 返回数值参数的绝对值         |
+| `UPPER()`          | 把字符串转换为大写字母       |
+| `LOWER()`          | 把字符串转换为小写字母       |
+| `LENGTH()`         | 返回字符串的长度             |
+| `sqlite_version()` | 返回 SQLite 库的版本         |
