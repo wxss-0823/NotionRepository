@@ -1447,5 +1447,105 @@ DROP VIEW view_name;
 
 ### 2.13. SQLite Transaction
 
+​	事务是一个对数据库执行的工作单元，以逻辑顺序完成的工作单位或序列
 
+#### 2.13.1. 事务属性
+
+- **原子性（Atomicity）：**确保工作单位内的所有操作都成功完成，否则，事务会在出现故障时终止，之前的操作也会回滚到以前的状态；
+- **一致性（Consistency)：**确保数据库在成功提交的事务上正确地改变状态；
+- **隔离性（Isolation）：**使事务操作相互独立和透明；
+- **持久性（Durability）：**确保已提交事务的结果或效果在系统发生故障的情况下仍然存在。
+
+#### 2.13.2. BEGIN TRANSACTION
+
+​	事务可以使用 `BEGIN TRANSACTION` 命令或简单的 `BEGIN` 命令来启动。此类事务通常会持续执行下去，直到遇到下一个 `COMMIT` 或 `ROLLBACK` 命令。在数据库关闭或发生错误时，事务处理也会回滚。
+
+```sqlite
+BEGIN;
+-- or 
+BEGIN TRANSACTION;
+```
+
+#### 2.13.3. COMMIT
+
+​	用于把事务调用的更改保存到数据库，把自上次 `COMMIT` 或 `ROLLBACK` 命令以来的所有事务保存到数据库。
+
+```sqlite
+COMMIT;
+-- or
+END TRANSACTION;
+```
+
+#### 2.13.4. ROLLBACK
+
+​	用于撤消尚未保存到数据库的事务的事务命令，撤销自上次发出 COMMIT 或 ROLLBACK 命令以来的事务。
+
+```sqlite
+ROLLBACK;
+```
+
+### 2.14. SQLite 子查询
+
+- 子查询必须用括号括起来；
+- 子查询在 `SELECT` 子句中只能有一个列，除非在主查询中有多列，与子查询的所选列进行比较；
+- `ORDER BY` 不能用在子查询中，可以使用 `GROUP BY` 代替；
+- 子查询返回多于一行，只能与多值运算符一起使用，如 `IN` 运算符；
+- `BETWEEN` 运算符不能与子查询一起使用，但是可在子查询内使用。
+
+#### 2.14.1. SELECT 子查询
+
+```sqlite
+SELECT column_name [, column_name ]
+FROM   table1 [, table2 ]
+WHERE  column_name OPERATOR
+      (SELECT column_name [, column_name ]
+      FROM table1 [, table2 ]
+      [WHERE])
+```
+
+#### 2.14.2. INSERT 子查询
+
+```sqlite
+INSERT INTO table_name [ (column1 [, column2 ]) ]
+           SELECT [ *|column1 [, column2 ]
+           FROM table1 [, table2 ]
+           [ WHERE VALUE OPERATOR ]
+```
+
+#### 2.14.3. UPDATE 子查询
+
+```sqlite
+UPDATE table
+SET column_name = new_value
+[ WHERE OPERATOR [ VALUE ]
+   (SELECT COLUMN_NAME
+   FROM TABLE_NAME)
+   [ WHERE) ]
+```
+
+#### 2.14.4. DELETE 子查询
+
+```sqlite
+DELETE FROM TABLE_NAME
+[ WHERE OPERATOR [ VALUE ]
+   (SELECT COLUMN_NAME
+   FROM TABLE_NAME)
+   [ WHERE) ]
+```
+
+### 2.15. SQLite Autoincrement
+
+​	SQLite 的 `AUTOINCREMENT` 是一个关键字，用于表示表中的字段值会自动递增。
+
+```sqlite
+CREATE TABLE table_name(
+	column1 INTEGER AUTOINCREMNT,
+  column2 datatype,
+  column3 datatype,
+  ...
+  columnN datatype
+);
+```
+
+### 2.16. SQLite 注入
 
