@@ -919,7 +919,7 @@ mvn help:effective-pom
 
 ​	`profile` 可以定义一系列的配置信息，然后指定其**激活条件**。可以定义多个 `profile`，每个 `profile` 对应不同的激活条件和配置信息，从而达到不同环境使用不同配置信息的效果。
 
-```sqlite
+```xml
 <profiles>
 	<profile>
 		<id>test</id>
@@ -932,7 +932,7 @@ mvn help:effective-pom
 
 ​	通过命令控制台，向 Maven 传递对应的参数，可以使用对应的配置。
 
-```sqlite
+```shell
 mvn test -Ptest
 ```
 
@@ -943,7 +943,7 @@ mvn test -Ptest
 
 ​	打开 `%USER_HOME%/.m2` 目录下的 `settings.xml` 文件，如果 `setting.xml` 文件不存在就直接拷贝 `%M2_HOME%/conf/settings.xml` 到目录。
 
-```sqlite
+```xml
 <settings xmlns="http://maven.apache.org/POM/4.0.0"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -955,7 +955,7 @@ mvn test -Ptest
 </settings>
 ```
 
-
+​	
 
 
 
