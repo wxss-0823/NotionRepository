@@ -955,29 +955,126 @@ mvn test -Ptest
 </settings>
 ```
 
-​	
+​	此时不需要传入参数也可以执行对应配置。
 
+```shell
+mvn test
+```
 
+#### 4.2.3. 环境变量
 
+​	通过加入 `<activation>` 节点，设置激活条件的键值对。
 
+```xml
+<profiles>
+	<profile>
+		<id>test</id>
+		<activation>
+      <property>
+        <name>env</name>
+        <value>test</value>
+      </property>
+    </activation>
+    <build>
+			...
+    </build>
+  </profile>
+</profiles>
+```
 
+​	当向 Maven 传递键值对为 `env=test` 时，执行对应配置，可以通过命令控制台。
 
+```shell
+mvn test -Denv=test
+```
 
+- **-Denv=test：**使用 `-D` 传递环境变量，`env` 是设置的 `<name>` 值，`test` 是设置的 `<value>` 值。
 
+​	也可以通过加入 `<propertied>` 节点，固定调用一种配置。
 
+```xml
+<properties>
+	<env>test</env>
+</properties>
+```
 
+#### 4.2.4. 操作系统
 
+​	可以设置触发条件为操作系统，当运行环境为对应的系统时，执行对应配置。
 
+```xml
+<profile>
+   <id>test</id>
+   <activation>
+      <os>
+         <name>Windows XP</name>
+         <family>Windows</family>
+         <arch>x86</arch>
+         <version>5.1.2600</version>
+      </os>
+   </activation>
+</profile>
+```
 
+#### 4.2.5. 文件判断
 
+​	可以通过判断特定文件的存在或者缺失激活对应的配置文件。
 
+```xml
+<profile>
+   <id>test</id>
+   <activation>
+      <file>
+         <missing>target/generated-sources/axistools/wsdl2java/
+         com/companyname/group</missing>
+      </file>
+   </activation>
+</profile>
+```
 
+## 5. Maven 仓库
 
+​	在 Maven 术语中，仓库是一个存放项目中以来的第三方库的位置（例如：`.m2` 路径）。在 Maven 中，任何一个依赖、插件或者项目构建的输出，都可以称之为构件。
 
+### 5.1. 本地仓库
 
+​	Maven 的本地仓库，在安装后并不会创建，它是在第一次执行 Maven 命令的时候才被创建。运行 Maven 的时候，Maven 所需要的任何构件都是直接从本地仓库获取的。如果本地仓库没有，它会首先尝试从远程仓库下载构件至本地仓库，然后再使用本地仓库的构件。
 
+​	Windows 操作系统下，本地仓库的默认路径在 C 盘，可以通过在 Maven 安装目录下的 `setting.xml` 文件中自定义仓库路径。
 
+```xml
+<localRepository>[UserPath]</localRepository>
+```
 
+### 5.2. 中央仓库
+
+​	Maven 中央仓库是由 Maven 社区提供的仓库，其中包含了绝大多数流行的开源 Java 构件，以及源码、作者信息、SCM、信息、许可证信息等。
+
+- 这个仓库由 Maven 社区管理；
+- 不需要配置；
+- 需要通过网络才能访问。
+
+​	Maven 社区提供了一个 URL 访问 [中央仓库](http://search.maven.org/#browse) ，简单的 Java 项目依赖的构件都可以在这里下载到。
+
+### 5.3. 远程仓库
+
+​	如果 Maven 在中央仓库中也找不到依赖的文件，它会停止构建过程并输出错误信息到控制台。为避免这种情况，Maven 提供了远程仓库的概念，它是开发人员自己定制仓库，包含了所需要的代码库或者其他工程中用到的 jar 文件。
+
+```xml
+<repositories>
+	<repository>
+		<id>companyname.lib</id>
+		<url>http://download.companyname.org/maven2/lib</url>
+  </repository>
+</repositories>
+```
+
+### 5.4. 依赖搜索顺序
+
+1. 首先在本地仓库中搜索，如果找不到，执行下一步；
+2. 在中央仓库中搜索，如果找不到，并且有一个或多个远程库被设置，则执行第四步，如果找到了，则下载到本地仓库中备用；
+3. 如果远程仓库没有被设置，Maven 将简单的停滞处理并抛出错误：无法找到依赖文件；
+4. 在一个或多个远程仓库中搜索依赖的文件，如果找到了，则下载到本地仓库以备将来引用，否则 Maven 将停止处理并抛出错误。
 
 
 
