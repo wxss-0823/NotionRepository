@@ -1078,25 +1078,232 @@ mvn test -Denv=test
 
 ## 6. Maven 插件
 
+​	Maven 有三个标准的生命周期，每个生命周期都包含一系列的阶段（phase），这些 phase 相当于 Maven 提供的统一接口，其实现由 Maven 的插件完成。
 
+​	例如，当输入命令 `mvn clean` 时，`clean` 对应于 Maven 的 Clean 生命周期，但是其具体操作是由 `maven-clean-plugin` 实现的。
 
+```shell
+# 实现插件的执行
+mvn [plugin-name]:[goal-name]
+```
 
+### 6.1. 插件的类型
 
+| 类型              | 描述                                                |
+| ----------------- | --------------------------------------------------- |
+| Build plugins     | 在构建时执行，并在 pom.xml 文件的元素中配置         |
+| Reporting plugins | 在网站生成过程中执行，并在 pom.xml 文件的元素中配置 |
 
+### 6.2. 常用的插件列表
 
+| 插件     | 描述                                              |
+| -------- | ------------------------------------------------- |
+| clean    | 构建之后清理目标文件，删除目标目录                |
+| compiler | 编译 Java 源文件                                  |
+| surefile | 运行 JUnit 单元测试，创建测试报告                 |
+| jar      | 从当前工程中构建 JAR 文件                         |
+| war      | 从当前工程中构建 WAR 文件                         |
+| javadoc  | 为工程生成 Javadoc                                |
+| antrun   | 从构建过程的任意一个阶段中运行一个 ant 任务的集合 |
 
+## 7. Maven 创建 Java 项目
 
+### 7.1. 初始化 Java 应用项目
 
+​	Maven 使用原型 `archetype` 插件创建项目，使用 `maven-archetype-quickstart` 创建简单的 Java 应用。
 
+```shell
+mvn archetype:generate "-DgroupId=com.companyname.bank" "-DartifactId=consumerBanking" "-DarchetypeArifactId=maven-artifactId-quickstart" "-DinteractiveMode=false"
+```
 
+### 7.2. 创建的目录树
 
+```shell
+.\---MVN
+     \---consumerBanking
+         |   pom.xml
+         |   
+         \---src
+             +---main
+             |   \---java
+             |       \---com
+             |           \---companyname
+             |               \---bank
+             \---test
+                 \---java
+                     \---com
+                         \---companyname
+                             \---bank
+```
 
+### 7.3. 文件结构说明
 
+| 文件夹结构         | 描述                                     |
+| ------------------ | ---------------------------------------- |
+| consumerBanking    | 包含 src 文件夹和 pom.xml                |
+| src/main/java      | Java 代码文件包含在 groupId 对应的目录下 |
+| src/test/java      | 测试代码包含在 groupId 对应的目录下      |
+| src/main/resources | 包含了图片/属性文件                      |
 
+## 8. Maven 构建 & 测试项目
 
+​	添加好源码文件与测试文件，并配置好 pom.xml 文件内容后，命令控制台执行：
 
+```shell
+mvn clean package
+```
 
+​	构建过程为：
 
+1. Maven 清理目标目录；
+2. Maven 编译源码文件，以及测试源码文件；
+3. Maven 运行测试用例，测试编译完成的源码；
+4. Maven 创建项目包；
+5. 打包好的文件位于 `consumerBanking\target\classes` 下，名称为 `[artifactId]-[version].[packaging]` ；
+6. 测试报告存放在 `comsumerBanking\target\surefile-reports` 文件中；
+
+### 8.1. 添加多个源文件
+
+​	通过 Java 的包声明，将一个项目的多个源文件声明为同一个包，包名对应于 `com.companyname.bank` ，Maven 会在打包时，自动识别同一个包下的源文件，并编译打包成一个输出文件。
+
+## 9. Maven 引入外部依赖
+
+​	如果项目需要引用第三方库的文件到项目，首先应该在 `consumerBanking\src` 路径下新建库文件夹 `lib`，并将文件复制进该路径；然后修改 pom.xml 文件中的依赖配置信息，通过系统路径引入依赖。
+
+```xml
+<dependencies>
+	<dependency>
+  	<groupId>ldapjdk</groupId>
+    <artifactId>ldapjdk</artifactId>
+    <version>1.0</version>
+    <scope>system</scope>
+    <systemPath>${basedir}\src\lib\ldapjdk.jar</systemPath>
+  </dependency>
+</dependencies>
+```
+
+## 10. Maven 项目文档
+
+​	在 pom.xml 中添加文档相关的插件配置，以运行 `site` 命令。
+
+```xml
+<build>
+	<pluginManagement>
+  	<plugins>
+    	<plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.3</version>
+      </plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-report-plugin</artifactId>
+        <version>2.7</version>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+</build>
+```
+
+​	在对应的项目文件夹下，执行 `mvn site` 命令，Maven 会自动生成项目文档。
+
+### 10.1. 文件格式
+
+​	Maven 使用一个名为 [Doxia](https://maven.apache.org/doxia/index.html) 的文档处理引擎来创建文档，它能将多种格式的源码读取成一种通用的文档模型。要为自定义的项目撰写文档，可以将内容写成以下几种常用的，可被 Doxia 转化的格式。
+
+| 格式名 | 描述                     | 参考                                                      |
+| ------ | ------------------------ | --------------------------------------------------------- |
+| Apt    | 纯文本文档格式           | https://maven.apache.org/doxia/references/apt-format.html |
+| Xdoc   | Maven 1.x 的一种文档格式 | https://jakarta.apache.org/site/jakarta-site2.html        |
+| FML    | FAQ 文档适用             | https://maven.apache.org/doxia/references/fml-format.html |
+| XHTML  | 可扩展的 HTML 文档       | https://en.wikipedia.org/wiki/XHTML                       |
+
+## 11. Maven 快照
+
+​	一个大型的软件应用通常包含多个模块，并且通常的场景是多个团队开发同一应用的不同模块。而不同团队的开发进度不同，如果一个团队近期正在进行快节奏的 bug 修复或者项目改进，那么他们可能每天都要发布一个版本到远程仓库，那么可能会发生：
+
+- 该团队每次更新代码都需要告知其他团队；
+- 其他团队需要经常修改 pom.xml 文件的配置至最新版本。
+
+### 11.1. 快照的作用
+
+​	鉴于上述发生的问题，Maven 提供了一种过渡版本控制方案，将经常需要修改的版本定义为快照（snapshot），例如：原始版本为 1.0，而快照版本为 1.0-SNAPSHOT，当某个团队需要经常更新版本时，每次上传覆盖上一次的快照版本即可，而对于其他团队而言，可以将版本设置为 1.0-SNAPSHOT，由于覆盖作用，Maven 每次构建时会自动获取最新的快照，直到该团队最终调试完成，将版本升级为 1.1，再修改正式的版本为 1.1 。
+
+​	快照的情况下，Maven 会自动获取最新的快照，对于所有团队而言，调试期间均不需要修改版本号。但是也可以使用 `-U` 参数强制 Maven 下载最新的快照构建。
+
+```shell
+mvn clean package -U
+```
+
+## 12. Maven 自动化构建
+
+​	自动化构建定义了这样一种场景：在一个项目成功构建后，依赖于其的相关工程即开始构建，这样可以保证其依赖项目的稳定。
+
+**注意：**要保证当前项目和其他依赖工程的版本一致。
+
+​	通过添加一个 `post-build` 目标来启动其他依赖工程。
+
+```xml
+<build>
+	<plugins>
+  	<plugin>
+      <!-- 构建的时候执行插件 -->
+    	<artifactId>maven-invoker-plugin</artifactId>
+      <version>1.6</version>
+      <configuration>
+      	<debug>true</debug>
+        <pomIncludes>
+        	<pomInclude>xxx/pom.xml</pomInclude>
+        	<pomInclude>yyy/pom.xml</pomInclude>
+        </pomIncludes>
+      </configuration>
+      <executions>
+      	<execution>
+        	<id>build</id>
+          <goals>
+          	<goal>run</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+```
+
+## 13. Maven 依赖管理
+
+​	Maven 一个核心的特性就是依赖管理，当处理多模块项目，项目间的依赖就变得非常复杂，管理也变得困难，针对此种情形，Maven 提供了一种高度控制的方法。
+
+### 13.1. 可传递性依赖发现
+
+​	Maven 可以避免去搜索所有嵌套的所需库的需求，可以通过读取项目的 `pom.xml` 文件，找出项目之间的依赖关系。使用者只需要在每个项目的 `pom.xml` 中定义好直接的依赖关系，其余的事情 Maven 会自动处理。
+
+| 功能     | 描述                                                         |
+| -------- | ------------------------------------------------------------ |
+| 依赖调节 | 决定当多个手动创建的版本同时出现时，被使用的依赖版本。如果两个依赖版本在依赖树的深度相同时，首先被声明的依赖将被使用 |
+| 依赖管理 | 可以直接指定手动创建的某个版本供使用                         |
+| 依赖范围 | 明确在构建过程每个阶段生效的依赖                             |
+| 依赖排除 | 任何可以传递的依赖可以通过 `exclusion` 元素被排除在外，这样 Maven 不会将被排除的依赖加入项目 |
+| 依赖可选 | 任何可以传递的依赖可以通过 `optional` 元素被标记为可选，可选会阻断依赖传递 |
+
+### 13.2. 依赖范围
+
+​	依赖范围就是依赖在构件过程中生效的阶段。
+
+| 范围     | 描述                                                         |
+| -------- | ------------------------------------------------------------ |
+| 编译阶段 | 表明依赖只在项目的类路径下有效，默认取值                     |
+| 供应阶段 | 表明依赖由运行时的 JDK 或者网络服务器提供                    |
+| 运行阶段 | 表明依赖在编译阶段不是必须的，但在执行阶段是必须的           |
+| 测试阶段 | 表明依赖只在测试编译阶段和执行阶段                           |
+| 系统阶段 | 表明需要通过绝对路径提供外部依赖                             |
+| 导入阶段 | 表明依赖在一个 POM 中定义，并且，当前项目的依赖关系可以取代引用的 POM |
+
+### 13.3. 依赖管理
+
+​	通常情况下，在一个共通项目下有一系列项目，可以创建一个公共的依赖 POM 文件，作为一系列项目的父项目，该 POM 包含所有公共的依赖。
+
+​	通过这种方式，子项目可以使用父项目的依赖，其他项目可以通过依赖子项目进而使用父项目的依赖，避免了依赖的重复定义。
 
 
 
