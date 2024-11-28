@@ -44,6 +44,8 @@ ssh-add /c/User/[username]/.ssh/id_rsa
 git remote add origin "http://....git"
 # 使用 SSH 添加远程仓库
 git remote set-url origin git@github.com:xxx/xxx.git
+# 查看远程仓库地址
+git remote -v
 ```
 
 ### 配置用户和邮箱
@@ -111,15 +113,16 @@ git pull origin main
   - 网速太差，换网
 - `fatal: refusing to merge unrelated histories`
   - 最后加上`--allow-unrelated-histories`
-
 - `! [remote rejected] master -> master (pre-receive hook declined)`
   `error: failed to push some refs to 'https://github.com/wxss-0823/MathCodes.git'`
   - 超出了github允许的50.00 MB，上传大文件详见[Git Large File Storage](https://git-lfs.github.com. )
-
 - `fatal: unable to auto-detect email address (got 'Wang Xishengshun@DESKTOP-WXSS.(none)')`
   - 未配置 github 用户名和邮箱
 - `fatal: unable to access 'https://github.com/xxx/******.git/': Failed to connect to github.com port 443 after 21090 ms: Couldn't connect to server`
   - 使用代理问题，需要指定 `Static Host` 和 `Port`
-
 - ` fatal: The request was aborted: Could not create SSL/TLS secure channel.`
-	- 建立 SSH 连接失败，需要检查密钥的配置情况
+  - 建立 SSH 连接失败，需要检查密钥的配置情况
+- `fatal: unable to access 'https://github/wxss-0823/CompanyBackup.git/': Recv failure: Connection was [reset|aborted]`
+  - 代理网络问题，检查代理网络是否故障
+- `fatal: unable to access 'https://github/wxss-0823/CompanyBackup.git/': OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github:443`
+  - 报错 443：网络原因无法使用 http/https 连接仓库，可以换为使用 ssh 连接
