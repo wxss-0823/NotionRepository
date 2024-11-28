@@ -1305,6 +1305,66 @@ mvn clean package -U
 
 ​	通过这种方式，子项目可以使用父项目的依赖，其他项目可以通过依赖子项目进而使用父项目的依赖，避免了依赖的重复定义。
 
+## 14. Maven 自动化部署
+
+​	为了防止不同团队之间的部署方案，时间，内容产生冲突，一种可行的自动化部署方案如下：
+
+- 使用 Maven 构建和发布项目；
+- 使用 SubVersion， 源码仓库来管理源代码；
+- 使用远程仓库管理软件（Jfrog或者Nexus） 来管理项目二进制文件。
+
+### 14.1. pom.xml 配置
+
+- `scm`：配置 SVN 的路径，Maven 将从该路径将代码取下来；
+- `repository`：构建的 WAR、EAR 或 JAR 文件的位置，或者其他源码构建成功后生成的构件的存储位置；
+- `plugin`：配置 `maven-release-plugin` 插件来实现自动部署过程。
+
+```xml
+<scm>
+  <url>http://www.svn.com</url>
+  <connection>scm:svn:http://localhost:8080/svn/jrepo/trunk/
+    Framework</connection>
+  <developerConnection>scm:svn:${username}/${password}@localhost:8080:
+    common_core_api:1101:code</developerConnection>
+</scm>
+<distributionManagement>
+  <repository>
+    <id>Core-API-Java-Release</id>
+    <name>Release repository</name>
+    <url>http://localhost:8081/nexus/content/repositories/Core-Api-Release</url>
+  </repository>
+</distributionManagement>
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-release-plugin</artifactId>
+      <version>2.0-beta-9</version>
+      <configuration>
+        <useReleaseProfile>false</useReleaseProfile>
+        <goals>deploy</goals>
+        <scmCommentPrefix>[bus-core-api-release-checkin]-</scmCommentPrefix>	
+     	</configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+### 14.2. Release 插件
+
+​	Maven 使用 `maven-release-plugin` 插件完成以下任务。
+
+```shell
+# 清理工作空间，保证最新的发布进程成功运行
+mvn release:clean
+# 在上次发布不成功的情况下，回滚修改的工作空间代码和配置，保证发布过程成功进行
+mvn release:rollback
+# 完成一系列发布之前的准备工作，包括：检查本地是否存在未提交的修改；确保没有快照的依赖；改变应用程序的版本信息用以发布；更新 POM 文件到 SVN；运行测试用例；提交修改后的 POM 文件；为代码在 SVN 上做标记；增加版本号和附加快照以备将来发布；提交修改后的 POM 文件到 SVN 等
+mvn release:prepare
+# 切换代码到之前做标记的地方，运行 Maven 部署目标来部署 WAR 文件或构建相应的结构到仓库
+mvn release:perform
+```
+
 
 
 
