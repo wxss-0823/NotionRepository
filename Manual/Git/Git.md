@@ -40,8 +40,10 @@ ssh-add /c/User/[username]/.ssh/id_rsa
 
 ```shell
 # 在 github 新建 SSH Key，并粘贴 id_rsa.pub 的内容
-# 添加远程仓库
+# 使用 HTTP/HTTPs 添加远程仓库
 git remote add origin "http://....git"
+# 使用 SSH 添加远程仓库
+git remote set-url origin git@github.com:xxx/xxx.git
 ```
 
 ### 配置用户和邮箱
@@ -75,7 +77,10 @@ git config --global --unset https.proxy
 ### 克隆仓库到本地
 
 ```shell
+# 使用 HTTP/HTTPs 克隆
 git clone "url"
+# 使用 SSH 克隆
+git clone "ssh"
 ```
 
 ### 查询状态
