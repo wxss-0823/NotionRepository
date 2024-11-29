@@ -43,7 +43,7 @@
    
    `net start mysql / net stop mysql`
    
-   如果上述某一步出问题，可以使用 `sc delete mysql` 删除服务，重新安装一次，建议将文件删除重新开始
+   如果上述某一步出问题，可以使用 `sc delete mysql` 删除服务，重新安装一次，建议将文件删除重新开始，也可以执行 `mysqld --remove mysql` 移除服务。
 
 5. 输入 `net start mysql` 确保服务运行；输入 `mysql -u root -p` 以 root 身份登录 mysql ；输入之前记录的密码，显示成功登录 `mysql>`
 
@@ -60,3 +60,24 @@
 7. 输入 `exit;` 重新进入就可以正常执行命令了。
 
 8. 密码：`020823`
+
+### MySQL 升级
+
+1. 从 https://mysql.net.cn/downloads/ 下载最新的 MySQL Windows ZIP Archive 发行版；
+2. 如果服务器正在运行，请将其停止。如果服务器作为服务安装，请在命令提示符中输入以下命令停止服务
+
+```shell
+SC STOP mysqld_service_name
+# 或者
+net stop mysqld_service_name
+```
+
+​	如果没有将 MySQL 作为服务器运行，请使用 `mysqladmin` 将其停止。
+
+```shell
+"%mysql%\bin\mysqladmin" -u root -p [password] shutdown
+```
+
+3. 提取 ZIP 存档，并覆盖现有的 Mysql 安装。
+4. 重新启动服务器，可以使用 `SC START mysqld_service_name` 或者 `net stop mysqld_service_name` ，否则直接调用 `mysqld_sevice_name mysqld` 。
+
