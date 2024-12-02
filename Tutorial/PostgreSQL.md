@@ -281,6 +281,240 @@ SELECT (item).name FROM on_hand WHERE (item).price > 9.99;
 CREATE DATABASE dbname;
 ```
 
+### 2.2. 选择数据库
+
+```postgresql
+\l 								-- 查看已经存在的数据库
+\c database_name;	-- 进入数据库
+```
+
+### 2.3. 删除数据库
+
+```postgresql
+DROP DATABASE [IF EXISTS] database_name;
+```
+
+### 2.4. 创建表格
+
+```postgresql
+CREATE TABLE table_name(
+   column1 datatype,
+   column2 datatype,
+   column3 datatype,
+   .....
+   columnN datatype,
+   PRIMARY KEY( column1, column2, ... )
+);
+```
+
+### 2.5. 删除表格
+
+```postgresql
+DROP TABLE table_name;
+```
+
+### 2.6. 模式（SECHMA）
+
+​	PostgreSQL 模式（SCHEMA）可以看着是一个表的集合，一个模式可以包含视图、索引、数据类型、函数和操作符等。
+
+- 允许多个用户使用一个数据库并且不会互相干扰；
+- 将数据库对象组织成逻辑组以便更容易管理；
+- 第三方应用的对象可以放在独立的模式中，这样它们就不会与其他对象的名称发生冲突。
+
+```postgresql
+CREATE SCHEMA myschema (
+	...
+);
+```
+
+### 2.7. INSERT INTO 语句
+
+​	PostgreSQL `INSERT INTO` 语句用于向表中插入新记录，可以插入一行，也可以同时插入多行。
+
+```postgresql
+INSERT INTO TABLE_NAME (column1, column2, column3,...columnN) VALUES (value1, value2, value3,...valueN), (value1, value2, value3,...valueN), ... ;
+```
+
+### 2.8. SELECT 语句
+
+​	PostgreSQL `SELECT` 语句用于从数据库中选取数据。
+
+```postgresql
+SELECT column1, column2,...columnN FROM table_name;
+```
+
+### 2.9. 运算符
+
+#### 2.9.1. 算术运算符
+
+| 运算符 |        描述        |
+| :----: | :----------------: |
+|   +    |         加         |
+|   -    |         减         |
+|   *    |         乘         |
+|   /    |         除         |
+|   %    |     模（取余）     |
+|   ^    |        指数        |
+|  \|/   |       平方根       |
+| \|\|/  |       立方根       |
+|   !    |        阶乘        |
+|   !!   | 阶乘（前缀操作符） |
+
+#### 2.9.2. 比较运算符
+
+| 运算符 |   描述   |
+| :----: | :------: |
+|   =    |   等于   |
+|   !=   |  不等于  |
+|   <>   |  不等于  |
+|   >    |   大于   |
+|   <    |   小于   |
+|   >=   | 大于等于 |
+|   <=   | 小于等于 |
+
+#### 2.9.3. 逻辑运算符
+
+| 运算符 |     描述     |
+| :----: | :----------: |
+|  AND   | 逻辑与运算符 |
+|  NOT   | 逻辑非运算符 |
+|   OR   | 逻辑或运算符 |
+
+#### 2.9.4. 位运算符
+
+| 运算符 | 描述                                 |
+| :----- | :----------------------------------- |
+| &      | 按位与操作，按二进制位进行"与"运算   |
+| \|     | 按位或运算符，按二进制位进行"或"运算 |
+| #      | 异或运算符，按二进制位进行"异或"运算 |
+| ~      | 取反运算符，按二进制位进行"取反"运算 |
+| <<     | 二进制左移运算符                     |
+| >>     | 二进制右移运算符                     |
+
+### 2.10. 表达式
+
+```postgresql
+SELECT column1, column2, columnN
+FROM table_name
+WHERE [CONDITION | EXPRESSION];
+```
+
+### 2.11. WHERE 子句
+
+```postgresql
+SELECT column1, column2, columnN
+FROM table_name
+WHERE [condition1];
+```
+
+### 2.12. AND & OR 运算符
+
+#### 2.12.1. AND
+
+​	`AND` 运算符表示一个或者多个条件必须同时成立。
+
+```postgresql
+SELECT column1, column2, columnN
+FROM table_name
+WHERE [condition1] AND [condition2]...AND [conditionN];
+```
+
+#### 2.12.2. OR
+
+​	`OR` 运算符表示多个条件中只需满足其中任意一个即可。
+
+```postgresql
+SELECT column1, column2, columnN
+FROM table_name
+WHERE [condition1] OR [condition2]...OR [conditionN];
+```
+
+### 2.13. UPDATE 语句
+
+​	用于更新在 PostgreSQL 数据库中的数据。
+
+```postgresql
+UPDATE table_name
+SET column1 = value1, column2 = value2...., columnN = valueN
+WHERE [condition];
+```
+
+### 2.14. DELETE 语句
+
+```postgresql
+DELETE FROM table_name WHERE [condition];
+```
+
+### 2.15. LIKE 子句
+
+​	用于获取包含某些字符的数据，如果没有使用通配符，`LIKE` 子句和等号 `=` 得到的结果是一样的。
+
+- `%`：百分号，匹配任意字符； 
+- `_`：下划线，匹配一个字符。
+
+```postgresql
+SELECT FROM table_name WHERE column LIKE 'XXXX%';
+-- 或者
+SELECT FROM table_name WHERE column LIKE '%XXXX%';
+-- 或者
+SELECT FROM table_name WHERE column LIKE 'XXXX_';
+-- 或者
+SELECT FROM table_name WHERE column LIKE '_XXXX';
+-- 或者
+SELECT FROM table_name WHERE column LIKE '_XXXX_';
+```
+
+### 2.16. LIMIT 子句
+
+​	用于限制 SELECT 语句中查询的数据的数量。
+
+```postgresql
+SELECT column1, column2, columnN
+FROM table_name
+LIMIT [no of rows] OFFSET [row num];
+```
+
+### 2.17. ORDER BY 语句
+
+```postgresql
+SELECT column-list
+FROM table_name
+[WHERE condition]
+[ORDER BY column1, column2, .. columnN] [ASC | DESC];
+```
+
+### 2.18. GROUP BY 语句
+
+​	在 PostgreSQL 中，`GROUP BY` 语句和 `SELECT` 语句一起使用，用来对相同的数据进行分组。`GROUP BY` 在一个 `SELECT` 语句中，放在 `WHERE` 子句的后面，`ORDER BY` 子句的前面。
+
+```postgresql
+SELECT column-list
+FROM table_name
+WHERE [ conditions ]
+GROUP BY column1, column2....columnN
+ORDER BY column1, column2....columnN
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
