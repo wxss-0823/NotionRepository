@@ -495,39 +495,450 @@ GROUP BY column1, column2....columnN
 ORDER BY column1, column2....columnN
 ```
 
+### 2.19. WITH 子句
 
+​	在 PostgreSQL 中， `WITH` 子句提供了一种编写辅助语句的方法，以便在更大的查询中使用，这些语句通常称为通用表达式（Common Table Express，CTE），也可以当做一个为查询而存在的临时表。`WITH` 子句在多次执行子查询时特别有用，允许在查询中通过它的名称多次引用他，在使用前必须先定义。
 
+```postgresql
+WITH
+	name_for_summary_data AS (
+  	SELECT Statement)
+  SELECT columns
+  FROM name_for_summary_data
+  WHERE conditons <=> (
+  	SELECT column
+ 		FROM name_for_summary_data)
+ 	[ORDER BY columns]
+```
 
+### 2.20. HAVING 子句
 
+​	用于筛选分组后的各组数据，在由 `GROUP BY` 子句创建的分组上设置条件。`HAVING` 子句必须放置在 `GROUP BY` 子句后面，`ORDER BY` 子句前面。
 
+```postgresql
+SELECT column-list
+FROM table_name
+WHERE [conditions]
+GROUP BY column-list
+HAVING [conditions]
+ORDER BY column-list
+```
 
+### 2.21. DISTINCT 关键字
 
+​	用于去除重复记录，只获得唯一的记录。
 
+```postgresql
+SELECT DISTINCT column1, column2, ... , columnN
+FROM table_name
+WHERE [condition]
+```
 
+## 3. PostgreSQL 高级指令
 
+### 3.1. 约束
 
+​	用于规定表中的数据规则，如果存在违反约束的数据行为，行为会被约束终止。
 
+#### 3.1.1. NOT NULL 约束
 
+​	默认情况下，列可以保存为 NULL 值，如果不想某列有 NULL 值，需要在该列定义此约束，指定在该列上不允许 NULL 值。NULL 与没有数据不一样，它表示未知的数据类型。
 
+#### 3.1.2. UNIQUE 约束
 
+​	用于设置列是唯一的，避免同一列出现重复值。
 
+#### 3.1.3. PRIMARY KEY 约束
 
+​	称为主键，是数据表中每一条记录的唯一标识，一张表只能由一个 `PRIMARY KEY`。
 
+#### 3.1.4. FOREIGN KEY 约束
 
+​	外键约束，指定列中的值必须匹配另一个表中的某一行中出现的值。通常一个表中 `FOREIGN KEY` 指向另一个表中 `UNIQUE KEY`，即维护相关表之间的引用完整性。
 
+#### 3.1.5. CHECK 约束
 
+​	保证列中的所有值满足某一条件，即对输入一条记录进行检查。
 
+#### 3.1.6. EXCLUSION 约束
 
+​	确保当满足所有指定的运算时，不插入数据。
 
+```postgresql
+CREATE TABLE table_name (
+	... ,
+	EXCLUDE USING gist
+	( condition1 ,
+	conditon2 )
+);
+```
 
+**注意：**Gist（Generalized Search Tree），即通用搜索树。
 
+#### 3.1.7. 删除约束
 
+​	删除约束必须指导约束名称，使用 `\d table_name` 查找系统生成的名称。
 
+```postgresql
+ALTER TABLE table_name DROP CONSTRAINT some_name;
+```
 
+### 3.2. JOIN
 
+​	用于把来自两个或多个表的行结合起来，基于这些表之间的共同字段。
 
+#### 3.2.1. CROSS JOIN
 
+​	交叉连接把第一个表的每一行与第二个表的每一行进行匹配，产生 n*m 的表。
 
+```postgresql
+SELECT ... FROM table1 CROSS JOIN table2 ...
+```
 
+#### 3.2.2. INNER JOIN
 
+​	根据连接谓词结合两个表的列值来创建一个新的结果表，查询会找出所有满足连接谓词的匹配对。
 
+```postgresql
+SELECT table1.column1, talbe2.column2 ...
+FROM table1
+INNER JOIN table2
+ON table1.common_filed = table2.common_filed;
+```
+
+#### 3.2.3. OUTER JOIN
+
+​	外部连接是内部连接的扩展，用于输出内部连接无法输出的行。
+
+##### LEFT OUTER JOIN
+
+​	左表被选择的行，即使没有匹配也会出现在结果表中。
+
+```postgresql
+SELECT ... FROM table1 LEFT OUTER JOIN table2 ON conditional_expression ...
+```
+
+##### RIGHT OUTER JOIN
+
+​	右表被选择的行，即使没有匹配也会出现在结果表中。
+
+```postgresql
+SELECT ... FROM table1 RIGHT OUTER JOIN table2 ON conditional_expression ...
+```
+
+##### FULL OUTER JOIN
+
+​	全外连接会将所有表被选择的行，即使没有匹配都显示的结果表中。
+
+```postgresql
+SELECT ... FROM talbe1 FULL OUTER JOIN table2 ON conditional_expression ...
+```
+
+### 3.3. UNION 操作符
+
+​	用于合并两个或多个 `SELECT` 语句的结果。每个结果表必须拥有相同数量的列，相似的数据类型，和相同的列顺序。
+
+#### 3.3.1. UNION
+
+```postgresql
+SELECT column1 [, column2]
+FROM table1 [, table2]
+[WHERE conditon]
+
+UNION
+
+SELECT column1 [, column2]
+FROM table1 [, table2]
+[WHERE conditon];
+```
+
+**注意：**`UNION` 操作符会将重复的行删除。
+
+#### 3.3.2. UNION ALL
+
+```postgresql
+SELECT column1 [, column2]
+FROM table1 [, table2]
+[WHERE conditon]
+
+UNION ALL
+
+SELECT column1 [, column2]
+FROM table1 [, table2]
+[WHERE conditon];
+```
+
+**注意：**`UNION ALL` 操作符不会删除重复的行。
+
+### 3.4. NULL 值
+
+​	NULL 值代表遗漏的未知数据，默认地，表的列可以存放 NULL 值。
+
+#### 3.4.1. IS NOT NULL
+
+​	筛选表中不为空的值。
+
+#### 3.4.2. IS NULL
+
+​	筛选表中为空的值。
+
+### 3.5. 别名
+
+​	可以用 SQL 重命名一张表或者一个字段的名称，这个名称就叫做该表或该字段的别名，创建别名是为了让表名和列名可读性更强。
+
+```postgresql
+SELECT column1, column2, ...
+FROM table_name AS alias_name
+WHERE [condition];
+```
+
+### 3.6. 触发器
+
+​	触发器是数据库的回调函数，它会在数据库事件发生时自动执行/调用，
+
+- PostgreSQL 触发器可以在几种情况下触发：
+	- 执行操作之前；
+	- 执行操作之后；
+	- 更新操作。
+- 触发器的 `FOR EACH ROW` 属性是可选的，如果选中，当操作修改时每行调用一次；相反，选中 `FOR EACH STATEMENT` 不选修改了多少航，每个语句标记的触发器执行一次；
+- `WHEN` 子句和触发器操作在引用 `NEW.column-name` 和 `OLD.column-name` 表单插入、删除或更新时可以访问每一行元素；
+- 如果存在 `WHEN` 子句，只会执行 `WHEN` 子句成立的那一行，如果有没有 `WHEN` 子句，会在每一行执行；
+- `BEFORE` 或 `AFTER` 关键字决定何时执行触发器动作；
+- 要修改的表必须存在于同一数据库中，作为触发器被附件的表或视图，且必须只使用 `table_name` ，而不是 `database.table_name`；
+- 当创建约束触发器会指定约束选项，当约束触发器实现的约束被违反时，将抛出异常。
+
+#### 3.6.1. 创建触发器
+
+```postgresql
+CREATE TRIGGER trigger_name [BEFORE|AFTER|INSTEAD OF] event_name
+ON table_name
+[
+  -- 触发器逻辑......
+];
+```
+
+####  3.6.2. 列出触发器
+
+```postgresql
+SELECT * FROM pg_trigger;
+```
+
+#### 3.6.3. 删除触发器
+
+```postgresql
+DROP trigger ${trigger_name} ON ${table_of_trigger_dependent};
+```
+
+### 3.7. 索引
+
+​	索引是加速搜素引擎检索数据的一种特殊表查询。通过创建索引，下一次检索时将会加快速度。
+
+#### 3.7.1. 创建索引
+
+```postgresql
+CREATE [UNIQUE] INDEX index_name 
+ON table_name(column-list);
+```
+
+#### 3.7.2. 局部索引
+
+```postgresql
+CREATE [UNIQUE] INDEX index_name 
+ON table_name(column-list)
+WHERE condition;
+```
+
+#### 3.7.3. 隐式索引
+
+​	在 PostgreSQL 中，隐式索引是在创建对象时，由数据库服务器自动创建的索引，这类索引通常为主键索引和唯一约束索引。其创建和管理是由 PostgreSQL 自动完成，用户不需要手动干预，这使得数据库管理变得更加简单和高效。
+
+#### 3.7.4. 删除索引
+
+```postgresql
+DROP INDEX index_name;
+```
+
+### 3.8. ALTER TABLE
+
+​	用于添加、修改，删除一张已经存在的表列，也可以用于添加和删除约束。
+
+#### 3.8.1. 添加/删除列
+
+```postgresql
+ALTER TABLE table_name [ADD|DROP] COLUMN column_name;
+```
+
+#### 3.8.2. 修改列数据类型
+
+```postgresql
+ALTER TABLE table_name ALTER COLUMN column_name TYPE DATATYPE datatype_name;
+```
+
+#### 3.8.3. 添加列约束
+
+```postgresql
+-- 添加唯一约束
+ALTER TABLE table_name ADD CONSTRAINT constraint_name UNIQUE (column-list);
+-- 添加 CHECK 约束
+ALTER TABLE table_name ADD CONSTRAINT constraint_name CHECK (condition);
+```
+
+#### 3.8.4. 添加主键约束
+
+```postgresql
+ALTER TABLE table_name ADD CONSTRAINT constraint_name PRIMARY KEY (column-list);
+```
+
+#### 3.8.5. 删除约束
+
+```postgresql
+ALTER TABLE table_name DROP CONSTRAINT constraint_name;
+```
+
+### 3.9. TRUNCATE TABLE
+
+​	用于删除表中的数据，但不删除表的结构。
+
+```postgresql
+TRUNCATE TALBE table_name;
+```
+
+### 3.10. VIEW
+
+​	视图是一个以预定义的 PostgreSQL 查询形式存在的表的组合，是一种虚拟表，可以从一个或多个表中创建。视图是只读的，但是可以在视图上创建触发器，当尝试修改视图时，在对应表中实现操作。
+
+#### 3.10.1. 创建视图
+
+```postgresql
+CREATE [TEMP | TEMPORARY] VIEW view_name AS
+SELECT column1, column2 ...
+FROM table_name
+WHERE [condition];
+```
+
+#### 3.10.2. 删除视图
+
+```postgresql
+DROP VIEW view_name;
+```
+
+### 3.11. TRANSACTION
+
+​	事务是数据库管理系统执行过程中的一个逻辑单位，由一个有限的数据库操作序列构成。
+
+- 为数据库操作序列提供了一个从失败中恢复到正常状态的办法，同时提供了数据库即使在正常状态下仍然能保持一致性的方法；
+- 当多个应用程序在并发访问数据库时，可以提供一个隔离方法，防止互相之间的操作互相干扰。
+
+#### 3.11.1. 开始事务
+
+​	用于启动一个事务，一直执行下去，直到遇到下一个 `COMMIT` 或 `ROLLBACK` 命令。
+
+```postgresql
+BEGIN;
+-- 或
+BEGIN TRANSACTION;
+```
+
+#### 3.11.2. COMMIT 命令
+
+​	用于把事务调用的更改保存到数据库中的事务命令，即确认事务。
+
+```postgresql
+COMMIT;
+```
+
+#### 3.11.3. ROLLBACK 命令
+
+​	用于撤销尚未保存到数据库的事务命令，即回滚事务。
+
+```postgresql
+ROLLBACK;
+```
+
+### 3.12. LOCK
+
+​	锁主要是为了保护数据库数据的一致性，可以组织用户修改一行或整个表，一般用在并发较高的数据库中。多个用户访问数据库的时候，若对并发操作不加控制，就可能读取和存储不正确的数据，破坏数据库的一致性。
+
+- 排它锁：Exclusion Locks，如果数据对象加上排它锁，则其他事务不能对它读取和修改；
+- 共享锁：Share Locks，如果加上共享锁，则其他事务可以读取，但不能修改。
+
+```postgresql
+LOCK [ TABLE ] table_name IN lock_mode;
+```
+
+- `talbe_name`：要锁定的现有表的名称；
+- `lock_mode`：锁定模式指定表被并发访问的行为，包含：`ACCESS SHARE`，`ROW SHARE`，`SHARE`，`ROW EXCLUSION`，`SHARE UPDATE EXCLUSION`，`SHARE ROW EXCLUSION`，`EXCLUSION`，`ACCESS EXCLUSION`。
+
+#### 3.12.1. 死锁
+
+​	当两个事务彼此等待对方完成其操作时，可能会发生死锁，PostgreSQL 可以检测它们，并以回滚结束它们。为了防止程序遇到这个问题，需要保证设计为以相同的顺序锁定对象。
+
+#### 3.12.2. 咨询锁
+
+​	PostgreSQL 提供了创建具有应用程序定义含义的锁的方法，这些被称为咨询锁。由于系统并不强制使用它们，所以正确使用它们取决于应用程序。
+
+### 3.13. 子查询
+
+​	指在 PostgreSQL 查询中的 `WHERE` 子句中嵌入查询语句，一个 `SELECT` 语句的查询结果能够作为另一个语句的输入值。
+
+```postgresql
+SELECT column_name [, column_name ]
+FROM table1 [, table2 ]
+WHERE column_name OPERATOR
+	(SELECT column_name [, column_name]
+	FROM table1 [, table2 ]
+	[WHERE]);
+```
+
+### 3.14. AUTO INCREMENT
+
+​	自动增长会在新记录插入表中时生成一个唯一的数字。PostgreSQL 使用序列来标识字段的自增长，数据类型由 `smallserial`，`serial`，`bigserial`，类似于 MySQL 数据库支持的 `AUTO_INCREMENT` 属性。
+
+```postgresql
+CREATE TABLE table_name (
+	column SERIAL
+);
+```
+
+### 3.15. PRIVILEGES
+
+​	无论何时创建数据库对象，都会为其分配一个所有者，通常是执行 `CREATE` 语句的人，对于大多数类型的对象，初始状态是只有所有者（或超级用户）才能修改或删除对象，要允许其他角色或用户使用它，必须为该用户设置权限。
+
+#### 3.15.1. GRANT
+
+​	用于为用户分配权限。
+
+```postgresql
+GRANT privilege [, ...]
+ON object [, ...]
+TO { PUBLIC | GROUP group | username }
+```
+
+- `privilege`：可以是 `SELECT`，`INSERT`，`UPDATE`，`DELETE`，`RULE`，`ALL`；
+- `object`：要授予访问权限的对象名称；
+- `PUBLIC`：所有用户；
+- `GROUP group`：为用户组授予权限；
+- `username`：要授予权限的用户名。
+
+#### 3.15.2. REVOKE
+
+​	用于取消对用户的授权。
+
+```postgresql
+REVOKE privilege [, ...]
+ON object [, ...]
+TO { PUBLIC | GROUP group | username }
+```
+
+#### 3.15.3. 添加/删除用户
+
+```postgresql
+-- 添加用户
+CREATE USER username WITH PASSWORD 'password';
+-- 删除用户
+DROP USER username;
+```
+
+## 4. 其他文档
+
+​	详细的常用函数，进阶应用可以查看 [官方文档](https://www.postgresql.org/docs/) 。
