@@ -55,7 +55,7 @@ CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE
 
 ### 2.1. String
 
-​	`string` 是 Redis 最基本的类型，一个 `key` 对应一个 `value`；是二进制安全的，意思是 `string` 可以包含任何数据，比如： jpg 图片或者序列化的对象；最大能存储 512 MB。
+​	`string` 是 Redis 最基本的类型，是二进制安全的，意思是 `string` 可以包含任何数据，比如： jpg 图片或者序列化的对象；最大能存储 512 MB。
 
 #### 2.1.1. 常用命令
 
@@ -64,3 +64,77 @@ CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE
 - `INCR key`：将键的值加 1；
 - `DECR key`：将键的值减 1；
 - `APPEND key value`：将值追加到键的值之后。
+
+### 2.2. Hash
+
+​	`hash` 是一个键值对集合，类似于一个小型 NoSQL 数据库。Redis `hash` 是一个 `string` 类型的 `field` 和 `value` 的映射表，适合用于存储对象，每个哈希最多可以存储 $2^{32}-1$ 个键值对。
+
+#### 2.2.1. 常用命令
+
+- `HSET key field value`：设置哈希表中字段的值；
+- `HGET key field`：获取哈希表中字段的值；
+- `HGETALL key`：获取哈希表中所有字段和值；
+- `HDEL key field`：删除哈希表中的一个或多个字段。
+
+### 2.3. List
+
+​	`list`是简单的字符串列表，按照插入顺序排序，可以添加一个元素到列表的头部/左边，或者尾部/右边，列表最多可以存储 $2^{32} - 1$ 个元素。
+
+#### 2.3.1. 常用命令
+
+- `LPUSH key value`：将值插入到列表头部；
+- `RPUSH key value`：将值插入到列表尾部；
+- `LPOP key`：移出并获取列表的第一个元素；
+- `RPOP key`：移出并获取列表的最后一个元素；
+- `LRANGE key start stop`：获取列表在指定范围内的元素。
+
+### 2.4. Set
+
+​	`Set` 是 `string` 类型的无序集合，集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是 O(1)，集合中最大的成员数为 $2^{32} - 1$ 。
+
+#### 2.4.1. 常用命令
+
+- `SADD key value`：向集合添加一个或多个成员；
+- `SREM key value`：移除集合中的一个或多个成员；
+- `SMEMBERS key`：返回集合中的所有成员；
+- `SISMEMBER key value`：判断值是否是集合的成员。
+
+### 2.5. zset
+
+​	`zset` 和 `set` 一样也是 `string` 类型元素的集合，且不允许重复的成员。不同的是每个元素都会关联一个`double` 类型的分数，Redis 正是通过这些分数来为集合中的成员进行从小到大的排序。`zset` 的成员是唯一的，但分数（score）却可以重复。
+
+#### 2.5.1. 常用命令
+
+- `ZADD key score value`：向有序集合添加一个或多个成员，或更新已存在成员的分数；
+- `ZRANGE key start stop [WITHSCORES]`：返回指定范围内的成员；
+- `ZREM key value`：移除有序集合中的一个或多个成员；
+- `ZSCORE key value`：返回有序集合中，成员的分数值；
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
