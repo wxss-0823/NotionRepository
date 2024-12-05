@@ -144,18 +144,27 @@ COMMAND KEY_NAME
 
 ​	用于管理 Redis 字符串的值。
 
-| 命令                      | 描述                                          |
-| ------------------------- | --------------------------------------------- |
-| `SET key value`           | 设置指定 key 的值                             |
-| `GET key`                 | 获取指定 key 的值                             |
-| `GETRANGE key start end`  | 返回 key 中字符串值的子字符串                 |
-| `GETSET key value`        | 将给定的 key 值设为 value，并返回 key 的旧值  |
-| `GETBIT key offset`       | 对 key 所储存的字符串值，获取指定偏移量上的位 |
-| `MGET key1 [key2 ...]`    | 获取一个或多个给定的 key 的值                 |
-| `SETBIT key offset value` | 对                                            |
-|                           |                                               |
-|                           |                                               |
-|                           |                                               |
+| 命令                             | 描述                                                         |
+| -------------------------------- | ------------------------------------------------------------ |
+| `SET key value`                  | 设置指定 key 的值                                            |
+| `GET key`                        | 获取指定 key 的值                                            |
+| `GETRANGE key start end`         | 返回 key 中字符串值的子字符串                                |
+| `GETSET key value`               | 将给定的 key 值设为 value，并返回 key 的旧值                 |
+| `GETBIT key offset`              | 对 key 所储存的字符串值，获取指定偏移量上的位                |
+| `MGET key1 [key2 ...]`           | 获取一个或多个给定的 key 的值                                |
+| `SETBIT key offset value`        | 对 key 所储存的字符串值，设置或清除指定偏移量上的位          |
+| `SETEX key seconds value`        | 将值 value 关联到 key，并将 key 的过期时间设为 seconds       |
+| `SETNX key value`                | 只有在 key 不存在时，设置 key 值                             |
+| `SETRANGE key offset value`      | 用 value 参数覆写给定 key 所存储的字符串从指定偏移量开始的值 |
+| `STRLEN key`                     | 返回 key 所储存的字符串值的长度                              |
+| `MSET key value [key value ...]` | 同时设置一个或多个 key-value 对，当且仅当所有给定 key 不存在 |
+| `PSETEX key milliseconds value`  | 设置 key-value 对的同时，设置 key 的生存时间，以 ms 为单位   |
+| `INCR key`                       | 将 key 中储存的数字值加一                                    |
+| `INCRBY key increment`           | 将 key 所储存的值加上给定的增量                              |
+| `INCRBYFLOAT key increment`      | 将 key 所储存的值加上给定的浮点增量                          |
+| `DECR key`                       | 将 key 中储存的数字值减一                                    |
+| `DECRBY key decrement`           | 将 key 中储存的数字减去给定的减量                            |
+| `APPEND key value`               | 如果 key 已经存在并且是一个字符串，将只当值追加到原来值的末尾 |
 
 
 
