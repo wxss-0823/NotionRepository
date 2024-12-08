@@ -170,24 +170,24 @@ COMMAND KEY_NAME
 
 ​	`hash` 是一个 `string` 类型的 `field`（字段）和 `value` 的映射表。每个 `hash` 最多储存 $2^{32}-1$ 个键值对。
 
-| 命令                       | 描述                                |
-| -------------------------- | ----------------------------------- |
-| `HDEL key field1 [field2]` | 删除一个或多个哈希表字段            |
-| `HEXISTS key field`        | 查看哈希表 key 中，指定字段是否存在 |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
-|                            |                                     |
+| 命令                                             | 描述                                            |
+| ------------------------------------------------ | ----------------------------------------------- |
+| `HDEL key field1 [field2]`                       | 删除一个或多个哈希表字段                        |
+| `HEXISTS key field`                              | 查看哈希表 key 中，指定字段是否存在             |
+| `HGET key field`                                 | 获取存储在哈希表指定字段的值                    |
+| `HGETALL key`                                    | 获取在哈希表中指定 key 的所有字段的值           |
+| `HINCREBY key field increment`                   | 为哈希表 key 中指定字段的整数值增加 increment   |
+| `HINCRBYFLOAT key field increment`               | 为哈希表 key 中的指定字段的整数值增加 increment |
+| `HKEYS key`                                      | 获取哈希表中所有字段                            |
+| `HLEN key`                                       | 获取哈希表中字段的数量                          |
+| `HMGET key field1 [field2]`                      | 获取所有给定字段的值                            |
+| `HMSET key field1 value1 [field2 value2]`        | 同时将多个 field-value 对设置到哈希表中         |
+| `HSET key field value`                           | 将哈希表 key 中的字段 field 的值设为 value      |
+| `HSETNX key field value`                         | 只有在字段 field 不存在时，设置哈希表的值       |
+| `HVALS key`                                      | 获取哈希表中所有值                              |
+| `HSCAN key cursor [MATCH pattern] [COUNT count]` | 迭代哈希表中的键值对                            |
 
-
+Update GitPush.exe.
 
 
 
