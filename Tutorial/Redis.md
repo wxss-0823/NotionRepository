@@ -187,7 +187,295 @@ COMMAND KEY_NAME
 | `HVALS key`                                      | 获取哈希表中所有值                              |
 | `HSCAN key cursor [MATCH pattern] [COUNT count]` | 迭代哈希表中的键值对                            |
 
-Update GitPush.exe.
+### 3.4. 列表（List）
+
+​	Redis 列表是简单的字符串列表，按照插入顺序排序，可以添加一个元素到列表的头部，或者尾部。一个列表最多可以包含 $2^{32}-1$ 个元素。
+
+| 命令                                    | 描述                                                         |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `BLPOP key1 [key2] timeout`             | 移出并获取列表的第一个元素，如果列表没有元素会阻塞列表，直到等待超时或发现可弹出的元素为止 |
+| `BRPOP key1 [key2] timeout`             | 移出并获取列表的最后一个元素，如果列表没有元素会阻塞列表，直到等待超时或发现可弹出的元素为止 |
+| `BRPOPLPUSH source destination timeout` | 从列表中弹出一个值，将弹出的元素插入到另外一个列表中并返回它，如果列表没有元素会阻塞列表，直到等待超时或发现可弹出的元素为止 |
+| `LINDEX key index`                      | 通过索引获取列表中的元素                                     |
+| `LINSERT key BEFROE|AFTER pivot value`  | 在列表的元素前或者后插入元素                                 |
+| `LLEN key`                              | 获取列表长度                                                 |
+| `LPOP key`                              | 移出并获取列表的第一个元素                                   |
+| `LPUSH key value1 [value2]`             | 将一个或多个值插入到列表头部                                 |
+| `LPUSHX key value`                      | 将一个值插入到已存在的列表头部                               |
+| `LRANGE key start stop`                 | 获取列表指定范围内的元素                                     |
+| `LREM key count value`                  | 移除列表元素                                                 |
+| `LSET key index value`                  | 通过索引设置列表元素的值                                     |
+| `LTRIM key start stop`                  | 对一个列表进行修剪（trim），不在指定区间内的元素都将被删除   |
+| `RPOP key`                              | 移除列表的最后一个元素，返回值为移除的元素                   |
+| `RPOPLPUSH source destination`          | 移除列表的最后一个元素，并将该元素添加到另一个列表并返回     |
+| `RPUSH key value1 [value2]`             | 在列表中添加一个或多个值到列表尾部                           |
+| `RPUSHX key value`                      | 为已存在的列表添加值                                         |
+
+### 3.5. 集合（Set）
+
+​	Redis 的 Set 是 String 类型的无序集合，集合成员是唯一的，这就意味着集合中不能出现重复的数据。集合对象的编码可以是 `intset` 或者 `hashtable`，最大成员数为 $2^{32}-1$ 。
+
+| 命令                                             | 描述                                                |
+| ------------------------------------------------ | --------------------------------------------------- |
+| `SADD key member1 [member2]`                     | 向集合添加一个或多个成员                            |
+| `SCARD key`                                      | 获取集合成员数                                      |
+| `SDIFF key1 [key2]`                              | 返回第一个集合与其他集合之间的差集                  |
+| `SDIFFSTORE destination key1 [key2]`             | 返回给定所有集合的差集并储存在 destination 中       |
+| `SINTER key1 [key2]`                             | 返回给定所有集合的交集                              |
+| `SINTERSOTRE destination key1 [key2]`            | 返回给定所有集合的交集并存储在 destination 中       |
+| `SISMENBER key member`                           | 判断 member 元素是否是集合 key 的成员               |
+| `SMEMBERS key`                                   | 返回集合中的所有成员                                |
+| `SMOVE source destination member`                | 将 member 元素从 source 集合移动到 destination 集合 |
+| `SPOP key`                                       | 移除并返回集合中的一个随机元素                      |
+| `SRANDMEMBER key [count]`                        | 返回集合中一个或多个随机数                          |
+| `SREM key member1 [member2]`                     | 移除集合中一个或多个成员                            |
+| `SUNION key1 [key2]`                             | 返回所有给定集合的并集                              |
+| `SUNIONSTORE destination key1 [key2]`            | 所有给定集合的并集储存在 destination 集合中         |
+| `SSCAN key cursor [MATCH pattern] [COUNT count]` | 迭代集合中的元素                                    |
+
+### 3.6. 有序集合（Sorted set）
+
+​	Redis 有序集合和集合一样，也是 `string` 类型元素的集合，且不允许重复的成员；不同的是每个元素都会关联一个 `double` 类型的分数，通过这些分数来为集合中的成员进行从小到大的排序。有序集合的成员是唯一的，但是分数可以重复，最大成员数为 $2^{32}-1$ 。
+
+| 命令                                             | 描述                                                         |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| `ZADD key score1 member1 [score2 member2]`       | 向有序集合添加一个或多个成员，或者更新已存在成员的分数       |
+| `ZCARD key`                                      | 获取有序集合的成员数                                         |
+| `ZCOUNT key min max`                             | 计算在有序集合中指定区间分数的成员数                         |
+| `ZINCREBY key increment member`                  | 有序集合中对指定成员的分数加上增量 increment                 |
+| `ZINTERSTORE destination numkeys key [key ...]`  | 计算给定的一个或多个有序集的交集并将结果存储在新的有序集合 destination 中 |
+| `ZLEXCOUNT key min max`                          | 在有序集合中计算指定字典区间内成员数量                       |
+| `ZRANGE key start stop [WITHSCORES]`             | 通过索引区间返回有序集合指定区间内的成员                     |
+| `ZRANGEBYLEX key min max [LIMIT offset count]`   | 通过字典区间返回有序集合的成员                               |
+| `ZRANGEBYSCORE key min max`                      | 通过分数返回有序集合指定区间内的成员                         |
+| `ZRANK key member`                               | 返回有序集合中指定成员的索引                                 |
+| `ZREM key member [member ...]`                   | 移除有序集合中的一个或多个成员                               |
+| `ZREMRANGEBYLEX key min max`                     | 移除有序集合中给定字典区间的所有成员                         |
+| `ZREMRANGEBYRANK key start stop`                 | 移除有序集合中给定的索引区间的所有成员                       |
+| `ZREMRANGEBYSCORE key min max`                   | 移除有序集合中给定的分数区间的所有成员                       |
+| `ZREVRANGE key start stop [WITHSCORES]`          | 返回有序集合中指定区间内的成员，通过索引，分数由高到低       |
+| `ZREVRANGEBYSCORES key max min [WITHSCORES]`     | 返回有序集合中指定分数区间的成员，分数由高到低排序           |
+| `ZREVRANK key memeber`                           | 返回有序集合中指定成员的排名，有序集成员按分数值递减排序     |
+| `ZSCORE key member`                              | 返回有序集中，成员的分数值                                   |
+| `ZUNIONSTORE destination numkeys key [key ...]`  | 计算给定的一个或多个有序集的并集，并存储在新的 key 中        |
+| `ZSCAN key cursor [MATCH pattern] [COUNT count]` | 迭代有序集合中的元素，包括元素成员和元素分值                 |
+
+### 3.7. HyperLogLog
+
+​	Redis HyperLogLog 是用来做基数统计的算法，优点是在输入元素数量或体积非常大时，计算基数所需的空间是固定的，并且很小的。这与元素越多，内存耗费越多的集合形成鲜明对比。HyperLogLog 只会根据输入元素来计算基数，而不会储存输入元素本身，所以不能像集合那样，返回输入的各个元素。
+
+#### 3.7.1. 基数
+
+​	基数是指数据集中不重复元素的数量，基数估计就是在误差允许范围内，快速计算基数。
+
+#### 3.7.2. 命令
+
+| 命令                                        | 描述                              |
+| ------------------------------------------- | --------------------------------- |
+| `PFADD key element [element ...]`           | 添加指定元素到 HyperLogLog 中     |
+| `PFCOUNT key [key ...]`                     | 返回给定 HyperLogLog 的基数估算值 |
+| `PFMERGE destkey sourcekey [sourcekey ...]` | 将多个 HyperLogLog 合并为一个     |
+
+### 3.8. 发布订阅
+
+​	Redis 发布订阅（pub/sub）是一种消息通信模式：发信者（pub）发送消息，订阅者（sub）接收消息。Redis 客户端可以订阅任意数量的频道。
+
+| 命令                                          | 描述                             |
+| --------------------------------------------- | -------------------------------- |
+| `PSUBSCRIBE pattern [pattern ...]`            | 订阅一个或多个符合给定模式的频道 |
+| `PUBSUB subcommand [argument [argument ...]]` | 查看订阅与发布系统的状态         |
+| `PUBLISH channel message`                     | 将信息发送到指定频道             |
+| `PUNSUBSRIBE [pattern [pattern ...]]`         | 退订所有给定模式的频道           |
+| `SUBSCRIBE channel [channel ...]`             | 订阅给定的一个或多个频道的信息   |
+| `UNSUBSCRIBE [channel [channel ...]]`         | 退订给定的频道                   |
+
+### 3.9. 事务
+
+​	Redis 事务可以一次执行多个命令，并且带有以下三个保证：
+
+- 批量操作在发送 `EXEC` 命令之前被放入队列缓存；
+- 收到 `EXEC` 命令后进入事务执行，事务中任意命令执行失败，其余命令依然被执行；
+- 在事务执行过程中，其他客户端提交的命令请求不会插入到事务执行命令序列中。
+
+​	一个事务从开始到执行会经历：开始事务，命令入队，执行事务，三个阶段。
+
+| 命令                  | 描述                                                         |
+| --------------------- | ------------------------------------------------------------ |
+| `MULTI`               | 标记一个事务块的开始                                         |
+| `EXEC`                | 执行所有事务块的命令                                         |
+| `DISCARD`             | 取消事务，放弃执行事务块内的所有命令                         |
+| `WATCH key [key ...]` | 监视一个或多个 key，如果在事务执行之前，key 被其他命令改动，那么事务将被打断 |
+| `UNWATCH`             | 取消 `WATCH` 命令对所有 key 的监视                           |
+
+### 3.10. 脚本
+
+​	Redis 脚本使用 Lua 解释器来执行，通过内嵌支持 Lua 环境。
+
+| 命令                                               | 描述                                                   |
+| -------------------------------------------------- | ------------------------------------------------------ |
+| `EVAL script numkeys key [key ...] arg [arg ...]`  | 执行 Lua 脚本                                          |
+| `EVALSHA sha1 numkeys key [key ...] arg [arg ...]` | 执行 Lua 脚本                                          |
+| `SCRIPT EXISTS script [script ...]`                | 查看指定脚本是否已经被保存在缓存当中                   |
+| `SCRIPT FLUSH`                                     | 从脚本缓存中移除所有脚本                               |
+| `SCRIPT KILL`                                      | 杀死当前正在运行的 Lua 脚本                            |
+| `SCRIPT LOAD script`                               | 将脚本 script 添加到脚本缓存中，但并不立即执行这个脚本 |
+
+### 3.11. 连接
+
+​	Redis 连接命令主要用于连接 Redis 服务
+
+| 命令            | 描述               |
+| --------------- | ------------------ |
+| `AUTH password` | 验证密码是否正确   |
+| `ECHO message`  | 打印字符串         |
+| `PING`          | 查看服务是否运行   |
+| `QUIT`          | 关闭当前连接       |
+| `SELECT index`  | 切换到指定的数据库 |
+
+### 3.12. 服务器
+
+​	Redis 服务器命令主要用于管理 Redis 服务。
+
+| 命令                                           | 描述                                                         |
+| ---------------------------------------------- | ------------------------------------------------------------ |
+| `BGREWRITEAOF`                                 | 异步执行一个 AOF（AppendOnly File）文件重写操作              |
+| `BGSAVE`                                       | 在后台异步保存当前数据库的数据到磁盘                         |
+| `CLIENT KILL [ip:port] [ID client-id]`         | 关闭客户端连接                                               |
+| `CLIENT LIST`                                  | 获取连接到服务器的客户端连接列表                             |
+| `CLIENT GETNAME`                               | 获取连接的名称                                               |
+| `CLIENT PAUSE timeout`                         | 在指定时间内终止运行来自客户端的命令                         |
+| `CLIENT SETNAME connection-name`               | 设置当前连接的名称                                           |
+| `CLUSTER SLOTS`                                | 获取集群节点的映射数组                                       |
+| `COMMAND`                                      | 获取 Redis 命令详情数组                                      |
+| `COMMAND COUNT`                                | 获取 Redis 命令总数                                          |
+| `COMMAND GETKEYS`                              | 获取给定命令的所有键（已删除）                               |
+| `TIME`                                         | 返回当前服务器时间                                           |
+| `COMMAND INFO command-name [command-name ...]` | 获取指定 Redis 命令描述的数组                                |
+| `COFIG GET parameter`                          | 获取指定配置参数的值                                         |
+| `CONFIG REWRITE`                               | 对启动 Redis 服务器时所指定的 redis.conf 配置文件进行改写    |
+| `CONFIG SET paremeter value`                   | 修改 Redis 配置参数，无需重启                                |
+| `CONFIG RESETSTAT`                             | 重置 `INFO` 命令中的某些统计数据                             |
+| `DBSIZE`                                       | 返回当前数据库的 key 的数量                                  |
+| `DEBUG OBJECT key`                             | 获取 key 的调试信息                                          |
+| `DEBUG SEGFAULT`                               | 让 Redis 服务器崩溃                                          |
+| `FLUSHALL`                                     | 删除所有数据库的所有 key                                     |
+| `FLUSHDB`                                      | 删除当前数据库的所有 key                                     |
+| `INFO [section]`                               | 获取 Redis 服务器的各种信息和统计数值                        |
+| `LASTSAVE`                                     | 返回最近一次 Redis 成功将数据保存到磁盘上的时间，以 UNIX 时间戳格式表示 |
+| `MONITOR`                                      | 实时打印出 Redis 服务器接收到的命令，调试用                  |
+| `ROLE`                                         | 返回主从实例所属的角色                                       |
+| `SAVE`                                         | 同步保存数据到磁盘                                           |
+| `SHUTDOWN [NOSAVE] [SAVE]`                     | 异步保存数据到磁盘，并关闭服务器                             |
+| `SLAVEOF host port`                            | 将当前服务器转变为指定服务器的从属服务器                     |
+| `SLOWLOG subcommand [argument]`                | 管理 Redis 的慢日志                                          |
+| `SYNC`                                         | 用于**复制功能**（replication）的内部命令                    |
+
+### 3.13. GEO
+
+​	Redis GEO 主要用于存储地理位置信息，并对存储的信息进行操作。
+
+#### 3.13.1. geoadd
+
+​	用于存储指定的地理空间位置，可以将一个或多个经度（longitude）、纬度（latitude）、位置名称（member），添加到指定的 key 中。
+
+```shell
+GEOADD key longitude latitude member [longitude latitude member ...]
+```
+
+#### 3.13.2. geopos
+
+​	用于从给定的 key 中返回所有指定名称的位置，不存在的返回 `nil`。
+
+```shell
+GEOPOS key member [member ...]
+```
+
+#### 3.13.3. geodist
+
+​	用于返回两个给定位置之间的距离。
+
+```shell
+GEODIST key member1 member2 [m|km|ft|mi]
+```
+
+#### 3.13.4. georadius、georadiusbymember
+
+​	`georadius` 以给定的经纬度为中心，返回键包含的位置元素中，与中心距离不超过给定最大距离的所有位置元素，`georadiusbymember` 以给定的位置元素为中心。
+
+```shell
+GEORADIUS key longitude latitude radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count] [ASC|DESC] [STORE key] [STOREDIST key]
+GEORADIUSBYMEMBER key member radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count] [ASC|DESC] [STORE key] [STOREDIST key]
+```
+
+#### 3.13.5. geohash
+
+​	Redis GEO 使用 `geohash` 保存地理位置的坐标，`geohash` 用于获取一个或多个位置元素的坐标。
+
+```shell
+GEOHASH key member [member ...]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
