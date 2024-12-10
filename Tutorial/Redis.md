@@ -415,27 +415,194 @@ GEORADIUSBYMEMBER key member radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH]
 GEOHASH key member [member ...]
 ```
 
+### 3.14. Stream
 
+​	Redis Stream 主要用于消息队列（MQ，Message Queue），Redis 本身有一个发布订阅（pub/sub）来实现消息队列功能，但它有个缺点就是消息无法持久化，无法记录历史消息，而 Stream 提供了消息持久化和主备复制功能，可以让任何客户端访问任何时刻的数据，并且能记住每一个客户端的访问位置，还能保证信息不丢失。
 
+​	Stream 有一个消息链表，将所有加入的消息都串起来， 每个消息都有一个唯一对应的 ID 和对应的内容。每个 Stream 都有唯一的名称，它是 Redis 的 key，在首次使用 `XADD` 指令追加消息时自动创建。
 
+#### 3.14.1. XADD
 
+​	向队列添加消息，如果指定队列不存在，则创建一个队列。
 
+```shell
+XADD key ID field value [field value ...]
+```
 
+- `key`：队列名称，如果不存在就创建；
+- `ID`：消息 ID，使用 `*` 表示由 Redis 生成，可以自定义，但是要保证递增性；
+- `field value`：记录。
 
+#### 3.14.2. XTRIM
 
+​	对流进行修剪，限制长度。
 
+```shell
+XTRIM key MAXLEN [~] count
+```
 
+- `key`：队列名称；
+- `count`：数量。
 
+#### 3.14.3. XDEL
 
+​	删除消息。
 
+```shell
+XDEL key ID [ID ...]
+```
 
+- `key`：队列名称；
+- `ID`：消息 ID。
 
+#### 3.14.4. XLEN
 
+​	获取流包含的元素数量，即消息长度。
 
+```shell
+XLEN key
+```
 
+- `key`：队列名称。
 
+#### 3.14.5. XRANGE
 
+​	获取消息列表，会自动过滤已经删除的信息。
 
+```shell
+XRANGE key start end [COUNT count]
+```
+
+- `key`：队列名；
+- `start`：开始值，`-` 表示最小值；
+- `end`：结束值，`+` 表示最大值；
+- `count`：数量。
+
+#### 3.14.6. XREVRANGE
+
+​	反向获取消息列表，会自动过滤已经删除的消息。
+
+```shell
+XREVRANGE key end start [COUNT count]
+```
+
+- `key`：队列名；
+- `end`：结束值，`+` 表示最大值；
+- `start`：开始值，`-` 表示最小值；
+- `count`：数量。
+
+#### 3.14.7. XREAD
+
+​	以阻塞或者非阻塞的方式获取消息列表。
+
+```shell
+XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] id [id ...]
+```
+
+- `count`：数量；
+- `milliseconds`：可选，阻塞毫秒数，没有就是设置为非阻塞模式；
+- `key`：队列名；
+- `id`：消息 ID。
+
+#### 3.14.8. XGROUP CREATE
+
+​	创建消费者组。
+
+```shell
+XGROUP [CREATE key groupname id|$] [SETID key groupname id|$] [DESTORY key groupname] [DELCONSUMER key groupname consumername]
+```
+
+- `key`：队列名称，如果不存在就创建；
+- `groupname`：组名；
+- `$`：表示从尾部开始消费，只接受新消息，当前 Stream 消息会全部忽略。
+
+#### 3.14.9. XREADGROUP GROUP
+
+​	用于读取消费者组中的消息。
+
+```shell
+XREADGROUP GROUP groupname consumer [COUNT count] [BLOCK milliseconds] [NOACK] [STREAMS] key [key ...] ID [ID ...]
+```
+
+- `groupname`：消费组名；
+- `consumer`：消费者名；
+- `count`：读取数量；
+- `milliseconds`：阻塞毫秒数；
+- `key`：队列名；
+- `ID`：消息 ID。
+
+## 4. Redis 高级教程
+
+### 4.1. 数据备份与恢复
+
+#### 4.1.1. 保存数据
+
+​	Redis `SAVE` 命令用于创建当前数据库的备份，将在 `dir` 对应路径下，创建名为 `dbfilename` 的备份文件。
+
+#### 4.1.2. 恢复数据
+
+​	将备份文件移动到 `dir` 约束的路径下，并指定 `dbfilename` 为对应文件名，并启动服务即可。
+
+#### 4.1.3. 后台保存数据
+
+​	Redis 备份文件也可以使用命令 `BGSAVE` ，该命令将在后台执行。
+
+### 4.2. 安全
+
+​	可以通过配置文件设置密码参数，这样客户端连接到 Redis 服务需要密码验证，可以使服务更安全。在配置文件中设置属性 `repuirepass` 的值为密码值。在下一次连接 Redis 服务时，使用 `AUTH password` 验证密码。
+
+### 4.3. 性能测试
+
+​	Redis 的性能测试是通过同时执行多个命令实现的。
+
+```shell
+redis-benchmark [option] [option value]
+```
+
+**注意：**该命令是在 Redis 的目录下执行的，而不是 Redis 的客户端的内部指令。
+
+| 选项    | 描述                                           | 默认值    |
+| ------- | ---------------------------------------------- | --------- |
+| `-h`    | 指定服务器主机名                               | 127.0.0.1 |
+| `-p`    | 指定服务器端口                                 | 6379      |
+| `-s`    | 指定服务器 socket                              | --        |
+| `-c`    | 指定并发连接数                                 | 50        |
+| `-n`    | 指定请求数                                     | 10000     |
+| `-d`    | 以字节形式指定 `SET/GET` 值的数据大小          | 2         |
+| `-k`    | 1=keep alive；0=reconnect                      | 1         |
+| `-r`    | `SET/GET/INCR` 使用随机 key，`SADD` 使用随机值 | --        |
+| `-P`    | 通过管道传输 `<numreq>` 请求                   | 1         |
+| `-q`    | 强制退出 Redis，仅显示 query/sec 值            |           |
+| `--csv` | 以 csv 格式传输                                |           |
+| `-l`    | 生成循环，永久执行测试                         |           |
+| `-t`    | 仅运行以逗号分隔的测试命令列表                 |           |
+| `-L`    | Idle 模式，仅打开 N 个 idle 连接并等待         |           |
+
+### 4.4. 客户端连接
+
+​	Redis 通过监听一个 TCP 端口或者 Unix socket 的方式来接收来自客户端的连接，当一个连接建立后，Redis 内部会进行以下操作：
+
+- 首先，客户端的 socket 被设置为非阻塞模式，因为 Redis 在网络事件处理上采用的是非阻塞多路复用模型；
+- 然后，为这个 socket 设置 TCP_NODELAY 属性，禁用 Nagle 算法；
+- 最后，创建一个可读的文件事件用于监听这个客户端 socket 的数据发送。
+
+#### 4.4.1. 最大连接数
+
+​	通过修改 redis.conf 文件对这个值进行修改。
+
+```shell
+CONFIG SET/GET maxclients [value]
+```
+
+#### 4.4.2. 客户端命令
+
+| 命令             | 描述                                           |
+| ---------------- | ---------------------------------------------- |
+| `CLIENT LIST`    | 返回连接到 Redis 服务器的客户端列表            |
+| `CLIENT SETNAME` | 设置当前连接的名称                             |
+| `CLIENT GETNAME` | 获取通过 `CLIENT SETNAME` 命令设置的服务器名称 |
+| `CLIENT PAUSE`   | 挂起客户端连接，指定挂起时间以毫秒计           |
+| `CLIENT KILL`    | 关闭客户端连接                                 |
 
 
 
