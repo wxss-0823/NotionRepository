@@ -446,17 +446,110 @@ end
 
 ### 10.1. 泛型 for 迭代器
 
-​	泛型 for 在自
+​	执行流程：
 
+1. 初始化，计算 `in` 后面表达式的值，表达式应该返回迭代函数，迭代对象，状态变量；
+2. 将迭代对象和状态变量作为参数，调用迭代函数；
+3. 将迭代函数的返回值赋给变量列表；
+4. 判断返回值是否为 `nil`，不是则重新以当前的键值作为状态变量，调用迭代函数；
+5. 是 `nil` ，则结束迭代。
 
+### 10.2. 无状态迭代器
 
+​	无状态迭代器指不需要保留任何状态，通过迭代函数自己保留状态。
 
+### 10.3. 多状态迭代器
 
+​	很多情况下，迭代器需要保存多个状态信息，而不是简单的状态变量和控制变量。可以使用闭包处理多个参数，也可以将多个参数封装到 table 中，作为迭代器的状态变量。
 
+## 11. Lua Table
 
+### 11.1. 构造
 
+​	构造器是创建和初始化表的表达式。表是 Lua 特有的功能强大的东西。最简单的构造函数是 `{}`，用来创建一个空表。
 
+```lua
+table_name = {value1, value2, value3, ...}
+```
 
+### 11.2. 连接
 
+​	可以使用 `concat()` 输出一个列表中元素连接成的字符串。
 
+```lua
+table.concat(table_name, connector, start, stop)
+```
 
+- `table_name`：表名；
+- `connector`：连接符；
+- `strat, stop`：连接起止位置。
+
+### 11.3. 插入 & 移除
+
+```lua
+-- 插入
+table.insert(table_name, pos, value)
+```
+
+- `pos`：插入的位置，缺省表示末尾插入；
+- `value`：插入的值。
+
+```lua
+-- 移除
+table.remove(table_name, pos)
+```
+
+### 11.4. 排序
+
+​	使用 `sort()` 对 Table 进行排序。
+
+```lua
+table.sort(table_name)
+```
+
+## 12. Lua 模块与包
+
+### 12.1. 模块定义
+
+​	Lua 的模块是由变量、函数等已知元素组成的 table。因此创建一个模块，只需要把需要导出的常量、函数放入其中，最后返回这个 table 即可。
+
+```lua
+-- 文件名为 module.lua
+-- 定义一个名为 module 的模块
+module = {}
+
+-- 定义一个常量
+module.constant = "This is a constant"
+
+-- 定义一个公有函数
+function module.func1()
+  ...
+end
+
+-- 定义一个私有函数
+local function func2()
+  ...
+end
+
+return module
+```
+
+### 12.2. 模块引入
+
+​	Lua 提供一个名为 `require` 的函数来加载模块。
+
+```lua
+require("module_name")
+```
+
+#### 12.2.1. 引用别名
+
+​	可以给加载的模块定义一个别名，方便调用。
+
+```lua
+local m = require("module_name")
+```
+
+#### 12.2.2. 加载机制
+
+​	对于自定义的模块，函数 `require` 又自己的文件路径加载策略，它会尝试从 Lua 文件或 C 程序库中加载模块。
