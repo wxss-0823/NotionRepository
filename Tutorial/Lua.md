@@ -552,4 +552,90 @@ local m = require("module_name")
 
 #### 12.2.2. 加载机制
 
-​	对于自定义的模块，函数 `require` 又自己的文件路径加载策略，它会尝试从 Lua 文件或 C 程序库中加载模块。
+​	对于自定义的模块，函数 `require` 又自己的文件路径加载策略，它会尝试从 Lua 文件或 C 程序库中加载模块。当 Lua 启动会，会以环境变量 `LUA_PATH` 的值来初始化环境变量，如果没有找到该环境变量，则使用一个编译时定义的默认路径来初始化。
+
+​	如果找过文件，则会调用 `package.loadfile` 来加载模块；搜索的文件路径是从全局变量 `package.cpath` 获取，而这个变量通过环境变量 `LUA_PATH` 来初始化；加载 C 模块是搜索 so 或 dll 类型的文件，如果找得到，就通过 `package.loadlib` 来加载它。
+
+### 12.3. C 包
+
+​	与在 Lua 中写包不同，C 包在使用以前必须首先加载并连接。Lua 在一个 `loadlib` 函数内提供了所有的动态连接的功能。
+
+```lua
+-- 使用 assert 返回错误
+local f = assert(loadlib(absolute_path, initial_func))
+-- 真正打开库
+f()
+```
+
+- `absolute_path`：库文件的绝对路径；
+- `initial_func`：初始化函数。
+
+​	`loadlib` 函数加载指定库，并连接到 Lua，但是并不打开库，也就是没有调用初始化函数，它返回初始化函数，并可以直接在 Lua 中调用它，如果加载动态库或者查找初始化代码出错，`loadlib` 将返回 nil 和错误信息。
+
+​	如果把库文件所在目录加入到 `LUA_PATH` 中，也可以使用 `require` 函数加载 C 库。
+
+## 13. Lua Metatable
+
+​	Metatable，即元表，是一种用于解释或扩展表内信息的同类表。Lua 提供了元表，用以实现 table 的复杂行为。
+
+### 13.1. 设置 & 获取元表
+
+```lua
+-- Set metatable
+setmetatable(table_name, metatable_name)
+-- Get metatable
+getmetatable(talbe_name)
+```
+
+### 13.2. Metamathod
+
+​	元表中的一些特殊键会表示一种特殊的方法。
+
+#### 13.2.1. __index 元方法
+
+​	当 table 没有对应键，Lua 会在该表的 metatable 中寻找 `__index` 键。如果 `__index` 键中包含一个表格，Lua 会在表格中查找对应键；如果 `__index` 包含一个函数的话，Lua 会将 table 和 键作为参数传递给函数。
+
+```lua
+setmetatable({}, {__index = {key = value}})
+-- __index contains function
+setmetatable({key1 = val1}, {__index = 
+  function(t, k)
+    if k == val2 then
+      return t.key1 .. val2
+    else
+      return nil
+    end
+  end
+})
+```
+
+#### 13.2.2. __newindex 元方法
+
+​	`__newindex` 元方法用来对表更新，`__index` 元方法用来对表访问。当给一个 table 缺少的索引赋值，解释器就会查找 `__newindex` 元方法。类似地，`__newindex` 接收 table，函数，或者 nil 作为参数，如果包含一个表格，则在这个表格中赋值；如果包含一个函数，则将 table，键，值作为参数传递给函数。
+
+```lua
+setmetatable({}, {__newindex = {})
+-- __newindex contains function
+setmetatable({}, {__newindex = 
+  function(t, k, v)
+        ...
+  end
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
