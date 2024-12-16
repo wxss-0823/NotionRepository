@@ -787,11 +787,77 @@ end
 xpcall(function_name, ... , errorhandlefunction_name)
 ```
 
+## 17. Lua Debug
 
+​	Lua 提供了 Debug 库用于提供创建自定义调试器的功能。
 
+### 17.1. Debug 库
 
+| 方法                                       | 描述                                                         |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `debug()`                                  | 进入用户交互模式，运行用户输入的字符串；输入一行仅包含 `cont` 的字符串将结束这个函数 |
+| `getfenv(object)`                          | 返回对象的环境变量                                           |
+| `gethook(optional thread)`                 | 返回三个表示线程钩子设置的值：当前钩子函数、当前钩子掩码、当前钩子计数 |
+| `getinfo([thread,] f [, what])`            | 返回关于一个函数信息的表，可以直接提供该函数，也可以用数字 f 表示函数在调用栈的层次：0 表示当前函数，1 表示调用 `getinfo` 的函数 |
+| `debug.getlocal([thread,] f, local)`       | 返回在栈的 f 层处函数的索引为 local 的局部变量的名字和值     |
+| `getmetatalbe(value)`                      | 把给定索引指向的值的元表压入堆栈                             |
+| `getregistry()`                            | 返回注册表，这是一个预定义的表，可以用来保存任何 C 代码想保存的 Lua 的值 |
+| `getupvalue(f, up)`                        | 返回函数 f 的第 up 个上值的名字和值                          |
+| `sethook([thread,] hook, mask [, count])`  | 将一个函数作为钩子函数设入，字符串 mask 和数字 count 决定钩子在何时调用，掩码有：`c` ，每当 Lua 调用一个函数时，调用钩子；`r` ，每当 Lua 从一个函数返回时，调用钩子；`l` ，每当 Lua 进入新的一行时，调用钩子 |
+| `setlocal([thread,] level, local, value)`  | 将 value 赋给栈上第 level 层函数的第 local 个局部变量        |
+| `setmetatable(value, talbe)`               | 将 value 的元表设为 table                                    |
+| `setupvalue(f, up, value)`                 | 将 value 设为函数 f 的第 up 个上值                           |
+| `traceback([thread,] [message [, level]])` | message 不为空或字符串，则返回 message；否则，返回调用栈的栈回溯信息 |
 
+## 18. Lua 垃圾回收
 
+​	Lua 采用了自动内存管理，这意味着不用操心新创建的对象需要的内存如何分配，也不用考虑在对象不再被使用后如何释放内存。
+
+​	Lua 运行了一个垃圾收集器来收集所有死对象，即在 Lua 中不可能再访问到的对象，来完成自动内存管理的工作。
+
+​	Lua 实现了一个增量标记-扫描收集器，它使用两个数字来控制垃圾收集循环：垃圾收集器间歇率和垃圾收集器步进倍率。这两个数字都是用百分数作为单位。
+
+​	垃圾收集器间歇率控制着收集器需要再开启新的循环前等待多久。增大这个值会减少收集器的积极性。当这个值小于 100 时，收集器在开启新的循环前不会有等待；设置这个值为 200，会让收集器等到总内存使用量达到之前的两倍时才开始新的循环。
+
+​	垃圾收集器步进倍率控制着收集器运作速度相对于内存分配速度的倍率。增大这个值不仅会让收集器更加积极，还会增加每个增量步骤的长度。不要把这个值设置得小于 100，否则收集器工作得太慢，永远都干不完一个循环。默认值是 200，表示收集器以内存分配得两倍速工作。
+
+### 18.1. 垃圾回收器函数
+
+​	Lua 提供了函数 `collectgarbage([opt, [arg]])` 来控制自动内存管理。
+
+- `collectgarbage("collect")`：做一次完整得垃圾收集循环，通过参数 opt，它提供了一组不同的功能；
+- `collectgarbage("count")`：以 K 字节数为单位返回 Lua 使用的内存总数；
+- `collectgarbage("restart")`：重启垃圾收集器的自动运行；
+- `collectgarbage("setpause")`：将 arg 设置为收集器的间歇率，返回间歇率的前一个值；
+- `collectgarbage("step")`：单步运行垃圾收集器，步长大小由 arg 控制。传入 0 时，收集器步进一步；传入非 0 值，收集器收集相当于 Lua 分配对应 K 字节内存的工作；如果收集器结束一个循环，返回 true；
+- `collectgarbage("stop")`：停止垃圾收集器的运行，在调用重启前，收集器只会因显示的调用运行。
+
+## 19. Lua 面向对象
+
+​	Lua 中的类可以通过 table 和 function 模拟出来，至于继承，可以通过 metatable 模拟出来。
+
+```lua
+-- 创建一个表作为类
+ClassName = {}
+-- 创建类的构造函数
+function ClassName:new(...)
+  -- 创建一个新的空表作为类的实例
+  local obj = {}
+  -- 标识实例继承类的方法
+  setmetatable(obj, self)
+  -- 确保可以正确调用类的方法和属性
+  self.__index = self
+  -- 初始化实例，调用初始化函数
+  obj:init(...)
+  return obj
+end
+-- 创建类的方法
+function ClassName:mathod(...)
+  ...
+end
+```
+
+## 20. Lua 数据库访问
 
 
 
