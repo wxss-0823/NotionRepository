@@ -859,4 +859,53 @@ end
 
 ## 20. Lua 数据库访问
 
-​	Lua 提供了数据库的操作库 LuaSQL，可以通过安装数据库驱动来连接到数据库。
+​	Lua 提供了数据库的操作库 LuaSQL，可以通过安装数据库驱动来连接到数据库。LuaSQL 可以通过 Luarocks 安装，安装教程详见：[Luarocks 安装](https://www.cnblogs.com/icefoxhz/articles/16809098.html) 。
+
+​	配置完成对应的项目结构后，需要在 VS 环境中执行命令，否则报错 `mingw32-gcc 不是内部或外部命令`。本机 VS 路径 `C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2022\Visual Studio Tools\VC`。
+
+​	此时应该可以正常安装包文件，用如下命令测试是否配置成功。
+
+```shell
+luarocks --lua-version=5.4 --tree=D:/Users/ProjectFiles/Codes/VSCode/Lua/lua/luarocks install luasocket --verbose
+```
+
+​	再确认配置成功后，尝试下载 luasql-mysql 依赖。使用如下命令：
+
+```shell
+luarocks --tree=D:/Users/ProjectFiles/Codes/VSCode/Lua/lua/luarocks install luasql-mysql MYSQL_INCDIR=D:/Users/MySQL/mysql-9.1.0-winx64/include MYSQL_LIBDIR=D:/Users/MySQL/mysql-9.1.0-winx64/lib --verbose
+```
+
+​	安装成功后即可开始访问连接数据库。
+
+### 20.1. 问题
+
+#### 20.1.1. [未解决]无法获取授权的问题
+
+> Error: Could not fetch rock file: Failed creating temporary directory luarocks-rock-luafilesystem-1.8.0-1: Failed setting permission exec for all
+
+​	根据 `--verbose` 的跟踪显示，Lua 5.3.6 问题出现在代码 `fs.execute_quiet(vars.ICACLS .. " " .. fs.Q(filename) .. " /inheritance:d /grant:r \"%USERNAME%\":" .. perms)` 处，显示 Wang 不可用。
+
+​	然而，这应该与命名的空格无关，Lua 5.4.2 相同的代码可以执行。不同之处在于，Lua 5.4.2 执行代码 `fs.execute_quiet(vars.ICACLS .. " " .. fs.Q(filename) .. " /inheritance:d /grant:r *S-1-1-0:" .. others_perms)`，而 Lua 5.3.6 执行代码 `fs.execute_quiet(vars.ICACLS .. " " .. fs.Q(filename) .. " /inheritance:d /grant:r Everyone:" .. others_perms)` 。
+
+​	一些可能的解决方案详见：[Github-luarock #1312](https://github.com/luarocks/luarocks/issues/1312) 。
+
+#### 20.1.2. [未解决]无法解析外部符号的问题
+
+> 正在创建库 C:\Users\WANGXI~1\AppData\Local\Temp\luarocks_build-LuaSQL-MySQL-2.6.0-3-4254843\luasql\mysql.lib 和对象 C:\Users\WANGXI~1\AppData\Local\Temp\luarocks_build-LuaSQL-MySQL-2.6.0-3-4254843\luasql\mysql.exp
+> mysqlclient.lib(my_init.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_RegCloseKey，函数 "bool \_\_cdecl win32_have_tcpip(void)" (?win32_have_tcpip@@YA_NXZ) 中引 用了该符号
+> mysqlclient.lib(my_init.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_RegEnumValueA，函数 "void \_\_cdecl win_init_registry(void)" (?win_init_registry@@YAXXZ) 中引用了该符号
+> mysqlclient.lib(my_init.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_RegOpenKeyExA，函数 "bool \_\_cdecl win32_have_tcpip(void)" (?win32_have_tcpip@@YA_NXZ) 中 引用了该符号
+> mysqlclient.lib(common.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_EqualSid，函数 "public: bool \_\_cdecl Sid::operator==(class Sid const &)const " (??8Sid@@QEBA_NAEBV0@@Z) 中引用了该符号
+> mysqlclient.lib(common.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_GetTokenInformation，函数 "public: _\_cdecl Sid::Sid(void *)" (??0Sid@@QEAA@PEAX@Z) 中引用 了该符号
+> mysqlclient.lib(common.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_IsValidSid，函数 "public: bool \_\_cdecl Sid::is_valid(void)const " (?is_valid@Sid@@QEBA_NXZ) 中引用了该符号
+> mysqlclient.lib(common.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_LookupAccountNameW，函数 "public: \_\_cdecl Sid::Sid(wchar_t const *)" (??0Sid@@QEAA@PEB_W@Z) 中引用了该符号C:\Users\WANGXI~1\AppData\Local\Temp\luarocks_build-LuaSQL-MySQL-2.6.0-3-4254843\luasql\mysql.dll : fatal error LNK1120: 7 个无法解析的外部命令
+
+​	上述报错调用的函数位于系统动态链接库，理应存在，并且检索存在，对应的目录均添加至环境变量，并且 `mysql.h` 文件包含 `#include <windows.h>` 。已尝试更换不同版本的 `mysqlclient.lib` 文件，均无效，推测与 mysql 版本无关；已尝试更换不同编译器版本的 `lua54.lib` 文件，均无效，推测与 Lua lib 版本无关。
+
+​	Luarocks 版本 3.11.1， Lua 版本 5.4.2，VS 版本 17.12.1，Linker 版本 14.42.34433.0，Lua lib，dll & include 版本 `lua-5.4.2_Win64_dll[14|17]_lib`，Luarocks 经过验证，可以正常运行，推测可能由于 Luasql 内部原因无法自动适配 mysql，可能需要手动编译源码。
+
+##### 手动编译
+
+​	根据命令行打印信息，获取
+
+​	无可能的解决方案。
