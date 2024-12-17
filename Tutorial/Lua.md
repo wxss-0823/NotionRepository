@@ -906,6 +906,27 @@ luarocks --tree=D:/Users/ProjectFiles/Codes/VSCode/Lua/lua/luarocks install luas
 
 ##### 手动编译
 
-​	根据命令行打印信息，获取
+​	根据命令行打印信息，获取编译过程，进入源码的根目录后，依次执行：
 
-​	无可能的解决方案。
+```shell
+# manually compile rockspec to install luasql-mysql
+luarocks --tree=D:/Users/ProjectFiles/Codes/VSCode/Lua/lua/luarocks install "D:\Program Files (x86)\Microsoft Edge\luasql-2.6.0\luasql-2.6.0\rockspec\luasql-mysql-2.6.0-1.rockspec" MYSQL_INCDIR=D:/Users/MySQL/mysql-9.1.0-winx64/include MYSQL_LIBDIR=D:/Users/MySQL/mysql-9.1.0-winx64/lib
+
+# process luasql.o
+mingw32-gcc -O2 -c -o src/luasql.o -ID:/Users/ProjectFiles/Codes/VSCode/Lua/lua/include src/luasql.c -ID:/Users/MySQL/mysql-9.1.0-winx64/include
+
+# process ls_mysql.o
+mingw32-gcc -O2 -c -o src/ls_mysql.o -ID:/Users/ProjectFiles/Codes/VSCode/Lua/lua/include src/ls_mysql.c -ID:/Users/MySQL/mysql-9.1.0-winx64/include
+
+# link .o for dll
+mingw32-gcc  -shared -o luasql/mysql.dll src/luasql.o src/ls_mysql.o -LD:/Users/MySQL/mysql-9.1.0-winx64/lib -lmysqlclient D:\Users\ProjectFiles\Codes\VSCode\Lua\lua\lua54.dll -lm
+```
+
+​	最新的源码仍然无法通过编译，猜测问题并不在 Luasql 内部，可能是 MySQL Lib 的问题，详细指令见 [Github-Command](https://github.com/wxss-0823/Codes/blob/master/VSCode/Lua/lua/command/Luarocks_sh-cmd.sh) 。
+
+##### 更换 Lib
+
+​	更换了多个 Lib，还是存在外部命令无法识别的报错，尝试在 `mysql.c` 中加入 `#include <windows.h>` ，无效，无法识别操作系统的环境库。猜测可能新版的 Luasql 与 mysql 间存在适配问题，Luasql 长达近 1 年未更新，更新日志也未详细描述兼容的版本。
+
+
+
