@@ -889,7 +889,7 @@ luarocks --tree=D:/Users/ProjectFiles/Codes/VSCode/Lua/lua/luarocks install luas
 
 ​	一些可能的解决方案详见：[Github-luarock #1312](https://github.com/luarocks/luarocks/issues/1312) 。
 
-#### 20.1.2. [未解决]无法解析外部符号的问题
+#### 20.1.2. [已解决]无法解析外部符号的问题
 
 > 正在创建库 C:\Users\WANGXI~1\AppData\Local\Temp\luarocks_build-LuaSQL-MySQL-2.6.0-3-4254843\luasql\mysql.lib 和对象 C:\Users\WANGXI~1\AppData\Local\Temp\luarocks_build-LuaSQL-MySQL-2.6.0-3-4254843\luasql\mysql.exp
 > mysqlclient.lib(my_init.obj) : error LNK2019: 无法解析的外部符号 \_\_imp_RegCloseKey，函数 "bool \_\_cdecl win32_have_tcpip(void)" (?win32_have_tcpip@@YA_NXZ) 中引 用了该符号
@@ -928,5 +928,119 @@ mingw32-gcc  -shared -o luasql/mysql.dll src/luasql.o src/ls_mysql.o -LD:/Users/
 
 ​	更换了多个 Lib，还是存在外部命令无法识别的报错，尝试在 `mysql.c` 中加入 `#include <windows.h>` ，无效，无法识别操作系统的环境库。猜测可能新版的 Luasql 与 mysql 间存在适配问题，Luasql 长达近 1 年未更新，更新日志也未详细描述兼容的版本。
 
+##### 问题关闭
 
+​	通过编译源码的方式解决了问题，具体教程详勘 [windows下编译luasql](https://blog.csdn.net/qq_30949367/article/details/58136014) 。首先修改源文件中的配置信息：
 
+```makefile
+# lua include 目录
+LUA_INC=D:\Users\ProjectFiles\Codes\VSCode\Lua\lua\include
+# luasql.c 文件目录
+LUA_DIR=D:\Program Files (x86)\Microsoft Edge\luasql-2.6.0\luasql-2.6.0\src
+# lua dll 库目录
+LUA_LIBDIR=D:\Users\ProjectFiles\Codes\VSCode\Lua\lua
+#lua lib 库目录，详细至文件
+LUA_LIB="D:\Users\ProjectFiles\Codes\VSCode\Lua\lua\lua54.lib"
+
+# 项目类型
+T=mysql
+
+# mysql include 目录
+DRIVER_INCLUDE= /I"D:\Users\MySQL\mysql-9.1.0-winx64\include"
+# mysql 库文件，注意包含两个库，这就是前面报错的原因
+DRIVER_LIBS= "D:\Users\MySQL\mysql-9.1.0-winx64\lib\libmySQL.lib" "D:\Users\MySQL\mysql-9.1.0-winx64\lib\mysqlclient.lib" 
+
+# 目标文件
+OBJS= src\luasql.obj src\ls_$T.obj
+```
+
+​	原文需要添加几个函数，实测好像并不需要，修改完成后使用 VS 的命令行执行命令：`nmake /f Makefile.win.sqlite3` 和 `nmake /f Makefile.win.sqlite3 install` 。
+
+```c
+const char *luaL_findtable (lua_State *L, int idx,
+                                   const char *fname, int szhint) 
+{
+  const char *e;
+  if (idx) lua_pushvalue(L, idx);
+  do {
+    e = strchr(fname, '.');
+    if (e == NULL) e = fname + strlen(fname);
+    lua_pushlstring(L, fname, e - fname);
+    if (lua_rawget(L, -2) == LUA_TNIL) {  /* no such field? */
+      lua_pop(L, 1);  /* remove this nil */
+      lua_createtable(L, 0, (*e == '.' ? 1 : szhint)); /* new table for field */
+      lua_pushlstring(L, fname, e - fname);
+      lua_pushvalue(L, -2);
+      lua_settable(L, -4);  /* set new table into field */
+    }
+    else if (!lua_istable(L, -1)) {  /* field has a non-table value? */
+      lua_pop(L, 2);  /* remove table and value */
+      return fname;  /* return problematic part of the name */
+    }
+    lua_remove(L, -2);  /* remove previous table */
+    fname = e + 1;
+  } while (*e == '.');
+  return NULL;
+}
+ 
+int libsize (const luaL_Reg *l) {
+  int size = 0;
+  for (; l && l->name; l++) size++;
+  return size;
+}
+ 
+void luaL_pushmodule (lua_State *L, const char *modname,
+                                 int sizehint) 
+{
+  luaL_findtable(L, LUA_REGISTRYINDEX, "_LOADED", 1);  /* get _LOADED table */
+  if (lua_getfield(L, -1, modname) != LUA_TTABLE) {  /* no _LOADED[modname]? */
+    lua_pop(L, 1);  /* remove previous result */
+    /* try global variable (and create one if it does not exist) */
+    lua_pushglobaltable(L);
+    if (luaL_findtable(L, 0, modname, sizehint) != NULL)
+      luaL_error(L, "name conflict for module '%s'", modname);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -3, modname);  /* _LOADED[modname] = new table */
+  }
+  lua_remove(L, -2);  /* remove _LOADED table */
+}
+ 
+void luaL_openlib (lua_State *L, const char *libname,
+                               const luaL_Reg *l, int nup) {
+  luaL_checkversion(L);
+  if (libname) {
+    luaL_pushmodule(L, libname, libsize(l));  /* get/create library table */
+    lua_insert(L, -(nup + 1));  /* move library table to below upvalues */
+  }
+  if (l)
+    luaL_setfuncs(L, l, nup);
+  else
+    lua_pop(L, nup);  /* remove upvalues */
+}
+```
+
+​	运行无报错，在 `LUA_LIBDIR\luasql` 中产生 `mysql.dll` 文件，至此编译结束。
+
+​	使用方式为在 Lua 脚本中声明依赖，Lua 解释器会自动在 `mysql.dll` 文件中寻找函数。
+
+```lua
+local r = require "luasql.mysql"
+
+-- new env obj
+local env = r.mysql()
+
+-- new connection
+local conn = env:connect("Database", "Username", "Password", "Host", port)
+
+-- new cursor
+local cur = conn:execute("Command")
+
+-- fetch results
+local result = cur:fetch({}, "a")
+
+-- close conn
+conn:close()
+
+-- close env
+env:close()
+```
