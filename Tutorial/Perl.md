@@ -1194,9 +1194,82 @@ $string =~ tr/a-z/A-Z/;
 
 ​	详见[官方文档](https://perldoc.perl.org/perlre#Metacharacters) 。
 
+## 16. Perl 发送邮件
 
+​	可以使用 `MIME::Lite` 模块来实现发送邮件。
 
+## 17. Perl Socket 编程
 
+​	Socket，又称套接字，应用程序通常通过套接字向网络发出请求或者应答网络请求，使主机间或者一台计算机上的进程间可以通讯。
+
+### 17.1. 创建服务端
+
+- 使用 `socket` 函数来创建服务；
+- 使用 `bind` 函数绑定端口；
+- 使用 `listen` 函数监听端口；
+- 使用 `accept` 函数接收客户端请求。
+
+#### 17.1.1. socket 函数
+
+```perl
+socket (SOCKET, DOMAIN, TYPE, PROTOCOL);
+```
+
+- `DOMAIN`：为创建的套接字指定协议集；
+  - `AF_INET`：表示 IPv4 网络协议；
+  - `AF_INET6`：表示 IPv6 网络协议；
+  - `AF_UNIX`：表示本地套接字，使用一个文件；
+- `TYPE`：套接字类型可以根据是面向连接还是非连接，分为 `SOCK_STREAM` 或 `SOCKET_DGRAM` ；
+- `PROTOCOL`：指定实际使用的传输协议。
+
+#### 17.1.2. bind 函数
+
+​	使用 `bind` 为套接字分配一个地址。
+
+```perl
+bind (SOCKET, ADDRESS);
+```
+
+- `SOCKET`：一个 socket 描述符；
+- `ADDRESS`：socket 地址，包含了三个元素；
+  - 地址簇：TCP/IP，是 `AF_INET`；
+  - 端口号：port ；
+  - 网络地址：localhost 。
+
+#### 17.1.3. listen 函数
+
+​	当 socket 和一个地址绑定之后，`listen` 函数会开始监听可能的连接请求。然而，这只能在有可靠数据流保证的时候使用。
+
+```perl
+listen (SOCKET, QUEUESIZE);
+```
+
+- `SOCKET`：一个 socket 描述符；
+- `QUEUESIZE`：一个决定监听队列大小的整数，当有一个连接请求到来时，就会进入此监听队列；当一个连接请求被 `accept` 接收时，则从监听队列中移除；当队列满后，新的连接会返回错误。
+
+#### 17.1.4. accept 函数
+
+​	`accept` 函数接收请求的 socket 连接。如果成功，则返回压缩形式的网络地址，否则返回 FALSE。
+
+```perl
+accept (NEW_SOCKET, SOCKET);
+```
+
+- `NEW_SOCKET`：一个客户端 socket 的描述符；
+- `SOCKET`：一个服务端 socket 描述符。
+
+### 17.2. 创建客户端
+
+- 使用 `socket` 函数来创建服务；
+- 使用 `connect` 函数连接到服务端。
+
+#### 17.2.1. connect 函数
+
+​	`connect` 系统调用为一个套接字设置连接，参数有文件描述符和主机地址。
+
+```perl
+connect (SOCKET, ADDRESS);
+```
 
 
 
