@@ -126,3 +126,6 @@ git pull origin main
   - 代理网络问题，检查代理网络是否故障
 - `fatal: unable to access 'https://github/wxss-0823/CompanyBackup.git/': OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github:443`
   - 报错 443：网络原因无法使用 http/https 连接仓库，可以换为使用 ssh 连接
+
+- `ssh: connect to host github.com port 22: Connection timed out fatal: Could not read from remote repository` 
+	- IP 问题，github.com 自动获取的 IP 被墙，需要更换准入 IP，方法见[博客](https://blog.csdn.net/qq_44985985/article/details/124178193?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522167401535916800192261017%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=167401535916800192261017&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-124178193-null-null.142%5Ev71%5Ewechat,201%5Ev4%5Eadd_ask&utm_term=ping%20github.com%E8%AF%B7%E6%B1%82%E8%B6%85%E6%97%B6&spm=1018.2226.3001.4187)。
