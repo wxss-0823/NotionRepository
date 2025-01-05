@@ -1502,7 +1502,177 @@ while(read(FILE, $buffer, 100))
 }
 ```
 
+## 21. Perl 包和模块
 
+​	Perl 中每个包有一个单独的符号表。在此后定义的所有变量和子程序的名字都存储在该包关联的符号表中，直到遇到另一个 `package` 语句为止。
 
+```perl
+package mypack;
+```
 
+​	每个符号表有其自己的一组变量、子程序名，各组名字是不相关的，因此可以在不同的包中使用相同的变量名，而代表的是不同的变量。在一个包中访问另一个包的变量，可以通过 `package_name::var_name` 的方式指定。
 
+​	存储变量和子程序名的默认符号表为 `main` ，如果程序里定义了其他的包，当需要切换回默认符号表时，可以重新指定 `main` 包。
+
+```perl
+package main;
+```
+
+### 21.1. BEGIN 和 END 模块
+
+​	Perl 语言提供了两个关键字：`BEGIN`，`END`。它们可以分别包含一组脚本，用于程序体运行前或者运行后执行。
+
+```perl
+BEGIN {...}
+END {...}
+```
+
+- `BEGIN` 语句块在 Perl 脚本载入和编译后，其他语句执行前执行；
+- `END` 语句块在解释器退出前执行。
+
+### 21.2. require 和 use 语句
+
+​	模块可以通过 `require` 函数来调用，也可以使用 `use` 来引用。`require` 使用子程序需要指定包名，而 `use` 不需要。
+
+```perl
+require module_name;
+use module_name;
+```
+
+- `require` 用于载入 module 或 perl 程序（`.pm` 可以省略，但 `.pl` 必须有）；
+- `use` 在编译时引入，`require` 在运行时引入；
+- `use` 在引入模块时，同时引入模块的子模块，而 `require` 则不能引入，需要重新声明；
+- `use` 在当前默认的 `@INC` 中寻找模块，一旦模块不在 `@INC` 中，则不可以引入，而 `require` 可以指定路径；
+- `use` 引用模块时，如果模块名称中包含双冒号，该冒号将作为路径分隔符，相当于 Unix 或者 Windows 下的 `\` 。
+
+```perl
+package Module;
+
+require Exporter;
+# 继承模块的列表符号，use 时可以导出
+@ISA = qw(Expoter);
+# 默认导出的符号，空格分隔
+@EXPORT = qw(.. ..);
+```
+
+###  12.3. 创建 Perl 模块
+
+​	通过 Perl 分发自带的 h2xs 可以简单的创建一个 Perl 模块。
+
+```shell
+h2xs -AX -n ModuleName
+```
+
+- `-A`：忽略 autoload 机制；
+- `-X`：忽略 XS 元素；
+- `-n`：指定扩展模块的名字。
+
+​	执行后回输出一些信息。
+
+```shell
+Writing ModuleName/lib/ModuleName.pm
+Writing ModuleName/Makefile.PL
+Writing ModuleName/README
+Writing ModuleName/t/ModuleName.t
+Writing ModuleName/Changes
+Writing ModuleName/MANIFEST
+```
+
+- `README`：包含一些安装信息，模块依赖性，版权信息等；
+- `Changes`：作为项目的修改日志文件；
+- `Makefile.PL`：标准的 Perl Makefile 构造器，用于构建 `Makefile.PL` 文件来编译该模块；
+- `MANIFEST`：用于自动构建 `tar.gz` 类型的模块版本分发，这样就可以把模块拿到 CPAN 发布或者分发个其他人，它包含了这个项目中所有文件的列表；
+- `ModuleName.pm`：主模块文件，包含 mod_perl 句柄代码（handler code）；
+- `ModuleName.t`：测试脚本，默认情况下检查模块的载入，也可以添加一些新的测试单元；
+- `t/`：测试文件目录；
+- `lib/`：源码文件目录。
+
+### 21.4. 安装 Perl 模块
+
+​	可以对压缩的模块文件解压安装。
+
+```shell
+tar xvfz Module.tar.gz
+cd Module
+perl Makefile.PL
+make
+make install
+```
+
+## 22. Perl 进程管理
+
+​	Perl 中可以用不同的方法来创建进程。
+
+- 可以使用特殊变量 `$$` 或 `$PROCESS_ID` 来获取进程 ID；
+- `%ENV` 哈希存放了父进程，也就是 shell 中的环境变量，在 Perl 中可以修改这些变量；
+- `exit()` 通常用于退出子进程，主进程在紫禁城全部退出后再退出；
+- 所有打开的句柄会在子程序中被 `dup()` 函数赋值，关闭当前进程所有句柄不会影响其他进程。
+
+### 22.1. 反引号运算符
+
+​	使用反引号运算符可以很容易的执行 Unix 命令。
+
+```perl
+@files = `ls -l`;
+```
+
+### 22.2. system() 函数
+
+​	也可以使用 `system()` 函数执行 Unix 命令，执行该命令将直接输出结果。默认情况下回送到目前 Perl 的 `STDOUT` 指向的地方，一般是屏幕，也可以使用重定向运算符 `>` ，输出到指定文件。
+
+### 22.3. fork() 函数
+
+​	Perl `fork()` 函数用于创建一个新进程。在父进程中返回子进程的 PID ，在子进程中返回 0 ，如果发生错误，返回 `undef` ，并将 `$!` 设为对应的错误信息。`fork` 可以和 `exec` 配合使用，`exec` 函数执行完引号中的命令后进程即结束。
+
+​	子进程退出后，会向父进程发送一个 `CHLD` 信号。如果没有回应，就会变成僵死的进程，需要父进程使用 `wait` 和 `waitpid` 来终止，也可以设置 `$SIG{CHLD} = "IGNORE";` 。区别在于使用 `wait` 可以获得子进程 ID， 而使用 `$SIG` 不行。
+
+### 22.4. kill 函数
+
+​	Perl `kill` 函数用于给一组进程发送信号。
+
+```perl
+kill('signal', (Process List));
+```
+
+- `signal`：发送的数字信号；
+- `Process List`：接收的进程列表。
+
+## 23. Perl POD 文档
+
+​	Perl 中可以在模块或脚本中嵌入 POD（Plain Old Document）文档。POD 是一种简单而易用的标记型语言（置标语言）。
+
+```perl
+=head1
+...
+=cut
+```
+
+### 23.1. POD 简介
+
+​	POD（Plain Old Documentation）经常被用于在 Perl 程序和模块中的文档书写。POD 的转化器可以将其转换成很多种格式，例如：text，html，man 等。
+
+- **普通段落**: 可以在普通段落中使用格式化代码，如：黑体，斜体，或代码风格，下划线等；
+
+- **原文段落**: 原文段落，用于代码块或者其他不需要转换器处理的部分，而且不需要段落重排；
+
+- **命令段落**: 命令段落作用于整个的文档，通常用于标题设置或列表标记。
+
+  - 所有的命令段落（只有一行的长度）使用 `=` 开始，然后是一个标识符，随后的文本将被这条命令所影响。
+
+  ```perl
+  =pod (开始文档)
+  =head1 标题文本
+  =head2 标题文本
+  =head3 标题文本
+  =head4 标题文本
+  =over 缩进空格数量
+  =item 前缀
+  =back (结束列表)
+  =begin 文档格式
+  =end 结束文档格式
+  =for 格式文本
+  =encoding 编码类型
+  =cut (文档结束)
+  ```
+
+​	在 Perl 中，可以使用 `pod2html test.pod > test.html` 来生成 HTML 格式的 POD 文档。
