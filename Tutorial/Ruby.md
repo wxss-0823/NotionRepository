@@ -1321,13 +1321,41 @@ raise ExceptionType, "Error Message" condition
 
 ### 2.1. 面向对象
 
+#### 2.1.1. 类定义
 
+```ruby
+class Classname
+  ...
+end
+```
 
+#### 2.1.2. 实例化对象
 
+​	类提供了对象的蓝图，对象基于类的定义创建。
 
+```ruby
+instance_name = Classname.new
+```
 
+##### initialize 方法
 
+​	`initialize` 方法是一个标准的 Ruby 类方法，是类的构造方法，在调用 `new` 时，会自动调用该方法。
 
+```ruby
+def initialize(...)
+  ...
+end
+```
+
+#### 2.1.3. 实例化变量
+
+​	实例变量是类的属性，它们在使用类创建对象时，成为对象的属性。一般情况下，不同的对象具有不同的属性，这些属性单独赋值，并和其他对象不共享。对一个对象内部而言，任何方法可以使用 `@` 运算符访问这些属性；而对于外部而言，属性不可见，需要定义公共方法访问内部属性。
+
+```ruby
+def initialize (var1, var2, ... , *args)
+  @var1, @var2, ... = var1, var2, ...
+end
+```
 
 
 
