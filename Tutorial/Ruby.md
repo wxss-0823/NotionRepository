@@ -1026,167 +1026,422 @@ if ((1..10) === 5)
 end
 ```
 
+### 1.20. 迭代器
 
+​	迭代器是集合支持的方法，存储一组数据成员的对象称为集合。在 Ruby 中，数组（Array）和哈希（Hash）可以称之为集合。迭代器返回集合的所有元素，一个接着一个。
 
+#### 1.20.1. each 迭代器
 
+​	`each` 迭代器返回数组或哈希的所有元素。`each` 迭代器总是与一个块关联，它向块返回数组的每个值，一个接着一个，值被存储在变量中。
 
+```ruby
+collection.each do |variable|
+  ...
+end
+```
 
+#### 1.20.2. collect 迭代器
 
+​	`collect` 迭代器返回集合的所有元素。`collect` 方法不需要总是与一个块关联，`collect` 方法返回整个集合，不管它是数组或者是哈希。
 
+```ruby
+collection = collection.collect
+```
 
+**注意**：`collect` 方法不是数组间进行复制的正确方式，另一个称为 `clone` 的方法，用于复制一个数组到另一个数组。
 
+### 1.21. 文件的输入与输出
 
+​	Ruby 提供了一整套 I/O 相关的方法，在内核（Kernel）模块中实现。所有的 I/O 方法派生自 IO 类。
 
+#### 1.21.1. puts 语句
 
+​	`puts` 语句指示程序显示存储在变量中的值，这将在每行末尾添加一个新行。
 
+```ruby
+puts var
+```
 
+#### 1.21.2. gets 语句
 
+​	`gets` 语句用于获取来自名为 `STDIN` 的标准屏幕的用户输入。
 
+#### 1.21.3. putc 语句
 
+​	`putc` 用于依次输出一个字符串，执行一次输入一个字符。
 
+#### 1.21.4. print 语句
 
+​	`print` 语句与 `puts` 语句类似，不同之处在于，`puts` 语句会在输出内容结束后跳到下一行，而使用 `print` 语句时，光标定位在同一行。
 
+#### 1.21.5. 打开和关闭文件
 
+##### File.new 方法
 
+​	可以使用 `File.new` 方法创建一个 File 对象用于读取、写入或者读写，读写权限取决于 mode 参数，使用完成后，可以使用 `File.close` 方法来关闭该文件。
 
+```ruby
+aFile = File.new("filename", "mode")
+# ...
+aFile.close
+```
 
+##### File.open 方法
 
+​	可以使用 `File.open` 方法创建一个新的 File 对象，并把该 File 对象赋值给文件，但是，`File.open` 和 `File.new` 方法不同之处在于，`File.open` 方法可以与块关联，而 `File.new` 方法不能。
 
+```ruby
+File.open("filename", "mode") do |aFile|
+  ...
+end
+```
 
+##### mode 列表
 
+| 模式 | 描述                                                         |
+| :--- | :----------------------------------------------------------- |
+| r    | 只读模式，文件指针被放置在文件的开头，这是默认模式           |
+| r+   | 读写模式，文件指针被放置在文件的开头                         |
+| w    | 只写模式，如果文件存在，则重写文件；如果文件不存在，则创建一个新文件用于写入 |
+| w+   | 读写模式，如果文件存在，则重写已存在的文件；如果文件不存在，则创建一个新文件用于读写 |
+| a    | 只写模式，如果文件存在，则文件指针被放置在文件的末尾；如果文件不存在，则创建一个新文件用于写入 |
+| a+   | 读写模式，如果文件存在，则文件指针被放置在文件的末尾；如果文件不存在，则创建一个新文件用于读写 |
 
+#### 1.21.6. 读取和写入文件
 
+​	用于简单 I/O 的方法也可用于所有 File 对象。`gets` 从标准输入读取一行，`aFile.gets` 从文件对象 `aFile` 读取一行。
 
+##### sysread 方法
 
+​	可以使用方法 `sysread` 来读取文件的内容，当使用方法 `sysread` 时，可以使用任意一种模式打开文件。该方法将读取指定文件的 `num` 个字符，文件指针被放置在文件中第 `num+1` 个字符的位置。
 
+```ruby
+aFile.sysread(num)
+```
 
+##### syswrite 方法
 
+​	可以使用方法 `syswrite` 来向文件写入内容，当使用方法 `syswrite` 时，需要以写入模式打开文件。
 
+```ruby
+aFile.syswrite("...")
+```
 
+##### each_byte 方法
 
+​	该方法属于类 File，方法 `each_byte` 可以迭代字符串中每个字符。
 
+##### IO.readlines 方法
 
+​	类 File 是类 IO 的一个子类，类 IO 也有一些用于操作文件的方法。`IO.readlines` 是 IO 类中的一个方法，该方法逐行返回文件的内容。返回值存储在一个数组内，一个值表示文件中一行的内容。
 
+##### IO.foreach 方法
 
+​	该方法也逐行返回输出，方法 `foreach` 与方法 `readlines` 之间不同的是，方法 `foreach` 与块相关联，但是不像 `readlines` 方法，`foreach` 不是返回一个数组。
 
+```ruby
+IO.foreach("input.txt") {|line| puts line}
+```
 
+####  1.21.7. 重命名和删除文件
 
+​	可以通过 `rename` 和 `delete` 方法重命名和删除文件。
 
+```ruby
+# 重命名文件 test1.txt 为 test2.txt
+File.rename("test1.txt", "test2,txt")
+# 删除文件 test2.txt
+File.delete("test2.txt")
+```
 
+#### 1.21.8. 文件模式和所有权
 
+​	使用带有掩码的 `chmod` 方法来改变文件的模式或权限/访问列表。
 
+```ruby
+file.chmod(0777)
+```
 
+​	掩码的后三位与 Linux 中 `chmod` 的参数配置相同。
 
+| 掩码 | 描述                               |
+| :--- | :--------------------------------- |
+| 4000 | 执行时设置用户 ID                  |
+| 2000 | 执行时设置所属组 ID                |
+| 1000 | 保存交换文本，甚至在使用后也会保存 |
 
+#### 1.21.9. 文件查询
 
+​	在打开文件前，可能需要对文件进行一些判断操作。
 
+```ruby
+# 判断文件是否存在
+File.open("filename") if File::exists?("filename")
+# 判断是否为文件
+File.file?("filename")
+# 判断给定的文件名是否是一个目录
+File::directory?("directory")
+# 判断文件是否可读、可写、可执行
+File.readable?("filename")
+File.writable?("filename")
+File.excutable?("filename")
+# 检查文件大小是否为 0
+File.zero?("filename")
+# 返回文件的大小
+File.size?("filename")
+# 检查文件的类型
+File::ftype("filename")
+# 检查文件被创建、修改或最后访问的时间
+File::ctime("filename")
+File::mtime("filename")
+File::atime("filename")
+```
 
+#### 1.21.10. 目录
 
+​	所有的文件都是包含在目录中，Ruby 提供了处理文件和目录的方式。File 类用于处理文件，Dir 类用于处理目录。
 
+##### 浏览目录
 
+​	为了在 Ruby 程序中改变目录，可以使用 `Dir.chdir` 。
 
+```ruby
+Dir.chdir("...")
+# 返回当前目录
+Dir.pwd
+# 获取指定目录内文件和目录列表
+Dir.entries("...").join(" ")
+Dir.foreach("...").join("\n")
+```
 
+​	获取目录列表的更简洁的方式是通过使用 Dir 类数组的方法。
 
+```ruby
+Dir["..."]
+```
 
+##### 创建目录
 
+​	`Dir.mkdir` 可用于创建目录。
 
+```ruby
+Dir.mkdir("directory", mask)
+```
 
+**注意**：掩码为三位整数，规则与 Linux 中权限掩码相同。
 
+##### 删除目录
 
+​	`Dir.delete` 可用于删除目录，`Dir.unlink` 和 `Dir.mkdir` 执行相同的功能。
 
+```ruby
+Dir.delete("directory")
+```
 
+#### 1.21.11. 创建文件 & 临时目录
 
+​	临时文件是那些在程序执行过程中被简单地创建，但不会永久性存储地信息。`Dir.tmpdir` 提供了在当前系统上临时目录的路径，但是该方法默认情况下是不可用的，需要引入 `tmpdir` 模块。
 
+​	可以把 `Dir.tmpdir` 和 `File.join` 一起使用，创建一个独立于平台的临时文件。Ruby 的标准库中也包含了一个名为 `Tempfile` 的库，该库可用于创建临时文件。
 
+### 1.22. 异常
 
+​	Ruby 提供了一个完美的处理异常的机制，可以在 `begin/end` 块中附上可能抛出异常的代码，并使用 `rescue` 子句告诉 Ruby 要处理的异常类型。
 
+```ruby
+# 开始
+begin
+  # 抛出异常
+  raise
+# 捕获异常的类型
+rescue [ExceptionType = Standard Exception]
+  $! # 表示异常信息
+  $@ # 表示异常出现的代码位置
+  ...
+# 其他异常
+else
+  ...
+# 不管有没有异常，都会执行该块
+ensure
+# 结束
+end
+```
 
+​	从 `begin` 到 `rescue` 中的一切是受保护的，如果代码块执行期间发生了异常，控制会传到 `rescue` 和 `end` 之间的块。对于 `begin` 块中的每个 `rescue` 子句，Ruby 把抛出的异常与每个参数进行轮流对比，如果 `rescue` 子句中命名的异常与当前抛出异常的类型相同，或者是该异常的父类，则匹配成功；如果异常不匹配所有指定的错误类型，可以在所有的 `rescue` 子句后使用一个 `else` 子句。
 
+#### 1.22.1. retry 语句
 
+​	可以使用 `rescue` 块捕获异常，然后使用 `retry` 语句从开头开始执行 `begin` 块。
 
+```ruby
+begin
+  ...
+rescue
+  # 把控制移到 begin 的开头
+  retry
+end
+```
 
+**注意**：如果没有结束 `retry` 的控制，那么代码可能陷入死循环，所以处理异常时，谨慎使用 `retry`。
 
+#### 1.22.2. raise 语句
 
+​	可以使用 `raise` 语句抛出异常。
 
+```ruby
+# 重新抛出当前异常，没有则抛出 RuntimeError
+raise
+# 创建一个 RuntimeError 异常，并设置错误信息
+raise "Error Message"
+# 创建一个指定异常类型，并设置错误信息
+raise ExceptionType, "Error Message"
+# 添加异常抛出的条件语句，满足时，抛出指定类型、信息的异常
+raise ExceptionType, "Error Message" condition
+```
 
+#### 1.22.3. ensure 语句
 
+​	无论是否抛出异常，`ensure` 语句会在代码块结束时完成。`ensure` 放在最后一个 `rescue` 子句后，并包含一个块终止时总是执行的代码块。
 
+#### 1.22.4. else 语句
 
+​	`else` 语句只有在代码主体没有抛出异常时执行。一般放置在所有 `rescue` 子句之后，`ensure` 子句之前。
 
+#### 1.22.5. Catch & Throw
 
+​	`raise` 和 `rescue` 的异常机制在发生错误时放弃执行，`catch` 和 `throw` 用于需要在正常处理时跳出一些深层嵌套结构的操作。
 
+​	`catch` 定义了一个使用给定的名称作为标签的块，代码块正常执行，直到 `throw` 一个与之同名的标签，退出 `catch` 块。
 
+#### 1.22.6. 类 Exception
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+​	Ruby 的所有异常类均来自于 Exception，Exception 内建的子类等级见 [Document for Ruby](https://docs.ruby-lang.org/en/master/Exception.html)
 
 ## 2. Ruby 高级教程
+
+### 2.1. 面向对象
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
