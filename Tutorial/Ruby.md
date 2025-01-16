@@ -1357,25 +1357,153 @@ def initialize (var1, var2, ... , *args)
 end
 ```
 
+#### 2.1.4. 访问器 & 设置器方法
 
+​	为了在类的外部读取类中已定义的变量，可以通过定义访问器方法来访问。具体可以通过设置方法的返回值为类的属性。与访问变量值类似，Ruby 提供了一种在类的外部将参数传入类中已定义的变量，也就是所谓的设置器方法。
 
+​	这两种方法非常常用，因此 Ruby 定义了 `attr_accessor :var`、`attr_reader :var`、`attr_writer :var` 三种属性声明方法。使用时可以调用与属性同名的方法，相应的读取或者写入属性。
 
+```ruby
+class Classname
+  attr_accessor :var
+end
 
+classinstance = Classname.new
+classinstance.var = ...
+```
 
+#### 2.1.5. 实例方法
 
+​	实例方法的定义与其他方法的定义一样，都是使用 `def` 关键字，但是它们只能通过类实例来使用。
 
+```ruby
+class Classname
+  # 实例方法
+  def methodname
+    # method_body
+  end
+end
+```
 
+#### 2.1.6. 类方法 & 类变量
 
+​	类变量是类的所有实例中共享的变量，类变量的实例可以被所有对象实例访问。类变量以 `@@` 作为前缀，类变量必须在类定义中被初始化，且必须使用自定义方法访问，`attr_*` 无法访问。
 
+​	类方法使用 `def self.methodname()` 定义，类方法以 `end` 分隔符结尾。类方法可使用带有类名称的 `Classname.methodname` 形式调用。
 
+#### 2.1.7. to_s 方法
 
+​	定义的任何类都有一个 `to_s` 实例方法来返回对象的字符串表示形式。当对象需要以字符串显示时，自动调用该方法。
 
+```ruby
+class Classname
+  def to_s
+    "..."
+  end
+end
 
+classinstance = Classname.new
+puts "#{classinstance}"
+```
 
+#### 2.1.8. 访问控制
 
+​	Ruby 提供了三个级别的实例方法保护，分别是 `public`、`private`、`protected` 。Ruby 不在实例和类变量上应用任何访问控制。
 
+- `public`：可被任何对象调用。默认情况下，方法都是 `public` 的，除了 `initialize` 方法总是 `private`；
+- `private`：不能从类外部访问或查看，只有类方法可以访问私有成员；
+- `protected`：只能被类及其子类的对象调用，访问也只能在类及其子类内部进行。
 
+```ruby
+protected :methodname
+```
 
+#### 2.1.9. 类的继承
+
+Ruby 提供了子类化的概念，只要添加一个 `<` 字符和父类名称到类语句即可。
+
+```ruby
+class Derivedclass < Baseclass
+  # class define
+end
+```
+
+#### 2.1.10. 方法重载
+
+​	虽然可以在派生类中添加新的功能，但是有时可能想要改变已经在父类中定义的方法的行为。这时可以保持方法名称不变，重载方法的功能即可。
+
+```ruby
+class Baseclass
+  def method1
+    # method define
+  end
+end
+
+class Derivedclass < Baseclass
+  def method1
+    # overload
+  end
+end
+```
+
+#### 2.1.11. 运算符重载
+
+​	在对象运算时，有时需要将运算符重载运算规则。
+
+```ruby
+class Operator
+  def +(addend)
+    # add define
+  end
+  
+  def -(subtractor)
+    # subtract define
+  end
+  
+  def *(factor)
+    # multiple define
+  end
+end
+```
+
+#### 2.1.12. 冻结对象
+
+​	如果需要防止对象被改变，在 Object 中，`freeze` 方法可以实现这点，它能有效地把一个对象变成一个常数。任何对象都可以通过调用 `Object.freeze` 进行冻结。冻结对象不能被修改。
+
+​	可以使用 `Object.frozen?` 检查一个给定的对象是否被冻结。如果对象已经被冻结，则该方法返回 `true` ，否则返回一个 `false` 。
+
+#### 2.1.13. 类常量
+
+​	可以在类内部定义一个常量，通过把一个直接的数值或字符串赋给一个变量来定义，变量的定义不需要使用 `@` 或 `@@` ，按照惯例，常量名称使用全大写。
+
+​	一旦常量被定义，就不能改变它的值，可以在类的内部直接访问常量，就像是访问变量一样，但是如果想要在类的外部访问常量，必须使用 `Classname::CONSTANT` 。
+
+```ruby
+class Classname
+  CONSTANT = 0
+end
+
+puts Classname::CONSTANT
+```
+
+#### 2.1.14. allocate 创建对象
+
+​	如果想要在不调用对象构造器 `initialize` 的情况下创建对象，即不使用 `new` 方法创建对象，在这种情况下，可以调用 `allocate` 来创建一个未初始化的对象，需要手动初始化变量。
+
+#### 2.1.15. 类信息
+
+​	Ruby 的 `self` 和 Java 的 `this` 有相似之处，但又大不相同。Java 的方法都是在实例方法中引用，所以 `this` 一般都是指向当前对象的。而 Ruby 的代码逐行执行，所以在不同的上下文，`self` 就有了不同的含义。
+
+```ruby
+class Classname
+  # self.class = class
+  puts self.class
+  # self.name = Classname
+  puts self.name
+end
+```
+
+​	这意味着，类在定义时，将该类看作元类 `class` 的对象来执行，同时也意味着，元类和父类中的该方法在方法定义执行期间是可用的。
 
 
 
