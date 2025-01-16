@@ -715,7 +715,7 @@ end
 require filename
 ```
 
-​	这里，文件扩展名不是必需的。需要使用 `$LOAD_PATH$ << "."` 告诉解释器引入文件的路径，也可以使用 `require_relative` 来从一个相对目录引用文件。
+​	这里，文件扩展名不是必需的。需要使用 `$LOAD_PATH << "."` 告诉解释器引入文件的路径，也可以使用 `require_relative` 来从一个相对目录引用文件。
 
 **注意**：文件包含相同的函数名称，引用会导致代码模糊，但是模块避免了这种大麦模块。
 
@@ -1533,7 +1533,7 @@ end
 
 ​	详细内容查看官方文档 [class Regexp](https://docs.ruby-lang.org/en/master/Regexp.html) 。
 
-#### 2.3. 连接 MySQL - mysql2
+### 2.3. 连接 MySQL - mysql2
 
 ​	Ruby 连接 MySQL 的高效驱动 mysql2 。
 
@@ -1565,29 +1565,178 @@ end
 
 ​	详细的使用方法查看 Gem 官方文档 [Mysql2](https://www.rubydoc.info/gems/mysql2) 。
 
+### 2.4. XML 解析
 
+​	Ruby 中对 XML 文档的解析可以使用 rexml 库。rexml 库是 Ruby 的一个 XML 工具包，使用纯 Ruby 语言编写，遵守 XML1.0 规范。
 
+#### 2.4.1. DOM 解析器
 
+​	解析 XML 数据，首先需要引入 `rexml/document` 库。
 
+```ruby
+require 'rexml/document'
+include REXML
+```
 
+#### 2.4.2. 其他
 
+​	详细的使用方法详见 Gem 官方文档 [REXML](https://www.rubydoc.info/gems/rexml) 。
 
+### 2.5. 多线程
 
+#### 2.5.1. 创建线程
 
+​	要启动一个新的线程，只需要调用 `Thread.new` 即可。
 
+```ruby
+# 线程 1
+Thread.new {
+  # 线程 2
+}
+```
 
+#### 2.5.2. 线程生命周期
 
+1. 线程的创建可以使用 `Thread.new`，同样可以以同样的语法使用 `Thread.start` 或者 `Thread.fork` 来创建线程；
+2. 创建线程后无需启动，线程会自动执行；
+3. Thread 类定义了一些方法来操控线程，线程执行 `Thread.new` 中的代码块；
+4. 线程代码块中最后一个语句是线程的值，可以通过线程的方法来调用，如果线程执行完毕，则返回线程值，否则不返回值直到线程执行完毕；
+5. `Thread.current` 方法返回表示当前线程的对象，`Thread.main` 方法返回主线程；
+6. 通过 `Thread.join` 方法来执行线程，这个方法会挂起主线程，直到当前线程执行完毕。
 
+#### 2.5.3. 线程状态
 
+| 线程状态     | 返回值     |
+| :----------- | :--------- |
+| 可执行       | `run`      |
+| 睡眠         | `Sleeping` |
+| 退出         | `aborting` |
+| 正常终止     | `false`    |
+| 发生异常终止 | `nil`      |
 
+#### 2.5.4. 线程和异常
 
+​	当某线程发生异常，且没有被 `rescue` 捕捉到时，该线程通常会被无警告地终止。但是，如果有其他线程因为 `Thread.jon` 的关系一直等待该线程结束的话，则等待的线程同样会被引发相同的异常。
 
+#### 2.5.5. 线程同步控制
 
+##### Mutex 类
 
+​	通过 Mutex 类实现线程同步控制，如果多个线程钟同时需要一个程序变量，可以将这个变量部分使用 `lock` 锁定。
 
+```ruby
+@mutex = Mutex.new
+def method
+  @mutex.lock
+  sleep 1
+  @mutex.unlock
+end
 
+thread1 = Thread.new 10 do 
+  10.times do |value|
+  puts value + method
+  end
+end
 
+thread2 = Thread.new 10 do
+  10.times do |value|
+  puts value + method
+  end
+end
+  
+sleep 1
+thread1.join
+thread2.join
+```
 
+​	上述代码两个线程会交替进行，因为当一个线程进行时，另一个线程的变量 `@mutex` 被锁定。
+
+##### Queue 类
+
+​	Queue 类是一个支持线程的队列，能够同步对队列末尾进行访问。不同的线程可以使用同一对类，而不用担心这个队列中的数据是否能够同步，另外使用 SizedQueue 类能够限制队列的长度。
+
+```ruby
+queue = Queue.new
+
+producer = Thread.new do
+  10.times do |i|
+    sleep rand(i)
+    queue << i
+  end
+end
+
+consumer = Thread.new do
+  10.times do |i|
+    value = queue.pop
+    sleep rand(i/2)
+  end
+end 
+```
+
+​	在上述程序中，一个线程负责向 `queue` 压入数据，另一个线程负责读取。不需要担心，两个线程的操作之前是否会冲突或者覆盖，Queue 类会自动处理，并保证压入的数据被依次读取。
+
+#### 2.5.6. 线程变量
+
+​	线程可以拥有私有变量，线程的私有变量在线程创建的时候写入线程。可以在线程范围内使用，但是不能被线程外的程序共享。
+
+​	Ruby 允许通过名字来创建线程变量，类似的把线程看作 Hash 式的散列表。
+
+```ruby
+thread = Thread.new {
+  Thread.current["varname"] = varvalue
+  }
+```
+
+#### 2.5.7. 线程优先级
+
+​	线程优先级是影响线程调度的主要因素，其他因素包括占用 CPU 的执行时间长短，线程分组调度等等。
+
+​	可以使用 `Thread.priority` 方法得到线程的优先级和使用 `Thread.priority=` 方法来调整线程的优先级。线程的默认优先级为 0 ，优先级较高的线程执行的要快。
+
+​	一个 Thread 可以访问自己作用域内的数据，但是如果需要在某个线程内访问其他线程的数据，则可以把线程看作一个 Hash 表，访问数据。
+
+```ruby
+athr = Thread.new {Thread.current["name"] = "value"}
+bthr = Thread.new {Thread.current["name"] = "value"}
+cthr = Thread.new {Thread.current["name"] = "value"}
+Thread.list.each {|x| puts "#{x["name"]}"}
+```
+
+#### 2.5.8. 线程互斥
+
+​	Mutex（Mutal Exclusion，互斥锁）是一种用于多线程编程，防止两条线程同时对同一公共资源进行读写的机制。
+
+```ruby
+mutex = Mutex.new
+
+thread1 = Thread.new do
+  loop do
+    mutex.synchronize do
+      count1 += 1
+      count2 += 1
+    end
+  end
+end
+
+thread2 = Thread.new do
+  loop do
+    mutex.synchronize do
+      difference += (count1 - count2).abs
+    end
+  end
+end
+
+sleep 1
+# 锁定 mutex，暂停子线程，防止读取计数值不同
+mutex.lock
+puts "#{count1}"
+puts "#{count2}"
+puts "#{difference}"
+```
+
+#### 2.5.9. 死锁
+
+​	两个以上的运算单元，双方都在等待对方停止运行，以获取资源，但是没有一方提前退出时，这种情况，称为死锁。当在使用 Mutex 对象是要注意线程死锁。
 
 
 
