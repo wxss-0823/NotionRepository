@@ -1505,21 +1505,65 @@ end
 
 ​	这意味着，类在定义时，将该类看作元类 `class` 的对象来执行，同时也意味着，元类和父类中的该方法在方法定义执行期间是可用的。
 
+### 2.2. 正则表达式
 
+​	正则表达式是一种特殊序列的字符，它通过使用又专门语法的模式来匹配或查找字符串集合。
 
+#### 2.2.1. 语法
 
+​	正则表达式从字面上看是一种介于 `/` 之间的或介于跟在 `%r` 后的任意分隔符之间的模式。
 
+```ruby
+/pattern/
+/pattern/im					# 指定匹配时选项
+%r !/usr/local/!    # 使用 ! 分隔的正则表达式，用于匹配带有 \/ 的字符串
+```
 
+#### 2.2.2. 修饰符
 
+| 修饰符          | 描述                                                         |
+| :-------------- | :----------------------------------------------------------- |
+| `i`             | 当匹配文本时忽略大小写                                       |
+| `o`             | 只执行一次 `#{}` 插值，正则表达式在第一次时就进行判断        |
+| `x`             | 忽略空格，允许在整个表达式中放入空白符和注释                 |
+| `m`             | 匹配多行，把换行字符识别为正常字符                           |
+| `u` `e` `s` `n` | 把正则表达式解释为 Unicode（UTF-8）、EUC、SJIS 或 ASCII（如果没有指定修饰符，则认为正则表达式使用的是源编码） |
 
+#### 2.2.3. 模式匹配
 
+​	详细内容查看官方文档 [class Regexp](https://docs.ruby-lang.org/en/master/Regexp.html) 。
 
+#### 2.3. 连接 MySQL - mysql2
 
+​	Ruby 连接 MySQL 的高效驱动 mysql2 。
 
+```shell
+gem install mysql2
+```
 
+#### 2.3.1. 连接
 
+```ruby
+client = Mysql2::Client.new(:host => "localhost", :username => "root")
+```
 
+#### 2.3.2. 查询
 
+```ruby
+results = client.query("SELECT * FORM users;")
+```
+
+#### 2.3.3. 迭代结果集
+
+```ruby
+results.each do |row|
+  puts row["id"]
+end
+```
+
+#### 2.3.4. 其他
+
+​	详细的使用方法查看 Gem 官方文档 [Mysql2](https://www.rubydoc.info/gems/mysql2) 。
 
 
 
