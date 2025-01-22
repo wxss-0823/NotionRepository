@@ -612,6 +612,3 @@ $.getJSON("[URL]?jsoncallback=?", function(data) {
 	// ...
 });
 ```
-
-
-
