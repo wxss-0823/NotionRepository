@@ -410,3 +410,64 @@ buf.length;
 
 ​	常见的可读流包括文件读取流和网络请求响应流。
 
+```javascript
+let readableStream = fs.createReadStream('filename');
+```
+
+### 8.2. 写入流
+
+​	可写流用于将数据写入目的地，常见的可写流包括文件写入流和网络请求发送流。
+
+```javascript
+let writableStream = fs.createWriteStream('filename');
+```
+
+### 8.3. 双工流
+
+​	双工流（Duplex）同时具有可读和可写的能力。
+
+```javascript
+const server = net.createServer(...);
+```
+
+### 8.4. 转换流
+
+​	转换流是一种特殊的双工流，可以修改或转换数据。常见的转换流包括压缩和解压缩流。
+
+```javascript
+const gzip = zlib.createGzip();
+```
+
+### 8.5. 管道流
+
+​	管道提供了一个输出流到输入流的机制。通常用于从一个流中获取数据并将数据传递到另外一个流中。
+
+```javascript
+readableStream.pipe(gzip);
+```
+
+### 8.6. 链式流
+
+​	链式是通过连接输出流到另外一个流并创建多个流操作链的机制。链式流一般用于管道操作。
+
+```javascript
+readableStream.pipe(gzip).pipe(writableStream);
+```
+
+### 8.7. 暂停和恢复
+
+​	可读流可以暂定和恢复数据的读取。
+
+```javascript
+readableStream.pause();
+readableStream.resume();
+```
+
+### 8.8. 销毁
+
+​	可以销毁流，释放资源。
+
+```javascript
+readableStream.destory();
+```
+
