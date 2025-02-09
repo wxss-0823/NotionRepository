@@ -84,8 +84,329 @@ npm update express
 #### 2.3.1. 使用方法
 
 1. **初始化项目**：在项目目录中运行 `npm init` 命令，npm 会引导创建一个 `package.json` 文件，或者自动生成一个包含默认值的 `package.json` ；
-2.  **安装依赖**：使用 `npm install <package-name>` 命令安装依赖，npm 会自动将依赖添加到 `package.json` 文件的 `dependencies` 或 `devDependencies` 中，并创建 `package-lock.json` 文件以锁定依赖的版本；
+2. **安装依赖**：使用 `npm install <package-name>` 命令安装依赖，npm 会自动将依赖添加到 `package.json` 文件的 `dependencies` 或 `devDependencies` 中，并创建 `package-lock.json` 文件以锁定依赖的版本；
 3. **管理脚本**：使用 `scripts` 字段定义命令，例如：`"start": "node app.js"` ，可以通过 `npm start` 命令来运行脚本；
 4. **版本控制**：当项目准备好发布到 npm 时，可以使用 `npm publish` 命令，npm 会读取 `package.json` 中的信息来发布包；
 5. **发布包**：当项目准备好发布到 npm 时，可以使用 `npm publish` 命令，npm 会读取 `package.json` 中的信息来发布包；
 6. **依赖管理**：`package.json` 和 `package-lock.json` 文件一起工作，确保项目在不同环境中的依赖版本一致。
+
+## 3. REPL
+
+​	Node.js 提供了一个内置的 REPL （Read-Eval-Print Loop），这是一个交互式编程环境，可以在终端中运行 JavaScript 代码。
+
+- **Read**：读取用户输入，解析输入的 JavaScript 数据结构并存储在内存中；
+- **Eval**：执行输入的数据结构；
+- **Print**：输出结果；
+- **Loop**：循环操作以上步骤直到用户两次按下 `ctrl + c` 退出。
+
+### 3.1. 启动终端
+
+```shell
+node
+```
+
+### 3.2. 语法
+
+​	Node 终端中支持简单的表达式运算、变量、多行表达式等。
+
+#### 3.2.1. 表达式运算
+
+```shell
+> 1 + 4
+```
+
+#### 3.2.2. 变量
+
+​	可以将数据存储在变量中，并在需要的时候使用它。变量声明需要 `var` 关键字，如果没有使用，会直接打印出来。
+
+```shell
+> x = 10
+> var y = 10
+> x + y
+```
+
+#### 3.2.3. 多行表达式
+
+​	Node REPL 支持多行表达式，会在回车换行后，自动检测是否为连续的表达式。
+
+#### 3.2.3. 下划线变量
+
+​	可以使用下划线 `_` 获取上一个表达式的运算结果。
+
+```shell
+> x + y
+> var sum = _
+```
+
+## 4. 回调函数
+
+​	Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境，使得 JavaScript 可以脱离浏览器运行在服务器端。其核心特性之一是非阻塞 I/O 模型，非常适合处理高并发网络应用。
+
+### 4.1. 非阻塞代码
+
+​	回调函数，即该函数会在程序块执行结束后，返回一些操作，而程序块运行时，其他程序块可以同时进行，不被阻塞。
+
+### 4.2. 回调地狱
+
+​	当多个异步操作需要按顺序执行时，回调函数会导致代码嵌套，使得代码难以阅读和维护。为了改善代码的可读性和可维护性，可以使用以下几种方法：
+
+- **Promises**：一种新的异步编程模式，允许以链式的方式处理异步操作，避免了回调地狱；
+- **async/await**：基于 Promises，提供了一种更接近同步代码风格的异步编程语法糖，使得异步代码更易于理解和维护；
+- **事件驱动编程**：Node.js 支持事件驱动编程，通过监听和触发事件来处理异步操作。
+
+#### 4.2.1. async/await
+
+​	async/await 是 ES2017 引入的语法糖，可以更方便地处理异步操作，避免回调地狱。
+
+```javascript
+const fs = require('fs').promises;
+
+async function readFiles() {
+  try {
+    const data1 = await fs.readFile('file1.txt', 'utf8');
+    const data2 = await fs.readFile('file2.txt', 'utf8');
+    const data3 = await fs.readFile('file3.txt', 'utf8');
+    
+    console.log('Data from all files: ', data1, data2, data3);
+  } catch (err) {
+    console.error('Error reading files: ', err);
+  }
+}
+
+readFiles();
+```
+
+#### 4.2.2. then
+
+​	Promises 是另一种处理异步操作的方式，可以链式调用 then 方法，避免嵌套回调。
+
+```javascript
+const fs = require('fs').promises;
+
+fs.readFiles('file1.txt', 'utf8')
+	.then(data1 => {
+  	console.log('Data from file1: ', data1);
+  	return fs.readFile('file2.txt', 'utf8');
+	})
+	.then(data2 => {
+  	console.log('Data from file2: ', data2);
+  	return fs.readFile('file3.txt', 'utf8');
+	})
+	.then(data3 => {
+  	console.log('Data from file3: ', data3);
+  })
+	.catch(err => {
+  	console.error('Error reading files: ', err);
+	});
+```
+
+## 5. 事件循环
+
+​	事件循环是 Node.js 处理非阻塞 I/O 操作的核心机制，使得单线程能够高效处理多个并发请求。
+
+### 5.1. 事件循环的阶段
+
+​	事件循环分为多个阶段，每个阶段处理特定的任务。
+
+- **Times**：执行 `setTimeout()` 和 `setInterval()` 的回调；
+- **I/O Callbacks**：处理一些延迟的 I/O 回调；
+- **ldle prepare**：内部使用，不常见；
+- **Poll**：检索新的 I/O 事件，执行与 I/O 相关的回调；
+- **Check**：执行 `setImmediate()` 回调；
+- **Close Callbacks**：处理关闭的回调。
+
+### 5.2. 事件循环的流程
+
+- 任务进入事件循环队列；
+- 事件循环按照阶段顺序进行处理，每个阶段有自己的回调队列；
+- 事件循环会在 poll 阶段等待新的事件到达，如果没有事件，会检查其他阶段的回调；
+- 如果 `setImmdiate()` 和 `setTimeout()` 都存在，`setImmediate()` 在 check 阶段先执行，而 `setTimeout()` 在 times 阶段执行。
+
+### 5.3. 宏任务与微任务
+
+- **宏任务**：`setImmdiate` 、`setInterval` 、`setImmediate` 、I/O 操作等；
+- **微任务**：`process.nextTick` ，`Promise.then` 。
+
+**执行顺序**：微任务优先级高于宏任务，会在当前阶段的回调结束后立即执行。
+
+### 5.4. 事件驱动程序
+
+​	在 Node.js 中，事件驱动编程主要通过 EventEmitter 类来实现，通过继承其可以创建自己的事件发射器，并注册和触发事件。
+
+#### 5.4.1. 基本概念
+
+- **事件**：在程序中发生的动作或状态改变；
+- **事件触发器**：EventEmitter 是 Node.js 的内置模块，用来发出和监听事件；
+- **事件处理器**：与事件关联的回调函数，事件发生时被调用。
+
+#### 5.4.2. 事件驱动流程
+
+- **注册事件**：在程序中通过 EventEmitter 实例注册事件和对应的处理器；
+- **触发事件**：当指定事件发生时，EventEmitter 会触发该事件；
+- **处理事件**：事件循环会调度相应的回调函数来执行任务。
+
+## 6. EventEmitter
+
+​	Node.js 所有的异步 I/O 操作在完成时都会发送一个事件到事件队列。
+
+### 6.1. EventEmitter 类
+
+​	events 模块只提供了一个对象：`event.EventEmitter` 。其核心就是事件触发与事件监听器功能的封装。
+
+​	EventEmitter 对象如果在实例化时发生错误，会触发 error 事件；当添加新的监听器时，`newListener` 事件会触发，当监听器被移除时，`removeListener` 事件被触发。
+
+### 6.2. error 事件
+
+​	EventEmitter 定义了一个特殊的事件 error，它包含了错误的语义，在遇到异常的时候通常会触发 error 事件。当 error 被触发时，EventEmitter 规定如果没有响应的监听器，Node.js 会把它当作异常，退出程序并输出错误信息。
+
+```javascript
+var events = require('events');
+var emitter = new events.EventEmitter();
+emitter.emit('error');
+```
+
+### 6.3. 继承 EventEmitter
+
+​	大多数时候，不会直接使用 EventEmitter，而是在对象中继承它，包括 `fs`、`net`、`http` 在内的，只要是支持事件响应的核心模块都是 EventEmitter 的子类。
+
+```javascript
+class MyEmitter extends EventEmitter {}
+```
+
+## 7. Buffer
+
+​	JavaScript 语言自身只有字符串数据类型，没有二进制数据类型。Node.js 中的 Buffer 类是用于处理二进制数据的核心工具，提供了对二进制数据的高效操作。
+
+- **二进制数据**：Buffer 对象是一个包含原始二进制数据的固定大小的数组。每个元素占用一个字节；
+- **不可变性**：虽然 Buffer 对象的内容可以在创建后修改，但其长度是固定的，不能动态改变。
+
+### 7.1. Buffer 与字符编码
+
+​	Buffer 实例一般用于表示编码字符的序列，通过显式的字符编码，就可以在 Buffer 实例与普通的 JavaScript 字符串之间进行相互转换。
+
+### 7.2. 创建 Buffer 类
+
+​	Buffer 提供了以下的 API 来创建 Buffer 类：
+
+- `Buffer.alloc(size[, fill[, encoding]])`：创建了一个长度为 size 字节的 Buffer。
+- `Buffer.allocUnsafe(size)`：创建了一个长度为 size 字节的 Buffer，但 Buffer 中可能存在旧的数据，可能影响执行结果，所以叫 Unsafe；
+- `Buffer.allocUnsafeSlow(size)`：用于分配给定大小 size 的新 Buffer 实例，但不对其进行初始化；
+- `Buffer.from(array)`：返回一个被 array 的值初始化的新的 Buffer 实例（传入的 array 元素只能是数字，不然就会自动被 0 覆盖）；
+- `Buffer.from(arrayBuffer[, byteOffset[, [length]])`：返回一个新建的与给定的 ArrayBuffer 共享同一内存的 Buffer；
+- `Buffer.from(buffer)`：复制传入的 Buffer 实例的数据，并返回一个新的 Buffer 实例；
+- `Buffer.from(string[, encoding])`：通过字符串创建 Buffer，可以指定编码，默认为 UTF-8 。
+
+### 7.3. 写入缓冲区
+
+```javascript
+buf.write(string[, offset[, length]][, encoding])
+```
+
+- `string`：写入缓冲区的字符串；
+- `offset`：缓冲区开始写入的索引值，默认为 0；
+- `length`：写入的字节数，默认为 `buffer.length`；
+- `encoding`：使用的编码，默认为 UTF-8 。
+
+#### 7.3.1. 返回值
+
+​	返回实际写入的大小，如果 Buffer 空间不足，则只会写入部分字符串。
+
+### 7.4. 从缓冲区读取数据
+
+```javascript
+buf.toString([encoding[, start[, end]]])
+```
+
+- `encoding`：使用的编码，默认为 UTF-8；
+- `start`：指定开始读取的索引位置，默认为 0；
+- `end`：结束位置，默认为缓冲区的末尾。
+
+#### 7.4.1. 返回值
+
+​	解码缓冲区数据并使用指定的编码返回字符串。
+
+### 7.5. 转换为 JSON 对象
+
+​	当字符串化一个 Buffer 实例时，`JSON.stringify()` 会隐式的调用 `toJSON()` 。
+
+```javascript
+buf.toJSON()
+```
+
+####  7.5.1. 返回值
+
+​	返回 JSON 对象。
+
+### 7.6. 缓冲区合并
+
+```javascript
+Buffer.concat(list[, totalLength])
+```
+
+- `list`：用于合并的 Buffer 对象数组列表；
+- `totalLength` 指定合并后 Buffer 对象的总长度。
+
+#### 7.6.1. 返回值
+
+​	返回一个由多个成员合并的新 Buffer 对象。
+
+### 7.7. 缓冲区比较
+
+```javascript
+buf.compare(otherBuffer);
+```
+
+- `otherBuffer`：与 buf 对象比较的另外一个 Buffer 对象。
+
+#### 7.7.1. 返回值
+
+​	返回一个数字，表示 buf 在 otherBuffer 之前（<0）、之后（>0）或相同（=0）。
+
+### 7.8. 拷贝缓冲区
+
+```javascript
+buf.copy(targetBuffer[, targetStart[, sourceSrart[, sourceEnd]]])
+```
+
+- `targetBuffer`：要拷贝的 Buffer 对象；
+- `targetStart`：数字，可选，默认为 0；
+- `sourceStart`：数字，可选，默认为 0；
+- `sourceEnd`：数字，可选，默认为 0 。
+
+#### 7.8.1. 返回值
+
+​	没有返回值。
+
+### 7.9. 缓冲区裁剪
+
+```javascript
+buf.slice([start[, end]])
+```
+
+- `start`：数字，可选，默认为 0；
+- `end`：数字，可选，默认为 0 。
+
+#### 7.9.1. 返回值
+
+​	返回一个新的缓冲区，它和就缓冲区指向同一块内存，但是从索引 `start` 开始，`end` 结束。
+
+### 7.10. 缓冲区长度
+
+```javascript
+buf.length;
+```
+
+#### 7.10.1. 返回值
+
+​	返回 Buffer 对象所占据的内存长度。
+
+## 8. Stream
+
+​	Node.js 的 Stream 是一种处理流式数据的抽象接口，广泛应用于文件操作、网络通信等场景。流式数据处理的一个主要优点是可以在数据传输过程中就开始处理数据，而不需要等待整个数据加载完毕，这使得 Node.js 能够高效地处理大量数据，而不用占用过多的内存。
+
+​	Stream 是一个抽象接口，Node 中有很多对象实现了这个接口。它允许以流的形式处理数据，而不是一次性将数据全部加载到内存中。这对于处理大量数据或者实现高效的数据传输非常有用。
+
+### 8.1. 读取数据
+
+​	常见的可读流包括文件读取流和网络请求响应流。
+
