@@ -471,3 +471,34 @@ readableStream.resume();
 readableStream.destory();
 ```
 
+## 9. 模块系统
+
+​	Node.js 模块系统是其核心功能之一，它允许开发者将代码组织成小的、可重用的单元，这些单元被称为模块。模块是一个封装了特定功能的独立文件，可以在其他文件中引入和使用。模块系统遵循 CommonJS 规范，但也支持 ES 模块。
+
+### 9.1. 导入内置模块
+
+​	内置模块是由 Node.js 自带的模块，无需额外安装。
+
+```javascript
+const fs = require('fs');
+```
+
+### 9.2. 导入第三方模块
+
+​	第三方模块是开发者或开源社区发布的模块，可以通过 npm 安装到项目中。
+
+```javascript
+const express = require('express');
+```
+
+### 9.3. 自定义模块导出与导入
+
+#### 9.3.1. 导入模块
+
+​	在 Node.js 中，引入一个模块非常简单。
+
+```javascript
+let hello = require('./hello');
+```
+
+​	以上代码，引入了当前目录下的 `hello.js` 文件。
