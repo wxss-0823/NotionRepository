@@ -502,3 +502,199 @@ let hello = require('./hello');
 ```
 
 ​	以上代码，引入了当前目录下的 `hello.js` 文件。
+
+#### 9.3.2. 导出模块
+
+​	Node.js 提供了 `exports` 和 `require` 两个像，其中 `exports` 是模块公开的接口。
+
+```javascript
+exports.world = function () {
+  console.log('Hello World');
+}
+```
+
+​	以上代码，通过 `exports` 对象把 world 作为模块的访问接口，导入模块后，可以直接访问 `exports` 的成员函数。
+
+​	有时候，需要把一个对象封装到模块中，而不仅仅是一个函数。
+
+```javascript
+module.exports = function {
+  ...
+}
+```
+
+#### 9.3.3. ES 模块
+
+​	ES 模块使用 `import` 和 `export`，是现代的 JavaScript 的模块规范。
+
+- ES 模块使用 `import` 和 `export` 关键字，需将文件扩展名设置为 `.mjs` ，或者在 `package.json` 中声明 `"type": "module"` ；
+- ES 模块支持静态导入（`import ... from ...`）和动态导入 `import()` 。
+
+#### 9.3.4. 模块缓存
+
+​	Node.js 会将已加载的模块缓存起来，以提高性能。再次 `require()` 同一模块时，直接返回缓存中的模块，而不是重新加载。要重新加载缓存可以删除缓存。
+
+```javascript
+delete require.cache[require.resolve('filepath')];
+```
+
+#### 9.3.5. 循环依赖
+
+​	当两个或多个模块相互导入时，称为循环依赖。Node.js 能够处理简单的循环依赖，但可能导致部分模块导出的对象未完全初始化。
+
+#### 9.3.6. 模块包装与作用域
+
+​	Node.js 会将每个模块包装在一个函数中，使得每个模块都有独立的作用域。这意味着在模块内定义的变量不会污染全局变量。
+
+#### 9.3.7. 服务端模块导入策略
+
+##### 从文件模块缓存中加载
+
+​	尽管原生模块与文件模块的优先级不同，但是都会优先从文件模块的缓存中加载已经存在的模块。
+
+##### 从原生模块加载
+
+​	原生模块的优先级仅次于文件模块缓存的优先级。`require` 方法在解析文件名之后，优先检查模块是否在原生模块列表中。
+
+​	原生模块也有一个缓存区，同样也是优先从缓存区加载。如果缓存区没有被加载过，则调用原生模块的加载方式进行加载和执行。
+
+##### 从文件加载
+
+​	当文件模块缓存中不存在，而且不是原生模块的时候，Node.js 会解析 `require` 方法传入的参数，并从文件系统中加载实际的文件。
+
+## 10. 函数
+
+​	在 Node.js 中，函数是 JavaScript 的核心组成部分之一，用于封装和执行特定任务。
+
+### 10.1. 函数声明
+
+​	使用 `function` 关键字声明一个函数。
+
+```javascript
+function func_name(para_list) {
+  // func body
+}
+```
+
+### 10.2. 函数表达式
+
+```javascript
+const variable = fucntion(para_list) {
+  // func body
+}
+```
+
+### 10.3. 箭头函数
+
+​	ES6 引入的简洁的函数表达式。
+
+```javascript
+const variable = (para_list) => {
+  // func body
+}
+```
+
+### 10.4. 函数类型
+
+#### 10.4.1. 普通函数
+
+​	最常见的函数类型，有函数名、参数和返回值。
+
+#### 10.4.2. 匿名函数
+
+​	没有名字的函数，通常作为参数传递给其他函数。
+
+```javascript
+func1(function(para_list) {
+  // func body
+}, para_list);
+```
+
+#### 10.4.3. 回调函数
+
+​	作为参数传递给另一个函数，并在某个操作完成后被调用。
+
+```javascript
+function fetchData(callback) {
+  setTime(() => {
+    const data = 'Some data';
+    callback(data);
+  });
+}
+
+fetchData((data) => {
+  console.log(data);
+})
+```
+
+#### 10.4.4. 异步函数
+
+​	使用 `async` 和 `await` 关键字处理异步操作。
+
+### 10.5. 高级用法
+
+#### 10.5.1. 闭包
+
+​	闭包指一个函数能够记住并访问其词法作用域，即使这个函数在其词法作用域之外执行。
+
+```javascript
+function createCounter() {
+  let count = 0;
+  return function() {
+    count++;
+    return count;
+  };
+}
+
+const counter = createCounter();
+console.log(counter());
+console.log(counter());
+```
+
+#### 10.5.2. 高阶函数
+
+​	接受函数作为参数或返回函数的函数。
+
+#### 10.5.3. 默认参数
+
+​	在函数声明时，为参数提供默认值。
+
+```javascript
+function funcname(para1 = defaultVar) {
+  // func body
+}
+```
+
+#### 10.5.4. 剩余参数
+
+​	允许将不定数量的参数表示为一个数组。
+
+```javascript
+function funcname(...para_list) {
+  // func body
+}
+```
+
+#### 10.5.5. 解构参数
+
+​	从对象或数组中提取数据并将其赋值给变量。
+
+```javascript
+function getUserInfo({name, age}) {
+  console.log(`Name: ${name}, Age: ${age}`);
+}
+
+const user = {name: "wxss", age: 23};
+getUserInfo(user);
+```
+
+
+
+
+
+
+
+
+
+
+
