@@ -43,6 +43,8 @@ ssh-add /c/User/[username]/.ssh/id_rsa
 # 使用 HTTP/HTTPs 添加远程仓库
 git remote add origin "http://....git"
 # 使用 SSH 添加远程仓库
+git remote add origin git@github.com:xxx/xxx.git
+# 修改远程仓库地址
 git remote set-url origin git@github.com:xxx/xxx.git
 # 查看远程仓库地址
 git remote -v
@@ -104,6 +106,28 @@ git push origin main
 # 应当注意，若远程仓库修改，本地版本落后于远程，无法推送，可以先获取修改，再推送
 git pull origin main
 ```
+
+### 远程项目部署本地
+
+```shell
+# 新建文件夹用于保存项目
+# 初始化项目
+git init
+# 添加远程分支
+git add remote git@github.com:xxx/xxx.git
+# 查看远程分支
+git branch -a
+# 拉取远程分支
+git fetch origin
+# 创建本地分支并关联远程分支
+git checkout -b master origin/master
+# 查看本地分支
+git branch
+# 拉取远程分支到本地
+git pull origin master
+```
+
+​	`pull` 相当于 `fetch + merge`，`pull` 的同时，会尝试将代码与本地分支合并，如果出现冲突，要求手动处理冲突；而 `fetch` 仅将远程分支的代码拉取到一个特殊分支，称作远程跟踪分支，可以选择是否合并到当前分支。
 
 - [常用命令](https://www.runoob.com/git/git-basic-operations.html)
 
