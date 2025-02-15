@@ -127,7 +127,20 @@ git branch
 git pull origin master
 ```
 
+#### pull & fetch	
+
 ​	`pull` 相当于 `fetch + merge`，`pull` 的同时，会尝试将代码与本地分支合并，如果出现冲突，要求手动处理冲突；而 `fetch` 仅将远程分支的代码拉取到一个特殊分支，称作远程跟踪分支，可以选择是否合并到当前分支。
+
+#### pull 拉取缓慢
+
+​	可以使用镜像站，修改 HTTPs 至镜像地址，并使用镜像地址拉取。
+
+```shell
+# 修改远程地址
+git remote set-url origin https://xxx.xxx/xxx/xxx.git
+# 拉取远程分支
+git pull origin master
+```
 
 - [常用命令](https://www.runoob.com/git/git-basic-operations.html)
 
