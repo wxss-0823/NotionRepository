@@ -314,3 +314,279 @@ export default {
 
 ​	在 input 输入框中，可以使用 `v-model` 指令来实现双向数据绑定。
 
+### 4.4. 缩写
+
+#### 4.4.1. v-bind 缩写
+
+```vue
+<!-- 完整语法 -->
+<a v-bind:href="url"></a>
+<!-- 缩写 -->
+<a :href="url"></a>
+```
+
+#### 4.4.2. v-on 缩写
+
+```vue
+<!--  完整语法 -->
+<a v-on:click="doSomething"></a>
+<!-- 缩写 -->
+<a @click="doSomething"></a>
+```
+
+## 5. Vue 条件语句
+
+​	在 Vue 3 中，可以在模板中使用多种条件语句来控制组件的渲染。
+
+### 5.1. 条件判断
+
+#### 5.1.1. v-if
+
+​	根据表达式的真假条件性的渲染元素。如果表达式为真，则渲染该元素；如果为假，则不渲染（不会在 DOM 中生成该元素）。
+
+​	因为 `v-if` 是一个指令，所以必须将它添加到一个元素上。如果是多个元素，可以包裹在 `<template>` 元素上，并在上面使用 `v-if` 。最终渲染的结果将不包括 `<template>` 元素。
+
+#### 5.1.2. v-else
+
+​	与 `v-if` 搭配使用，表示在前一个 `v-if` 表达式为假时渲染的元素。
+
+#### 5.1.3. v-else-if
+
+​	在 `v-if` 和 `v-else` 之间添加额外的条件判断，可以连续使用多个 `v-else-if` 。
+
+### 5.2. v-show
+
+​	根据表达式的真假条件性地显式或隐藏元素，与 `v-if` 不同的是，`v-show` 始终会在 DOM 中保留元素，只是通过 CSS 的 `display` 属性控制元素的显示和隐藏。
+
+```vue
+<h1 v-show="ok">Hello!</h1>
+```
+
+## 6. Vue 循环语句
+
+​	在 Vue 中，循环语句主要通过 `v-for` 指令来实现，用于遍历数组或对象，生成对应数量的元素。
+
+### 6.1. 遍历数组
+
+```vue
+<li v-for="(item, index) in items"></li>
+```
+
+### 6.2. 遍历对象
+
+```vue
+<li v-for="(value, key, index) in object"></li>
+```
+
+- **key**：使用 `v-for` 渲染列表时，必须为每个项提供一个唯一的 `key` 属性，以便 Vue 能够识别每个项的唯一性，从而进行高效的 DOM 更新；
+- **嵌套循环**：可以嵌套使用多个 `v-for` 来渲染多维数组或对象结构。
+
+### 6.3. 迭代整数
+
+​	`v-for` 也可以循环整数。
+
+```vue
+<li v-for="n in 10"></li>
+```
+
+### 6.4. 在组件上使用 v-for
+
+​	在自定义组件上，可以像在任何普通元素上一样使用 `v-for` 。
+
+```vue
+<my-component v-for="item in items" :key="item.id"></my-component>
+```
+
+## 7. Vue 组件
+
+​	每个 Vue 组件都是一个独立的 Vue 实例，具有自己的模板、数据、方法和生命周期钩子，使得组件可以自包含地定义和管理自己的功能和样式。
+
+### 7.1. 组件的特性和优势
+
+- **复用性**：组件可以在不同的地方多次使用，提高代码的复用性和可维护性；
+- **封装性**：每个组件都是独立的作用域，可以封装自己的状态和逻辑，避免全局污染；
+- **组合性**：可以通过组合多个小组件构建复杂的界面；
+- **响应式**：组件的数据响应式地绑定到视图，数据更新时自动更新视图；
+- **模块化**：支持模块化开发，可以使用现代前端工具链进行构建和管理。
+
+### 7.2. 组件创建
+
+#### 7.2.1. 全局组件
+
+​	可以通过 `component` 全局注册。
+
+```vue
+<script>
+const app = Vue.createApp({})
+
+app.component('runoob', {
+  template: '<h1>Self-define component</h1>'
+})
+</script>
+```
+
+#### 7.2.2. 局部组件
+
+​	全局注册往往是不够理想的，可能会包含不需要的组件在最终的构建结果中，这造成了用户下载的 JavaScript 的无谓的增加。可以通过一个普通的 JavaScript 对象来定义组件。
+
+```vue
+<script>
+const ComponentA = {
+  /* ... */
+};
+const ComponentB = {
+  /* ... */
+}
+</script>
+```
+
+​	然后在 components 选项中定义需要的组件。
+
+```vue
+<script>
+const app = Vue.createApp({
+  components: {
+    'component-a': ComponentA,
+    'Component-b': ComponentB
+  }
+})
+</script>
+```
+
+### 7.3. 单文件组件
+
+​	使用单文件组件（ `.vue` 文件）能够更好地组织和管理 Vue 组件，一个单文件组件通常由三部分组成：模板、脚本和样式。
+
+```vue
+<!-- MyComponent.vue -->
+<script setup>
+
+</script>
+
+<script>
+export default {
+  
+}
+</script>
+<template>
+
+</template>
+
+<style scoped>
+
+</style>
+```
+
+### 7.4. Prop
+
+#### 7.4.1. 静态 prop
+
+​	`prop` 是子组件用来接受父组件传递过来的数据的一个自定义属性。父组件的数据需要通过 `props` 把数据传给子组件，子组件需要显示地用 `props` 选项声明 `prop` 。
+
+```vue
+<div id="app">
+  <site-name title="Google"></site-name>
+  <site-name title="Runoob"></site-name>
+  <site-name title="Taobao"></site-name>
+</div>
+
+<script>
+const app = Vue.createApp({})
+
+app.component('site-name', {
+  props: ['title'],
+  template: `<h4>{{ title }}</h4>`
+})
+  
+app.mount('#app')
+</script>
+```
+
+#### 7.4.2. 动态 prop
+
+​	类似于用 `v-bind` 绑定 HTML 特性到一个表达式，也可以用 `v-bind` 动态绑定 `props` 的值到父组件的数据中。每当父组件的数据变化时，该变化也会传导给子组件。
+
+```vue
+<div id="app">
+  <site-info
+    v-for="site in sites"
+    :id="site.id"
+    :title="site.title"
+  ></site-info>
+</div>
+
+<script>
+const Site = {
+  data() {
+    return {
+      sites: [
+        {id: 1, title: 'Google'},
+        {id: 2, title: 'Runoob'},
+        {id: 3, title: 'Taobao'}
+      ]
+    }
+  }
+}
+
+const app = Vue.createApp(Site)
+
+app.component('site-info', {
+	props: ['id', 'title'],
+  template: `<h4>{{ id }} - {{ title }}</h4>`
+})
+  
+app.mount('#app')
+</script>
+```
+
+#### 7.4.3. prop 验证
+
+​	组件可以为 `props` 指定验证要求。为了定制 prop 的验证方式，可以为 `props` 中的值提供了一个带有验证需求的对象，而不是一个字符串数组。
+
+```vue
+<script>
+Vue.component('my-component', {
+	props: {
+    // 基础类型检查（null 和 undefined 会通过任何类型验证）
+    propA: Number,
+    // 多个可能的类型
+    propB: [String, Number],
+    // 必填的字符串
+    propC: {
+    	type: String,
+    	required: true
+  	},
+  	// 带有默认值的数字
+    propD: {
+      type: Nuber,
+      default: 100
+    },
+    // 带有默认值的对象
+    propE: {
+      type: Object,
+      // 对象或数组的默认值必须从一个工厂函数获取
+      default: function() {
+        return { message: 'Hello' }
+      }
+    },
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        return ['success', 'warning', 'danger'].indexof(value) !== -1
+      }
+    }
+  }
+})
+</script>
+```
+
+**注意**：当 prop 验证失败时，Vue 将会产生一个控制台警告。type 可以是原生构造器，也可以是自定义构造器，使用 `instanceof` 检测。
+
+
+
+
+
+
+
+
+
