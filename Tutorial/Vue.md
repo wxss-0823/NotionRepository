@@ -199,17 +199,118 @@ export default {
 </script>
 ```
 
+## 3. Vue 指令
 
+​	Vue 指令（Directives）是 Vue.js 的一项核心功能，它们可以在 HTML 模板中以 `V-` 开头的特殊属性形式使用，用于将响应式数据绑定到 DOM 元素上或在 DOM 元素上进行一些操作。
 
+| 指令      | 描述                                                         |
+| --------- | ------------------------------------------------------------ |
+| `v-bind`  | 用于将 Vue 实例的数据绑定到 HTML 元素的属性上                |
+| `v-if`    | 用于根据表达式的值来条件性地渲染元素或组件                   |
+| `v-show`  | 用于根据表达式的值来条件性地显示或隐藏元素                   |
+| `v-for`   | 用于根据数组或对象的属性值来循环渲染元素或组件               |
+| `v-on`    | 用于在 HTML 元素上绑定事件监听器，使其能够触发 Vue 实例中的方法和函数 |
+| `v-model` | 用于在表单控件和 Vue 实例的数据之间创建双向数据绑定          |
 
+## 4. Vue 模板语法
 
+​	Vue 使用了基于 HTML 的模板语法，允许开发者声明式地将 DOM 绑定至底层的 Vue 实例的数据。结合响应系统，在应用状态改变时，Vue 能够只能地计算出重新渲染组件的最小代价并应用到 DOM 操作上。
 
+### 4.1. 插值
 
+#### 4.1.1. 文本
 
+​	数据绑定最常见的形式就是使用 `{{ }}` 的文本插值。
 
+```vue
+<div>
+	{{ message }}
+</div>
+```
 
+​	`{{ }}` 标签内的内容将会被替代为对应组件实例中 `message` 的值，如果 `message` 属性的值发生了改变，`{{ }}` 标签内容也会更新。也可以使用 `v-once` 指令，执行一次性地插值，当数据改变时，插值处的内容不会更新。
 
+#### 4.1.2. HTML
 
+​	使用 `v-html` 指令用于输出 HTML 代码。
 
+```vue
+<div>
+  <span v-html="rawHTML"></span>
+</div>
 
+<script>
+export default {
+  data() {
+    return {
+      rawHTML: "<span style='color:red'>This is red</span>"
+    };
+  }
+};
+</script>
+```
+
+#### 4.1.3. 属性
+
+​	HTML 属性中的值应使用 `v-bind` 指令。
+
+```vue
+<div v-bind:id="dynamicId"></div>
+```
+
+ 	对于 Boolean 属性，常规值为 true 或 false，如果属性值为 null 或 undefined，则该属性不会显示出来。
+
+```vue
+<button v-bind:disabled="isButtonDisabled">Button</button>
+```
+
+#### 4.1.4. 表达式
+
+​	Vue.js 提供了完全的 JavaScript 表达式支持。
+
+```vue
+<div>
+  {{ message.split('').reverse().join('') }}
+</div>
+```
+
+​	表达式会在当前活动实例的数据作用于下作为 JavaScript 被解析。
+
+**注意**：每个绑定都只能包含单个表达式，语句和控制流都不会生效。
+
+### 4.2. 指令
+
+​	指令是带有 `v-` 前缀的特殊属性，用于在表达式的值改变时，将某些行为应用到 DOM 上。
+
+#### 4.2.1. 参数
+
+​	参数在指令后以冒号指明。
+
+```vue
+<div>
+  <p><a v-bind:href='url'>Home page</a></p>
+</div>
+
+<script>
+export default {
+  data() {
+    return {
+      url: "https://github.com/wxss-0823"
+    };
+  }
+};
+</script>
+```
+
+#### 4.2.2. 修饰符
+
+​	修饰符是以半角句号 `.` 指明的特殊后缀，用于指出一个指令应该以特殊的方式绑定。
+
+```vue
+<form v-on:submit.prevent="onSubmit"></form>
+```
+
+### 4.3. 用户输入
+
+​	在 input 输入框中，可以使用 `v-model` 指令来实现双向数据绑定。
 
