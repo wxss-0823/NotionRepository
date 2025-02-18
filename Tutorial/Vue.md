@@ -586,6 +586,275 @@ Vue.component('my-component', {
 
 ​	计算属性用于根据其他数据的变化，动态计算衍生出来的属性值，而且具有缓存机制，只有相关依赖发生变化时，才会重新计算。
 
+### 8.1. 声明计算属性
+
+```vue
+<template>
+	<div>
+    <p>商品名称：{{ productName}}</p>
+    <p>商品价格：{{ formattedPrice }}</p>
+  </div>
+</template>
+
+<script>
+import { reactive, computed } from 'vue';
+  
+export default {
+  setup() {
+    // 响应式数据
+    const state = reactive({
+      name: 'phone',
+      price: 2000
+    });
+    
+    // 计算属性
+    const productName = computed(() => {
+      return `优惠 ${state.name}`;
+    });
+    
+    const formattedPrice = computed(() => {
+      return `￥${state.price.toFixed(2)}`;
+    });
+    
+    return {
+      productName,
+      formattedPrice,
+      increasePrice
+    };
+  }
+};
+</script>
+```
+
+### 8.2. computed vs. methods
+
+​	可以使用 `methods` 来替代 `computed` ，效果上两个都是一样的，但是 `computed` 是基于它的依赖缓存，只有相关依赖发生改变时才会重新取值；而使用 `methods` ，在重新渲染时，函数总会重新调用执行。
+
+### 8.3. computed setter
+
+​	上述定义的函数可以理解为 `computed getter` ，`computed` 属性默认只有 `getter` ，不过在需要时也可以提供一个 `setter` 。
+
+```vue
+<script>
+const app = {
+  data() {
+    return {
+      name: 'Google',
+      url: 'https://www.google.com'
+    };
+  },
+  computed: {
+    site: {
+      get: function () {
+        return this.name + ' ' + this.url;
+      },
+      set: function (newSite) {
+        let names = newSite.split(' ');
+        this.name = names[0];
+        this.url = names[names.length - 1];
+      }
+    }
+  }
+}
+
+vm = Vue.createApp(app).mount('#app')
+</script>
+```
+
+## 9. Vue 监听属性
+
+​	可以通过 `watch` 来响应数据的变化。`watch` 的作用是用于监测响应式属性的变化，并在属性发生变化时执行特定的操作，它是 Vue 的一种响应式机制。
+
+```vue
+<div id="app">
+  <p>Counter: {{ counter }}</p>
+  <button @click = "counter++">Click me</button>
+</div>
+
+<script>
+const app = {
+  data() {
+    return {
+      counter: 1
+    }
+  }
+}
+
+vm = Vue.createApp(app).mount('#app')
+vm.$watch('counter', function(nval, oval) {
+  alert("Counter value from" + oval + 'to' + nval)
+});
+</script>
+```
+
+### 9.1. 异步加载
+
+​	异步数据的加载 Vue 通过 `watch` 选项提供了一个更通用的方法，来响应数据的变化。
+
+```vue
+<script>
+const watchExampleVM = Vue.createApp({
+  data() {
+    return {
+      question: '',
+      answer: '每个问题结尾需要输入 ? 号'
+    }
+  },
+  watch: {
+  	// 每当 question 改变时，运行此功能
+  	question(newQuestion, oldQuestion) {
+      if (newQuestion.indexOf('?') > -1 || newQuestion.indexOf('？') > -1) {
+        this.getAnswer()
+      }
+    }
+	},
+  methods: {
+    getAnswer() {
+      this.answer = 'Loading...'
+      axios
+      	.get('try/ajax/json_vuetest.php')
+      	.then(response => {
+        	this.answer = response.data.answer
+      	})
+      	.catch(error => {
+					this.answer = "Error! Can't access API." + error
+      	})
+    }
+  }
+}).mount('#watch-example')
+</script>
+```
+
+### 9.2. 用法总结
+
+#### 9.2.1. 基本用法
+
+​	在 Vue 3 中，`watch` 函数用于监听响应式属性。当监听的属性值发生变化时，Vue 会触发回调函数执行。
+
+```javascript
+import { reactive, watch } from 'vue'
+
+export default {
+  setup() {
+    const state = reactive({
+      count: 0
+    });
+    
+    watch(
+    	() => state.count,
+      (newVal, OldVal) => {
+        console.log(`count changed from ${oldVal} to ${newVal}`);
+      }
+    );
+    
+    return { state };
+  }
+};
+```
+
+#### 9.2.2. 监听多个响应式属性
+
+​	如果需要同时监听多个响应式的属性，可以通过一个数组来传递监听的多个属性。
+
+```javascript
+watch(
+	[() => state.count, () => state.name],
+  ([newCount, oldCount], [oldCount, oldName]) => {
+    console.log(`count changed from ${oldCount} to ${newCount}`);
+    console.log(`name changed from ${oldName} to ${newName}`);
+);
+```
+
+#### 9.2.3. 深度监听
+
+​	如果需要监听的是一个对象或数组，并希望对齐内部的嵌套属性进行监听，可以使用 `deep: true` 选项，这会监听对象的所有属性变化。
+
+```javascript
+watch(
+	() => state.user,
+  (newVal, oldVal) => {
+    console.log('User object changed:', newVal, oldVal);
+  },
+  { deep: true }
+);
+```
+
+#### 9.2.4. 立即执行
+
+​	默认情况下，`watch` 只会在监听的值发生变化时触发回调，如果希望在组件加载时就立即执行一次回调，可以设置 `immediate: true` 。
+
+```javascript
+watch(
+	() => state.count,
+  (newVal, OldVal) => {
+ 		console.log(`count changed from ${oldVal} to ${newVal}`);
+  },
+  { immediate: true }
+);
+```
+
+#### 9.2.5. 异步操作
+
+​	如果在 `watch` 中需要执行异步操作，可以直接在回调函数中使用 `async` 和 `await` ，这可以处理诸如 API 请求、数据存储等操作。
+
+```javascript
+watch(
+	() =>state.count,
+  async (newVal, OldVal) => {
+    console.log(`count changed from ${oldVal} to ${newVal}`);
+    await fetch(`https://api.example.com/count/${newVal}`);
+  }
+);
+```
+
+#### 9.2.6. 监听多个属性并使用 handler 函数
+
+​	可以将 `watch` 用作监听多个属性的处理程序。
+
+```javascript
+const handler = ([newCount, oldCount], [newName, oldName]) => {
+  console.log(`count changed from ${oldCount} to ${newCount}`);
+  console.log(`name changed from ${oldName} to ${newName}`);
+};
+
+watch(
+	[() =>state.count, () =>state.name],
+  handler
+);
+```
+
+#### 9.2.7. watchEffect 简化版的监听
+
+​	Vue 3 还提供了 `watchEffect` API ，它比 `watch` 更加简洁，可以自动地跟踪响应式数据的变化，而不需要指定具体的数据源。
+
+```javascript
+watchEffect(() => {
+	console.log(`count is: ${state.count}`);
+});
+```
+
+#### 9.2.8. flush 选项
+
+​	`flush` 选项用于控制 `watch` 的回调执行时机。默认情况下，`watch` 回调会在 DOM 更新后执行，如果需要在更新之前执行回调，可以使用 `flush: 'pre'` 。
+
+```javascript
+watch(
+	() => state.count,
+	(newVal, oldVal) => {
+		console.log(`count changed from ${oldVal} to ${newVal}`);
+	},
+	{ flush: 'pre' }
+);
+```
+
+## 10. Vue 样式绑定
+
+### 10.1. Vue.js class
+
+​	`class` 和 `style` 是 HTML 元素的属性，用于设置元素的样式，可以用 `v-bind` 来设置样式属性。`v-bind` 在处理 `class` 和 `style` 时，表达式除了可以使用字符串之外，还可以是对象或数组。
+
+
+
 
 
 
