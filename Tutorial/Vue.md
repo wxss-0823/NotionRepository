@@ -853,13 +853,177 @@ watch(
 
 ​	`class` 和 `style` 是 HTML 元素的属性，用于设置元素的样式，可以用 `v-bind` 来设置样式属性。`v-bind` 在处理 `class` 和 `style` 时，表达式除了可以使用字符串之外，还可以是对象或数组。
 
+#### 10.1.1. class 属性绑定
 
+​	动态的传递 `class` 参数，或者动态使能其中一部分 `class` 。当 `isActive=true` 时，`class` 为 `active` ；否则无 `class` 绑定。
 
+```vue
+<div v-bind:class="{ 'active': isActive }"></div>
+```
 
+​	同理，也可以传入多个 `class` ，选择性的使能其中部分或者全部。
 
+```vue
+<div v-bind:class="{ 'active': isActive, 'text-danger': hasError }"></div>
+```
 
+​	`:class` 指令也可以与普通的 `class` 属性共存。
 
+```vue
+<div class="static" v-bind:class="{ 'active': isActive }"></div>
+```
 
+ 	此外，也可以绑定一个返回对象的计算属性。
 
+```vue
+<div :class="{classObject}"></div>
 
+<script>
+export default {
+	data() {
+    return {
+      isActive: true,
+      error: null
+    };
+  },
+  computed: {
+    classObject() {
+      return {
+        active: this.isActive && !this.error,
+        'text-danger': this.error && this.error.type == 'fatal'
+      };
+    }
+  }
+};
+</script>
+```
 
+​	也可以把一个数组传给 `v-bind:class` 。
+
+```vue
+<div class="static" :class="[activeClass, errorClass]"></div>
+
+<script>
+export default {
+  data() {
+    return {
+      activeClass: "active",
+      errorClass: "text-danger"
+    };
+  }
+};
+</script>
+```
+
+​	还可以使用三元表达式来切换列表中的 `class` 。
+
+```vue
+<div id="app">
+  <div class="static" :class="[isActive ? activeClass : '', errorClass]"></div>
+</div>
+```
+
+### 10.2. Vue.js style
+
+​	可以在 `v-bind:style` 直接设置样式，简写为 `:style` 。
+
+```vue
+<div id="app">
+  <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+</div>
+
+<script>
+export default {
+  data() {
+    return {
+      activeColor: 'red',
+      fontSize: 30
+    };
+  }
+};
+</script>
+```
+
+​	也可以直接绑定到一个样式对象，让模板更清晰。
+
+```vue
+<div id="app">
+  <div :style="styleObject"></div>
+</div>
+
+<script>
+export default {
+  data() {
+    return {
+      styleObject: {
+        color: 'red',
+        fontSize: 30px
+      };
+    }
+  }
+};
+</script>
+```
+
+​	`v-bind:style` 可以使用数组将多个样式对象应用到一个元素上。
+
+```vue
+<div id="app">
+  <div :style="[baseStyles, overridingStyles]"></div>
+</div>
+```
+
+**注意**：当 `v-bind:style` 使用需要特定前缀的 CSS 属性时，Vue.js 会自动侦测并添加响应的前缀。
+
+​	可以为 `style` 绑定中的 property 提供一个包含多个值的数组，常用于提供多个带前缀的值，这样写只会渲染数组中最后一个被浏览器支持的值。
+
+```vue
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+```
+
+### 10.3. 组件上使用 class 属性
+
+#### 10.3.1. 单根元素
+
+​	当在带有单个根元素的自定义组件上使用 `class` 属性时，这些 `class` 会被添加到该元素中，现有的 `class` 将不会被覆盖。
+
+```vue
+<div id="app">
+  <github class="classC classD"></github>
+</div>
+
+<script>
+const app = Vue.createApp({});
+  
+app.component('github', {
+  template: `<h1 class="classA, classB">I like github!</h1>`
+})
+</script>
+```
+
+​	对于带数据绑定的 `class` 也同样适用。
+
+```vue
+<my-component :class="{ active: isActive }"></my-component>
+```
+
+#### 10.3.2. 多个根元素
+
+​	如果一个组件具有多个根元素，需要定义哪些部分将会接收这个类。可以使用 `$attrs` 组件的属性执行此操作。
+
+```vue
+<div id="app">
+  <github class="classA"></github>
+</div>
+
+<script>
+const app = Vue.createApp({})
+
+app.component('github', {
+  template: `
+  	<p :class="$attrs.class">I like github!</p>
+  	<span>This is a sub-component</span>
+  `
+})
+</script>
+```
