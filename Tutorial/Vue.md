@@ -983,7 +983,7 @@ export default {
 
 ### 10.3. 组件上使用 class 属性
 
-#### 10.3.1. 单根元素
+#### 10.3.1. 单个根元素
 
 ​	当在带有单个根元素的自定义组件上使用 `class` 属性时，这些 `class` 会被添加到该元素中，现有的 `class` 将不会被覆盖。
 
@@ -1027,3 +1027,133 @@ app.component('github', {
 })
 </script>
 ```
+
+## 11. Vue 事件处理
+
+​	可以使用 `v-on` 指令来监听 DOM 事件，从而执行 JavaScript 代码。`v-on` 指令可以缩写为 `@` 符号。
+
+### 11.1. 事件绑定
+
+​	通常情况下，需要使用一个方法从事件调用 JavaScript 方法。`v-on` 可以接受一个定义的方法作为调用。
+
+```vue
+<div id="app">
+  <button @click="greet">
+    Click me!
+  </button>
+</div>
+
+<script>
+const app = {
+  data() {
+    return {
+      name: 'wxss'
+    };
+  },
+  methods: {
+    greet(event) {
+      alert('Hello ' + this.name + '!')
+      if (event) {
+        alert(event.target.tagName)
+      }
+    }
+  }
+};
+  
+Vue.createApp(app).mount("#app")
+</script>
+```
+
+​	除了直接绑定到一个方法，还可以用内联的 JavaScript 语句。
+
+```vue
+<div id="app">
+  <button @click="say(Hello)">
+    Say hi
+  </button>
+</div>
+
+<script>
+const app = {
+  data() {
+    
+  },
+  methods: {
+    say(message) {
+      alert(message)
+    }
+  }
+};
+  
+Vue.createApp(app).mount("#app")
+</script>
+```
+
+​	事件处理程序中可以有多个方法，这些方法由逗号运算符分隔，方法按照顺序依次执行。
+
+```vue
+<div id="app">
+  <button @click="one($event), two($event)">Click me!</button>
+</div>
+```
+
+### 11.2. 事件修饰符
+
+​	Vue.js 为 `v-on` 提供了事件修饰符来处理 DOM 事件细节，通过 `.` 表示的指令后缀来调用修饰符。
+
+| 修饰符     | 功能                   |
+| ---------- | ---------------------- |
+| `.stop`    | 阻止冒泡               |
+| `.prevent` | 阻止默认事件           |
+| `.capture` | 阻止捕获               |
+| `.self`    | 只监听触发该元素的事件 |
+| `.once`    | 只触发一次             |
+| `.left`    | 左键事件               |
+| `.right`   | 右键事件               |
+| `.middle`  | 中间滚轮事件           |
+
+### 11.3. 按键修饰符
+
+​	Vue 允许为 `v-on` 在监听键盘事件时添加按键修饰符。
+
+```vue
+<!-- 只有在 keycode 是 13 时调用 vm.submit() -->
+<input v-on:keyup.13="submit">
+```
+
+​	记住所有的 KeyCode 比较困难，因此 Vue 为最常用的按键提供了别名。
+
+| 按键别名  | 按键名   |
+| --------- | -------- |
+| `.enter`  | 回车     |
+| `.tab`    | 制表     |
+| `.delete` | 删除     |
+| `.esc`    | 退出     |
+| `.space`  | 空格     |
+| `.up`     | 上键     |
+| `.down`   | 下键     |
+| `.left`   | 左键     |
+| `.right`  | 右键     |
+| `.ctrl`   | 控制     |
+| `.alt`    | 可选     |
+| `.shift`  | 切换     |
+| `.meta`   | 元       |
+| `.left`   | 鼠标左键 |
+| `.right`  | 鼠标右键 |
+| `.middle` | 鼠标中键 |
+
+### 11.4. exact 修饰符
+
+​	`.exact` 修饰符允许控制由精确的系统修饰符组合触发的事件，用于区分单个系统修饰符与组合系统修饰。
+
+```vue
+<!-- 即使 Alt 和 Shift 被一同按下，也会触发 -->
+<button @click.ctrl="onClick">A</button>
+
+<!-- 有且只有 Ctrl 被按下时才触发 -->
+<button @click.ctrl.exact="onClick">A</button>
+
+<!-- 没有任何系统修饰符被按下时才触发 -->
+<button @click.exact="onClick">A</button>
+```
+
