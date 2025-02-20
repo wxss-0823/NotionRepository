@@ -1157,3 +1157,302 @@ Vue.createApp(app).mount("#app")
 <button @click.exact="onClick">A</button>
 ```
 
+## 12. Vue 表单
+
+​	可以用 `v-model` 指令在表单 `<input>` 、`<textarea>` 、`<select>` 等元素上创建双向数据绑定。`v-model` 会根据控件类型自动选取正确的方法来更新元素，会忽略所有表单元素的 `value` 、`checked` 、`selected` 等属性的初始值，使用由 `data` 选项声明的初始值。
+
+​	`v-model` 在内部为不同的输入元素使用不同的属性，并抛出不同的事件。
+
+- `text` 和 `textarea` 元素使用 `value` 属性和 `input` 事件；
+- `checkbox` 和 `radio` 使用 `checked` 属性和 `change` 事件；
+- `select` 字段将 `value` 作为属性并将 `change` 作为事件。
+
+### 12.1. 输入框
+
+```vue
+<div id="app">
+	<input v-model="message" placeholder="Edit me...">
+</div>
+
+<script>
+const app = {
+  data() {
+    return {
+      message: ""
+    };
+  }
+}
+  
+Vue.createApp(app).mount("#app")
+</script>
+```
+
+### 12.2. 文本输入框
+
+```vue
+<div id="app">
+  <textarea v-model="message" placeholder="Multi lines text..."
+</div>
+  
+<script>
+const app = {
+  data() {
+    return {
+      message: 'https://github.com/wxss-0823'
+    }
+  }
+}
+
+Vue.create(app).mount("#app")
+</script>
+```
+
+### 12.3. 复选框
+
+​	复选框如果没有指定 `value` 的值，默认为逻辑值；如果指定了 `value` 的值，`v-model` 会绑定 `value` 的值。如果有多个复选框，结果可以保存在同一个数组内，即相同名称的 `v-model` 中。
+
+```vue
+<div id="app">
+  <p>Single checkbox</p>
+  <input type="checkbox" id="checkbox" v-model="checked">
+  <label for="checkbox">{{ checked }}</label>
+  
+  <p>Multi checkboxes</p>
+  <input type="checkbox" id="google" value="Google" v-model="checkedNames">
+  <label for="google">Google</label>
+  <input type="checkbox" id="github" value="Github" v-model="checkedNames">
+  <label for="github">Github</label>
+  <input type="checkbox" id="firefox" value="Firefox" v-model="checkedNames">
+  <label for="firefox">Firefox</label>
+</div>
+
+<script>
+const app = {
+  data() {
+    return {
+      checked: false,
+      checkedNames: []
+    }
+  }
+}
+
+Vue.createApp(app).mount("#app")
+</script>
+```
+
+### 12.4. 单选按钮
+
+```vue
+<div id="app">
+  <input type="radio" id="google" value="Google" v-model="picked">
+  <label for="google">Google</label>
+  <input type="radio" id="github" value="Github" v-model="picked">
+  <label for="github">Github</label>
+  <br>
+  <span>Selected value: {{ picked }}</span>
+</div>
+
+<script>
+const app = {
+  data() {
+    return {
+      picked: ''
+    }
+  }
+}
+
+Vue.createApp(app).mount("#app")
+</script>
+```
+
+### 12.5. select 列表
+
+​	单选时会绑定选项对应的 `value` ，多选时会绑定到一个数组。也可以使用 `v-for` 循环输出选项，简化代码结构。
+
+```vue
+<div id="app">
+  <select v-model="selected" name="site">
+    <option value="">Please select a site.</option>
+    <option value="www.google.com">Google</option>
+    <option value="www.github.com">Github</option>
+  </select>
+</div>
+
+<script>
+const app = {
+  data() {
+    return {
+      selected: ""
+    }
+  }
+}
+
+Vue.createApp(app).mount("#app")
+</script>
+```
+
+### 12.6. 值绑定
+
+​	对于表单元素，`v-model` 绑定的值通常是静态字符串（对于复选框也可能是布尔值），但是有时候需要把值绑定到当前活动实例的一个动态属性上，可以用 `v-bind` 实现。
+
+#### 12.6.1. 复选框
+
+```vue
+<input type="checkbox" v-model="toggle" true-value="yes" false-value="no" />
+```
+
+​	当选中时，`v-model` 绑定的 `toggle` 的值为 `yes` ，否则，值为 `no` 。
+
+#### 12.6.2. 单选框
+
+```vue
+<input type="radio" v-model="pick" v-bind:value="a" />
+```
+
+​	当选中时，`v-model` 绑定的值 `pick` 为动态属性 `a` 。
+
+#### 12.6.3. 选择框选项
+
+```vue
+<select v-model="selected">
+  <option :value="{ number: 13 }">123</option>
+</select>
+```
+
+​	当选中时，`v-model` 绑定的值 `selected` 为对象字面量。
+
+### 12.7. 修饰符
+
+#### 12.7.1. lazy
+
+​	默认情况下，`v-model` 在 `input` 事件中同步输入框的值和数据，可以添加一个修饰符 `lazy` ，从而转变为在 `change` 事件中同步。
+
+```vue
+<input v-model.lazy="msg">
+```
+
+#### 12.7.2. number
+
+​	如果需要自动将用户的输入值转为 Number 类型，且如果原值的转换结果为 NaN，则返回原值时，可以添加一个修饰符 `number` 。
+
+```vue
+<input v-model.number="age" type="number">
+```
+
+​	这通常很有用，因为即使在 `type="number"` 时，HTML 中输入的值也总是返回字符串类型。
+
+#### 12.7.3. trim
+
+​	如果需要自动过滤用户输入的首尾空格，可以添加 `trim` 修饰符。
+
+```vue
+<input v-model.trim="msg">
+```
+
+## 13. Vue 自定义指令
+
+​	除了默认设置的核心指令（`v-model` 和 `v-show`），Vue 也允许注册自定义指令。
+
+### 13.1. 注册指令
+
+#### 13.1.1. 全局指令
+
+```vue
+<script>
+const app = Vue.createApp({})
+
+app.directive('focus', {
+  mounted(el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
+  
+app.mount("#app")
+</script>
+```
+
+#### 13.1.2. 局部指令
+
+​	也可以使用 `directives` 选项来注册局部指令，这样指令只能在当前实例中使用。
+
+```vue
+<script>
+const app = {
+  data() {
+    return {
+    }
+  },
+  directives: {
+    focus: {
+      mounted(el) {
+        el.focus()
+      }
+    }
+  }
+}
+
+Vue.createApp(app).mount("#app")
+</script>
+```
+
+### 13.2. 钩子
+
+#### 13.2.1. 钩子函数
+
+​	指令定义函数提供了几个钩子函数：
+
+- `created`：在绑定元素的属性或事件监听器被应用之前调用；
+- `beforeMount`：指令第一次绑定到元素并且在挂在父组件之间调用；
+- `mounted`：在绑定元素的父组件被挂载后调用；
+- `beforeUpdate`：在更新包含组件的 VNode 之前调用；
+- `updated`：在包含组件的 VNode 及其子组件的 VNode 更新后调用；
+- `beforeUnmount`：当指令与绑定元素的父组件卸载之前时，只调用一次；
+- `unmounted`：当指令与元素接触绑定且父组件已卸载时，只调用一次。
+
+#### 13.2.2. 钩子函数的参数
+
+##### el
+
+​	指令绑定到的元素，可用于直接操作 DOM。
+
+##### binding
+
+​	一个对象，包含以下属性：
+
+- `instance`：使用指令的组件实例；
+- `value`：传递给指令的值，例如：`v-my-directive=2`；
+- `oldValue`：先前的值，仅在 `beforeUpdate` 和 `updated` 中可用，值是否已更改都可用；
+- `arg`：传递给指令的参数，例如：`v-my-directive:foo` ；
+- `modifiers`：包含修饰符的对象，例如：`v-my-directive.foo.bar` ，修饰符对象为 `{foo: true, bar: true}` 。
+
+##### vnode
+
+​	在现代前端框架中，虚拟 DOM（Virtual DOM）是一个核心概念，虚拟节点（VNode）是虚拟 DOM 的基础元素，是对真实 DOM 的一个抽象表示，是一个描述 DOM 结构的 JavaScript 对象，而不是实际的 DOM 元素。
+
+##### prevNode
+
+​	上一个虚拟节点，仅在 `beforeUpdate` 和 `updated` 钩子函数中可用。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
