@@ -20,6 +20,12 @@ winget install JanDeDobbeleer.OhMyPosh -s winget
 
 查询文件地址，添加至杀毒排除项。
 
+## 更新
+
+```shell
+winget upgrade JanDeDobbeleer .OhMyPosh -s winget
+```
+
 ## 安装字体
 
 为了保证正确显示，安装 Nerd Font。Github 中为：`FiraCode Nerd Fond Mono`
@@ -34,6 +40,8 @@ winget install JanDeDobbeleer.OhMyPosh -s winget
 
   ```shell
   oh-my-posh init pwsh --config '...\oh-my-posh\themes\{主题文件名}.json' | Invoke-Expression
+  
+  oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\pure.omp.json" | Invoke-Expression
   ```
 
 - 如果想要保存配置，需要按照如下步骤：

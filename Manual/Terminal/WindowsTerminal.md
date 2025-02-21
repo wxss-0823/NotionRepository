@@ -28,7 +28,7 @@ Set-PSReadLineOption -ShowToolTips
 - 在快捷方式的目标地址后，添加如下代码：自动补全有时候使用 `Tab` ，有时候使用右键。
 
 ```shell
--noe -c "&{  Set-PSReadLineOption -PredictionSource History -ShowToolTips}"
+-noe -c "&{Set-PSReadLineOption -PredictionSource History -ShowToolTips}"
 ```
 
 ##### PowerShell 配置文件
