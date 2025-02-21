@@ -53,7 +53,7 @@ winget install JanDeDobbeleer.OhMyPosh -s winget
     输入后，会打开先前创建的配置文件，配置文件的路径为：
 
     ```shell
-    C:\Users\{UserName}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
+    C:\Users\{UserName}\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
     ```
 
   - 在配置文件中输入：
@@ -65,7 +65,7 @@ winget install JanDeDobbeleer.OhMyPosh -s winget
   - 每次更改配置文件后需要重新加载配置
 
     ```shell
-    . $PROFILE
+    .$PROFILE
     ```
 
 ## 报错
