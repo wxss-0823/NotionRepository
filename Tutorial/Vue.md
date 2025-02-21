@@ -1434,9 +1434,209 @@ Vue.createApp(app).mount("#app")
 
 ​	上一个虚拟节点，仅在 `beforeUpdate` 和 `updated` 钩子函数中可用。
 
+## 14. Vue 路由
 
+​	Vue 路由允许通过不同的 URL 访问不同的内容，通过 Vue 可以实现多视图的单页 Web 应用（Single Page web Application，SPA）。
 
+​	Vue.js 路由需要载入 [vue-router 库](https://github.com/vuejs/vue-router-next) ，使用文档详见 [中文文档](https://router.vuejs.org/zh/guide/) 。
 
+### 14.1. router-link
+
+​	Vue Router 可以通过自定义组件 `router-link` 来创建链接，在不重新加载页面的情况下更改 URL ，处理 URL 的生成以及编码。
+
+#### 14.1.1. to
+
+​	表示目标路由的链接。当被点击后，内部会立刻把 `to` 的值传到 `router.push()` ，所以这个值可以是一个字符串或是描述目标位置的对象。
+
+```vue
+<!-- 字符串 -->
+<router-link to="home">Home</router-link>
+<!-- 渲染结果 -->
+<a href="home">Home</a>
+
+<!-- 使用 v-bind 的 JS 表达式 -->
+<router-link v-bind:to="'home'">Home</router-link>
+
+<!-- 简写形式 -->
+<router-link :to="'home'">Home</router-link>
+
+<!-- 描述目标位置的对象 -->
+<router-link :to="{ path: 'home' }">Home</router-link>
+
+<!-- 命名的路由 -->
+<router-link :to="{ name:  'user', params: { userId: 123 } }">User</router-link>
+
+<!-- 带查询参数 -->
+<router-link :to="{ path: 'register', query: { plan: 'private' } }">Home</router-link>
+```
+
+#### 14.1.2. replace
+
+​	设置 `replace` 属性的话，当点击时，会调用 `router.replace()` ，而不是 `router.push()` ，导航后不会留下 `history` 记录。
+
+```vue
+<router-link :to="{ path: '/abc' }" replace></router-link>
+```
+
+#### 14.1.3. append
+
+​	设置 `append` 属性后，则在当前路径后追加其路径，即相对路径。
+
+```vue
+<router-link :to="{ path: 'relative/path' }" append></router-link>
+```
+
+#### 14.1.4. tag
+
+​	当需要将 `router-link` 渲染成某种标签时，可以使用 `tag` 属性类指定何种标签。同样它还是会监听点击，触发导航。
+
+```vue
+<router-link :to="/foo" tag="li">foo</router-link>
+```
+
+#### 14.1.5. active-class
+
+​	可以设置链接激活后使用的 CSS 类名，通过 `active-class` 属性指定。
+
+```vue
+<style>
+  ._active{
+    background-color: red;
+  }
+</style>
+
+<router-link :to="{ path: '/route' }" active-class="_active">Router Link</router-link>
+```
+
+#### 14.1.6. exact-active-class
+
+​	配置当链接被精确匹配时，应该激活的 `class` 。
+
+```vue
+<router-link :to="{ path: '/route' }" exact-active-class="_active">Router Link</router-link>
+```
+
+#### 14.1.7. event
+
+​	声明可以用来触发导航的事件，可以是一个字符串或是一个包含字符串的数组。
+
+```vue
+<router-link :to="{ path: '/path' }" event="mouseover">Router Link</router-link>
+```
+
+### 14.2. router-view
+
+​	`router-view` 将显示与 URL 对应的组件，可以把它放在任何地方，以适应布局。
+
+## 15. Vue 混入
+
+​	混入（Mixins）定义了一部分可复用的方法或者计算属性。混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被混入该组件本身的选项。
+
+### 15.1. 选项合并
+
+#### 15.1.1. 数据合并
+
+​	当组件和混入对象含有同名选项时，这些选项将以恰当的方式混合。数据对象在内部会进行浅合并（一层属性深度），在和组件的数据发生冲突时，以组件数据优先。
+
+```vue
+<script>
+const myMixin = {
+  data() {
+    return {
+      message: "hello",
+      foo: "google"
+    }
+  }
+}
+
+const app = Vue.createApp({
+  data() {
+    return {
+      message: "goodbye",
+      bar: "def"
+    }
+  },
+	mixins: [myMixin]
+})
+</script>
+```
+
+#### 15.1.2. 钩子函数合并	
+
+​	同名钩子函数将合并为一个数组，因此都将被调用。`mixin` 对象的钩子函数将在组件自身钩子函数之前调用。
+
+```vue
+<script>
+const myMixin = {
+  created() {
+    console.log('mixin 对象的钩子被调用')
+  }
+}
+
+const app = Vue.createApp({
+  mixins: [myMixin],
+  created() {
+    console.log('组件钩子被调用')
+  }
+})
+</script>
+```
+
+#### 15.1.3. 选项对象的合并
+
+​	某些选项，例如：`method` 、`components` 、`directives` 等选项的值是一个对象，引入 `mixin` 对象后，这些值将被按键名合并为同一个对象。两个对象键名冲突时，取组件对象的键值对。
+
+```vue
+<script>
+const myMixin = {
+  methods: {
+    foo() {
+      console.log('foo')
+    },
+    conficting() {
+      console.log('from mixin')
+    }
+  }
+}
+
+const app = Vue.createApp({
+  mixins: [myMixin],
+  methods: {
+    bat() {
+      console.log('bar')
+    },
+    conflicting() {
+      console.log('from self')
+    }
+  }
+})
+
+app.mount("#app")
+</script>
+```
+
+### 15.2. 全局混入
+
+​	也可以全局注册混入对象，一旦使用全局混入对象，将会影响到所有之后创建的 Vue 实例。
+
+```vue
+<script>
+const app = Vue.createApp({
+  myOption: "hello"
+})
+
+app.mixin({
+  created() {
+    const myOption = this.$options.myOption
+    if (myOption) {
+      document.write(myOption)
+    }
+  }
+})
+  
+app.mount("#app")
+</script>
+```
 
 
 
