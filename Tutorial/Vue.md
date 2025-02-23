@@ -1638,21 +1638,60 @@ app.mount("#app")
 </script>
 ```
 
+## 16. Vue Ajax
 
+​	Axios 是一个基于 Promise 的 HTTP 库，可以用在浏览器和 Node.js 中。
 
+### 16.1. GET 方法
 
+​	可以简单的读取 JSON 数据。
 
+```vue
+<script>
+const app = {
+  data() {
+    return {
+      info: "Ajax Test!!"
+    }
+  },
+  mounted() {
+    axios
+    	.get("url")
+    	.then(reponse => {
+      this.info = response
+    })
+    	.catch(error => {
+      console.log(error);
+    });
+  }
+}
 
+Vue.createApp(app).mount("#app")
+</script>
+```
 
+### 16.3. POST 方法
 
+​	可以用 POST 方法，向 URL 发送数据和请求。
 
-
-
-
-
-
-
-
-
-
-
+```vue
+<script>
+const app = {
+  data() {
+    return {
+      info: null
+    }
+  },
+  mounted () {
+    axios
+      .post('url')
+      .then(response => (this.info = response))
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+}
+ 
+Vue.createApp(app).mount('#app')
+</script>
+```
