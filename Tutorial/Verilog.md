@@ -333,15 +333,112 @@ condition_expression ? true_expression : false_expression
 
 #### 1.5.1. \`define & \`undef
 
-​	在编译阶段
+​	在编译阶段，\`define 用于文本替换，类似于 C 语言中的 `#define` 。一旦 \`define 指令被编译，其在整个编译过程中都会有效。
 
+​	\`undef 用来取消之前的宏定义。
 
+#### 1.5.2. \`ifdef \`ifndef \`elseif \`else \`endif
 
+​	这些属于条件编译指令，用于根据定义情况，选择性地使用参数说明。
 
+#### 1.5.3. \`include
 
+​	使用 \`include 可以在编译时将一个 Verilog 文件内嵌到另一个 Verilog 文件中，作用类似于 C 语言中的 `#include` 结构。该指令通常用于将全局或公用的头文件包含在设计文件里。
 
+​	文件路径既可以使用相对路径，也可以使用绝对路径。
 
+#### 1.5.4. \`timescale
 
+​	在 Verilog 模型中，时延有具体的单位时间表述，并用 \`timescale 编译指令将时间单位与实际时间相关联。
+
+​	该指令用于定义时延、仿真的单位和精度。
+
+```verilog
+`timescale time_unit / time_precision
+```
+
+- `time_unit`：表示时间单位；
+- `time_precision`：表示时间精度。
+
+​	它们均是由数字以及单位组成。时间精度可以和时间单位一样，但是时间精度大小不能超过时间单位大小。
+
+​	在编译过程中，\`timescale 指令会影响后面所有模块中的时延值，直至遇到另一个 \`timescale 指令或 \`resetall 指令。由于在 Verilog 中没有默认的 \`timescale，如果没有指定 \`timescale，Verilog 模块就会继承前面编译模块的 \`timescale 参数。
+
+​	如果一个设计中的多个模块都带有 \`timescale，模拟器总是定位在所有模块中的最小时延精度上，并且所有时延都相应地换算为最小时延精度，时延单位并不受影响。
+
+​	\`timescale 的时间精度设置是会影响仿真时间的，时间精度越小，仿真是占用内存越多，实际使用的仿真时间就越长。所以如果没有必要，应尽量将时间精度设置的大一点。
+
+#### 1.5.5. \`default_nettype
+
+​	该指令用于为隐式的线网变量指定类型，即将没有声明就使用的变量设置默认类型。
+
+```verilog
+`default_nettype wand	// 缺省为线与类型
+`default_nettype none // 缺省不会自动产生 wire 变量
+```
+
+​	区别在于，指定默认类型，编译时只会产生警告，而不会产生错误；而不指定默认类型，如果未声明即使用，会产生错误，导致编译不通过。
+
+#### 1.5.6. \`resetall
+
+​	该编译器指令将所有的编译指令重新设置为缺省值。\`resetall 可以使得缺省连线类型为线网类型。将 \`resetall 添加到模块最后时，可以将当前的 \`timescale 取消放置进一步传递，只保证当前的 \`timescale 在局部有效，避免 \`timescale 的错误继承。
+
+#### 1.5.7. \`celldefine & \`endcelldefine
+
+​	这两个程序指令用于将模块标记为单元模块，包含模块的定义。
+
+#### 1.5.8. \`unconnected_drive & \`nounconnected_drive
+
+​	该指令用于，在模块实例化中，出现在这两个编译器指令间的任何未连接的输入端口，设置为正偏（上拉至高电平）电路状态或者反偏（下拉至低电平）电路状态。
+
+```verilog
+`unconnected_drive pull1
+...
+/* 在这两个程序指令间的所有未连接的输入端口为正偏电路状态 */
+`nounconnected_drive
+
+`unconnected_drive pull0
+...
+/* 在这两个程序指令间的所有未连接的输入端口为反偏电路状态 */
+`nounconnected_drive
+```
+
+### 1.6. 连续赋值
+
+#### 1.6.1. assign
+
+​	连续赋值语句是 Verilog 数据流建模的基本语句，用于对 `wire` 型变量进行赋值。
+
+​	Verilog 还提供了另一种对 `wire` 型赋值的简单方法，即在 `wire` 型变量声明的时候同时对其赋值。`wire` 型变量只能被赋值一次，因此该种连续赋值方式也只能有一次。
+
+```verilog
+assign LHS_target = RHS_expression ;
+```
+
+- `LHS`：Left Hand Side 指赋值操作的左侧；
+- `RHS`：Right Hand Side 指赋值操作的右侧；
+
+- `assign`：关键词，任何已经声明的 `wire` 型变量的连续赋值语句都是以 `assign` 开头。
+
+**注意**：
+
+1. `LHS_target` 必须是一个标量或者线性变量，而不能是寄存器类型；
+2. `RHS_expression` 的类型没有要求，可以是标量或线型或寄存器向量，也可以是函数调用；
+3. 只要 `RHS_expression` 表达式的操作数有事件发生时，`RHS_expression` 就会立刻重新计算，同时赋值给 `LHS_target` 。
+
+### 1.7. 时延
+
+#### 1.7.1. 时延
+
+​	连续赋值延时语句中的延时，用于控制任意操作数发生变化到语句左端赋予新值之间的时间延时。时延一般是不可综合的。寄存器的时延也是可以控制的。
+
+​	连续赋值时延一般可分为普通赋值时延、隐式时延、声明时延。
+
+```
+// 普通时延，A&B 计算结果延时 10 个时间单位赋值给 Z
+wire Z, A, B;
+assign 
+```
 
 
 
