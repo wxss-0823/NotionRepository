@@ -584,7 +584,169 @@ always @(posedge clk or negedge rstn) begin
 
 #### 1.11.2. 并行块
 
-​	并行块用关键字 `fork` 和 `join` 来表示。并行块中的语句是并行执行的，即使是阻塞形式的赋值。并行块中每条语句的时延都是与块语句开始执行的时间相关。顺序快与并行块的区别显而易见。
+​	并行块用关键字 `fork` 和 `join` 来表示。并行块中的语句是并行执行的，即使是阻塞形式的赋值。并行块中每条语句的时延都是与块语句开始执行的时间相关。
+
+#### 1.11.3. 嵌套块
+
+​	顺序块和并行块还可以嵌套使用。
+
+```verilog
+`timescale 1ns/1ns
+module test;
+	reg [3:0] ai_sequen2, bi_sequen2 ;
+	reg [3:0] ai_paral2, bi_paral2 ;
+	initial begin
+		ai_sequen2 = 4'd5 ;					// at 0 ns
+    	fork
+        #10 ai_paral2 = 4'd5 ;	// at 10 ns
+        #15 bi_paral2 = 4'd5 ;	// at 15 ns
+      join
+    	#20 bi_sequen2 = 4'd8 ;		// at 35 ns
+  end
+endmodule
+```
+
+#### 1.11.4. 命名块
+
+​	可以给块语句结构命名。命名的块中可以声明局部变量，通过层次名引用的方法对变量进行访问。
+
+```verilog
+`timescale 1ns/1ns
+
+module test;
+  initial begin : wxss		// 命名模块名字为 wxss
+    integer i ;						// 此变量可以通过 test.wxss.i 被其他模块使用
+    i = 0 ;
+    ...
+  end
+endmodule
+```
+
+​	命名块也可以被禁用，用关键字 `disable` 来表示。
+
+```verilog
+while (i_d <= 50) begin : test_b2
+	#10
+  if (i_d >= 50) begin
+    disable test_b2								// stop 当前 block：test_b2
+  end
+  i_d = i_d + 10 ;
+end
+```
+
+​	当 `i_d` 累加到 50 后，`diable` 退出了当前的 `while` 块。需要说明的是，在 `always` 和 `forever` 块中使用时只能退出当前循环，下一次语句会重新回到块开始。
+
+### 1.12. 条件语句
+
+​	条件（if）语句用于控制执行语句，要根据条件判断来确定是否执行。条件语句用关键字 `if` 和 `else` 来声明，条件表达式必须在圆括号内。
+
+```verilog
+if (condition1)					true_statement1   ;
+else if (condition2)		true_statement2   ;
+else if (condition3)		true_statement3   ;
+else 										default_statement ;
+```
+
+- 判断过程与 C 语言类似；
+- `true_statement` 等执行语句可以是一条语句，也可以是多条，如果是多条执行语句，需要用 `begin` 与 `end` 关键字进行说明。
+
+### 1.13. 多路分支语句
+
+​	`case` 语句是一种多路条件分支的形式，可以解决 `if` 语句中有多个条件选项时使用不方便的问题。
+
+```verilog
+case (case_expr)
+	condition1		:			true_statement1 ;
+	condition2		:			true_statement2 ;
+	...
+	default				:			default_statement ;
+endcase
+```
+
+- `default` 语句是可选的，且在一个 `case` 语句中不能有多个 `default` 语句；
+- 条件选项不要求互斥，虽然这些选项是并发比较的，但执行效果是谁在前且条件为真谁被执行；
+- `true_statement` 等执行语句可以是一条语句，也可以是多条，如果是多条执行语句，则需要用 `begin` 与 `end` 关键字进行说明；
+- `case` 语句支持嵌套使用。
+
+#### 1.13.1. 多条件
+
+​	`case` 语句中的 `condition` 也可以是多个，用 `,` 分隔。
+
+```verilog
+case (sel)
+  2'b00: ... ;
+  2'bx0, 2'bx1, 2'bxz: ... ;
+  ...
+endcase
+```
+
+#### 1.13.2. casex/casez 语句
+
+​	`casex` 、`casez` 语句是 `case` 语句的变形，用来表示条件选项中的无关项。`casex` 用 `x` 来表示无关值，`casez` 用 `?` 来表示无关值，两者的实现的功能是完全一致的，语法与 `case` 语句也完全一致。
+
+```verilog
+casez (sel)
+  4'b???1: ... ;
+  4'b??1?: ... ;
+  ...
+endcase
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
