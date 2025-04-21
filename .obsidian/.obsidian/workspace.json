@@ -1,22 +1,20 @@
 {
   "main": {
-    "id": "ead5e8aeb9011a77",
+    "id": "9fc2edbefd49149e",
     "type": "split",
     "children": [
       {
-        "id": "3bd3473cb487608b",
+        "id": "204192e1d38515e4",
         "type": "tabs",
         "children": [
           {
-            "id": "a8b50fff2d37b8c1",
+            "id": "b03595c657be5c7e",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "Tutorial/assets/Linux_DictionaryStructrue.jpg"
-              },
-              "icon": "lucide-image",
-              "title": "Linux_DictionaryStructrue"
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ]
@@ -25,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "4037a02977ff8a04",
+    "id": "3701a0e202830afe",
     "type": "split",
     "children": [
       {
-        "id": "7345cfafb7e4cd43",
+        "id": "dab2fb54c5af60ac",
         "type": "tabs",
         "children": [
           {
-            "id": "00f003f8b06de0f4",
+            "id": "f7f4ba7c43a9d3c0",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -46,7 +44,7 @@
             }
           },
           {
-            "id": "bb162077fc4dca99",
+            "id": "02833f5db62313d5",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -63,7 +61,7 @@
             }
           },
           {
-            "id": "5c80e616eeef34cb",
+            "id": "087ca2df50bab9cd",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -79,15 +77,15 @@
     "width": 300
   },
   "right": {
-    "id": "90901c608f9f7167",
+    "id": "b6119e91364db181",
     "type": "split",
     "children": [
       {
-        "id": "bce2efed2fe09253",
+        "id": "52baf7ecdf67246b",
         "type": "tabs",
         "children": [
           {
-            "id": "c3dfaba7bf70014c",
+            "id": "e5007cad6aa7b476",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -105,7 +103,7 @@
             }
           },
           {
-            "id": "294df82c774ab677",
+            "id": "3e5cb11c7cc9affd",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -118,7 +116,7 @@
             }
           },
           {
-            "id": "2f40c29bab398c09",
+            "id": "4f7f578b2dfe1608",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -133,7 +131,7 @@
             }
           },
           {
-            "id": "92e69d7197014c2b",
+            "id": "4fc5a224de21b589",
             "type": "leaf",
             "state": {
               "type": "outline",
@@ -160,28 +158,11 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "markdown-importer:Open format converter": false
+      "command-palette:Open command palette": false
     }
   },
-  "active": "a8b50fff2d37b8c1",
+  "active": "b03595c657be5c7e",
   "lastOpenFiles": [
-    "Tutorial/ASP.md",
-    "Tutorial/C.md",
-    "README.md",
-    "handwritten-notes/New note.pdf",
-    "handwritten-notes",
-    "未命名 1.canvas",
-    "未命名.canvas",
-    "Manual/Terminal/WindowsTerminal.md",
-    "ProgramNote/Python.md",
-    "ProgramNote/Java.md",
-    "ProgramNote/Git.md",
-    "ProgramNote/Front-end.md",
-    "ProgramNote/C++.md",
-    "ProgramNote/C#.md",
-    "ProgramNote/C.md",
-    "Illustration/插画.md",
-    "Bigdata/MySQL/初始化配置文件步骤.md"
+    "Untitled.canvas"
   ]
 }

@@ -114,7 +114,7 @@ git pull origin main
 # 初始化项目
 git init
 # 添加远程分支
-git remote add git@github.com:xxx/xxx.git
+git remote add origin git@github.com:xxx/xxx.git
 # 查看远程分支
 git branch -a
 # 拉取远程分支
