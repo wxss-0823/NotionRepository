@@ -1011,23 +1011,79 @@ endfunction
 | 调用     | 函数只能调用函数，不能调用任务                       | 任务可以调用函数和任务                                  |
 | 书写规范 | 函数不能单独作为一条语句出现，只能放在赋值语句的右端 | 任务可以作为一条单独的语句出现在语句块中                |
 
+#### 2.2.2. 任务声明
 
+​	任务在模块中任意位置定义，并在模块内任意位置引用，作用范围也局限于此模块。
 
+```verilog
+task		task_id ;
+	port_declaration ;
+	procedural_statement ;
+endtask
+```
 
+​	任务中使用关键字 `input` 、`output` 和 `inout` 对端口进行声明。任务逻辑设计中，可以把 `input` 变量看做 `wire` ，`output` 变量看做 `reg` 。对 `output` 信号赋值时不需要使用 `assign` 。为避免时序错乱，建议 `output` 信号采用阻塞赋值。
 
+```verilog
+task	xor_oper_iner(
+	input [N-1:0]		numa,
+	input [N-1:0]		numb,
+	output [N-1:0]	numco);
+	#3 numco = numa ^ numb ;
+endtask
+```
 
+#### 2.2.3. 任务调用
 
+​	任务可以单独作为一条语句出现在 `initial` 或 `always` 块中。
 
+```verilog
+task_id(input1, input2, input3, ..., output1, output2, ...);
+```
 
+- 任务调用时，端口必须按顺序对应；
+- 输入端连接的模块内信号可以是 `wire` 型， 也可以是  `reg` 型；输出连接的模块内信号要求一定是 `reg` 型。
 
+#### 2.2.4. 操作全局变量
 
+​	任务可以看做是过程性赋值，所以任务的 `output` 端信号返回时间是在任务中所有语句执行完毕之后。
 
+​	任务内部变量也只有在任务中可见，如果想具体观察任务中对变量的操作过程，需要将观察的变量声明在模块之内、任务之外。
 
+```verilog
+reg		clk_test2;
+task clk_rvs_global ;
+  # 5 ;		cli_test2 = 0;
+  # 5 ;		cli_test2 = 1;
+endtask
+always clk_rvs_global;
+```
 
+#### 2.2.5. automatic 任务
 
+​	和函数一样，Verilog 中任务调用时的局部变量都是静态的。可以用关键字 `automatic` 来对任务进行声明，那么任务调用时各存储空间就可以动态分配，每个调用的任务都各自独立的对自己独有的地址空间进行操作，而不影响多个相同任务调用时的并发执行。
 
+​	如果一个任务代码段被 2 处及以上调用，一定要用关键字 `automatic` 声明。
 
+### 2.3. 状态机
 
+​	有限状态机（Finite-State Machine，FSM），简称状态机，是表示有限个状态以及在这些状态之间的转移和动作等行为的数学模型。
+
+#### 2.3.1. 状态机类型
+
+​	Verilog 中状态机主要用于同步时序逻辑的设计，能够在有限个状态之间按一定要求和规律切换时序电路的状态。状态的切换方向不但取决于各个输入值，还取决于当前所在状态。
+
+##### Moore 型
+
+​	Moore 型状态机的输出只与当前状态有关，与当前输入无关。输出会在一个完整的时钟周期内保持稳定，即使此时输入信号有变化，输出也不会变化，输入对输出的影响要到下一个时钟周期才能反映出来。
+
+![MooreStateMachine](./assets/Verilog-MooreStateMachine.png)
+
+##### Mealy 型
+
+​	Mealy 型状态机的输出，不仅与当前状态有关，还取决于当前的输入信号。
+
+![MealyStateMachine](./assets/Verilog-MealyStateMachine.png)
 
 
 
