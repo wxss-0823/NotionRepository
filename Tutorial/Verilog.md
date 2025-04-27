@@ -1142,25 +1142,106 @@ always clk_rvs_global;
 5. 不要在多个 `always` 块中为同一个变量赋值；
 6. 避免 `latch` 产生。
 
+### 2.5. 避免 Latch
 
+​	锁存器（Latch）是电平触发的存储单元，数据存储的动作取决于输入时钟（或者使能）信号的电平值。仅当锁存器处于使能状态时，输出才会随着数据输入发生变化。
 
+​	当电平信号无效时，输出信号随输入信号变化，就像通过了缓冲器；当电平有效时，输出信号被锁存，激励信号的任何变化，都将直接引起锁存器输出状态的改变。
 
+#### 2.5.1. Latch 的危害
 
+1. 输入状态可能多次变化，容易产生毛刺，增加了下一级电路的不确定性；
+2. 在大部分 FPGA 的资源中，可能需要比触发器更多的资源去实现 Latch 结构；
+3. 锁存器的出现是的静态时序分析变得更加复杂。
 
+#### 2.5.2. 出现情形
 
+##### if 结构不完整
 
+​	组合逻辑中，不完整的 `if-else` 结构，会产生 Latch 。
 
+```verilog
+always @(*) begin
+  if (en) q = data ;
+end
+```
 
+​	缺少 `else` 分支，系统默认在 `else` 分支下保持寄存器 q 的值不变，即具有锁存功能，所以寄存器 q 会被综合成 Latch 结构。
 
+​	但是在时序逻辑中，不完整的 `if-else` 结构，不会产生 Latch。这是因为寄存器 q 在时钟的边沿下才会改变，这是触发器（Flip-flop）的特性。
 
+​	避免此类 Latch 的方法主要有 2 种，一种是补全 `if-else` 结构，或者对信号赋初值。
 
+```verilog
+always @(*) begin
+  if (en) q = data ;
+  else    q = 1'b0 ;
+end
 
+// or
+always @(*) begin
+  q = 1'b0 ;
+  if (en) q = data ;
+end
+```
 
+​	在组合逻辑中，当条件语句中有很多条赋值语句时，每个分支条件下赋值语句的不完整也是会产生 Latch 。通过对每个信号逻辑拆分来看，等同于 `if-else` 结构不完整，相关寄存器缺少在其他条件下的赋值行为。
 
+```verilog
+module module1_latch11(
+	input					data1,
+  intpu 				data2,
+  input					en ,
+  output reg 		q1 ,
+  output reg 		q2);
+  
+  always @(*) begin
+    if (en)			q1 = data1 ;
+    else				q2 = data2 ;
+  end
+endmodule
+```
 
+​	这种情况也可以通过补充完整赋值语句或赋初值来避免 Latch 。
 
+##### case 结构不完整
 
+​	`case` 语句产生 Latch 的原理几乎与 `if` 语句一致。在组合逻辑中，当 `case` 选项列表不全且没有加 `default` 关键字，或有多个赋值语句不完整时，也会产生 Latch 。
 
+```verilog
+module module_latch2(
+	input				 data1,
+	input				 data2,
+  input	[1:0]	 sel ,
+  output reg q ) ;
+  
+  always @(*) begin
+    case(sel)
+      2'b00: q = data1 ;
+      2'b01: q = data2 ;
+    endcase
+  end
+  
+endmodule
+```
+
+​	消除此种 Latch 的方法也是 2 种，将 `case` 选项列表补充完整，或对信号赋初值。补充完整 `case` 选项列表时，可以罗列所有的选项结果，也可以用 `default` 关键字来代替其他选项结果。
+
+```verilog
+always @(*) begin
+  case(sel)
+    2'b00:		q = data1 ;
+    2'b01: 		q = data2 ;
+    default: 	q = 1'b0 ;
+    // or
+    // 2'b10, 2'b11: q = 1'b0 ;
+  endcase
+end
+```
+
+##### 原信号赋值或判断
+
+​	在组合逻辑中，如果一个信号的赋值源头有其信号本身，或者判断条件中有其信号本身的逻辑，也会产生 Latch 。因为此时信号也需要
 
 
 
@@ -1173,7 +1254,6 @@ always clk_rvs_global;
 
 
 ​	
-
 
 
 
