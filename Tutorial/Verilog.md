@@ -1241,7 +1241,39 @@ end
 
 ##### 原信号赋值或判断
 
-​	在组合逻辑中，如果一个信号的赋值源头有其信号本身，或者判断条件中有其信号本身的逻辑，也会产生 Latch 。因为此时信号也需要
+​	在组合逻辑中，如果一个信号的赋值源头有其信号本身，或者判断条件中有其信号本身的逻辑，也会产生 Latch 。因为此时信号也需要具有存储功能，但是没有时钟驱动。
+
+```verilog
+// signal itself ad a part of condition
+reg a, b;
+always @(*) begin
+  if (a & b) a = 1'b1 ;		// a -> latch
+  else a = 1'b0 ;
+end
+
+// signal itself are the assignment source
+reg			c ;
+wire [1:0] sel ;
+always @(*) begin
+  case(sel)
+    2'b00:		c = c ;			// c -> latch
+    2'b01:		c = 1'b1 ;
+    default: 	c = 1'b0 ;
+  endcase
+end
+
+//signal itself as a part of condition in "? expression"
+wire		d, sel2 ;
+assign	d = (sel2 && d) ? 1'b0 : 1'b0 ;	// d -> latch
+```
+
+​	避免此类 Latch 的方法，就只有一种，即在组合逻辑中避免这种写法，信号不要给信号自己赋值，且不要用赋值信号本身参与判断条件逻辑。或者在不要求立刻输出信号的时候，将信号进行一个时钟周期的延时，再进行相关逻辑的组合。
+
+##### 敏感信号列表不完整
+
+​	组合逻辑中 `always@()` 块内敏感列表没有列全，该触发的时刻没有触发，那么相关寄存器还是会保存之前的输出结果，因而会生成锁存器。
+
+​	这种情况下，把敏感信号不全或者直接用 `always@(*)` 即可消除 Latch 。
 
 
 
