@@ -1285,7 +1285,7 @@ assign	d = (sel2 && d) ? 1'b0 : 1'b0 ;	// d -> latch
 
 ##### 信号声明
 
-​	testbench 模块声明时
+​	testbench 模块声明时，一般不需要声明端口，因为激励信号一般都在 testbench 内部，
 
 
 
