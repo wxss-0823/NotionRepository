@@ -1879,15 +1879,134 @@ endspecify
 specparam name = value ;
 ```
 
+#### 3.10.2. 全连接
+
+在全连接中，源引脚中的每一位于目标引脚的每一位相连接。源引脚和目标引脚的连接是组合遍历的，且不要求位宽对应。
+
+```verilog
+(<multiple_source_io> *> <multiple_destination_io>) = <delay_value> ; 
+```
+
+#### 3.10.3. 边沿敏感路径
+
+边沿敏感路径用于输入到输出延迟的时序建模，并使用边缘标识符指明触发条件。如果没有指明的话，任何变化都会触发源引脚到目的引脚的延迟值的变化。
+
+```verilog
+// 在 clk 上升沿触发，从 clk 上升沿至 out 上升沿，延迟为 1；从 clk 上升沿至 out 下降沿，延迟为 2
+// 从 in 到 out 的数据路径是同向的，即 out = in
+(posedge clk => (out +: in)) = (1, 2) ;
+```
+
+#### 3.10.4. 条件路径
+
+Verilog 也允许模型中根据信号值的不同，有条件的给路径延迟进行不同的赋值。条件中的操作数可以是标量可以是向量，条件表达式也可以包含任意操作符。
+
+```verilog
+specify
+  if (a)			(a => out) = 2.5 ;
+  if (~a)			(a => out) = 1.5 ;
+  
+  if (b & c)			(b => out) = 2.5 ;
+  if (!(b & c))		(b => out) = 1.5 ;
+  
+  if ({c, d} == 2'b01)
+    					(c, d *> out) = 3.5 ;
+  ifnone 			(c, d *> out) = 3 ;
+endspecify
+```
+
+**注意**：
+
+- 应当只使用 `if` 语句将条件路径中所有的输入状态都完整的声明；
+- 没有声明的路径会使用分布延迟，分布延迟也没有声明的话，将使用零延迟；
+- 如果路径延迟和分布延迟同时声明，将选择最大的延迟作为路径延迟；
+- `specify` 中的 `if` 语句不能使用 `else` 结构，可以使用 `ifnone` 描述条件缺省时的路径延迟。
+
+####  3.10.5. 门延迟路径
+
+门延迟（上升延迟、下降延迟、关断延迟）的数值也可以通过路径延迟的方法来描述。可以定义的延迟路径个数为 1 个，2 个，3 个， 6 个，12 个，其他数量的延迟值都是错误的。
+
+```verilog
+// 1 param: rise, fall and shut use the same parameter
+specify
+  specparam t_delay = 1.5 ;
+  (clk => q) = t_delay ;
+endspecify
+
+// 2 param: rise	(0 -> 1, z -> 1, 0 -> z)
+//					fall	(1 -> 0, z -> 0, 1 -> z)
+specify
+  specparam t_rise = 1.5, t_fall = 2 ;
+  (clk => q) = (t_rise, t_fall) ;
+endspecify
+
+// 3 param: rise	(0 -> 1, z -> 1)
+//					fall	(1 -> 0, z -> 0)
+specify
+  specparam t_rise = 1.5, t_fall = 2.5, t_turnoff = 1.8 ;
+  (clk => q) = (t_rise, t_fall, t_turnoff) ;
+endspecify
+
+// 6 param: 0 -> 1, 1 -> 0, 0 -> z, z -> 1, 1 -> z, z -> 0 respectively
+specify
+  specparam t_01 = 1.5, t_10 = 2, 	t_0z = 1.8 ;
+  specparam t_z1 = 2,   t_1z = 2.2, t_z0 = 2.1 ;
+  (clk => q) = (t_01, t_10, t_0z, t_z1, t_1z, t_z0) ;
+endspecify
+
+// 12 param: 0 -> 1, 1 -> 0, 0 -> z, z -> 1, 1 -> z, z -> 0
+//					 0 -> x, x -> 1, 1 -> x, x -> 0, x -> z, z -> x repectively
+specify
+  specparam t_01 = 1.5, t_10 = 2, 	t_0z = 1.8 ;
+  specparam t_z1 = 2,   t_1z = 2.2, t_z0 = 2.1 ;
+  specparam t_0x = 1.1, t_x1 = 1.2, t_1x = 2.1 ;
+  specparam t_x0 = 2,   t_xz = 2,   t_zx = 2.1 ;
+  
+  (clk => q) = (t_01, t_10, t_0z, t_z1, t_1z, t_z0, 
+                t_0x, t_x1, t_1x, t_x0, t_xz, t_zx) ;
+endspecify
+```
+
+门延迟路径模型中，也可以指定最大值、最小值和典型值。
+
+```verilog
+// rise, fall and turnoff's delay: min: typicla: max
+specify
+  specparam t_rise = 1:1.5:1.8 			;
+  specparam t_fall = 1:1.8:2	 			;
+  specparam t_turnoff = 1.1:1.2:1.3 ;
+  (clk => q) = (t_rise, t_fall, t_turnoff) ;
+endspecify
+```
+
+#### 3.10.6. x 传输延迟
+
+如果没有指定 x 转换时间的延迟（门路径延迟中没有给出 12 个延迟参数），则规定：
+
+- 从 x 转换为已知状态的延迟时间为，可能需要的最大延迟时间；
+- 从已知状态转换为 x 的延迟时间为，可能需要的最小延迟时间。
+
+### 3.11. 建立时间和保持时间
+
+#### 3.11.1. 基本概念
+
+建立时间是时钟触发事件来临之前，数据需要保持稳定的最小时间，以便数据能够被时钟正确的采样；保持时间是时钟触发事件来临之后，数据需要保持稳定的最小时间，以便数据能够被电路准确的传输。
+
+#### 3.11.2. 约束条件
+
+##### 建立时间约束条件
+
+时钟到来之前，数据需要提前准备好，才能被时钟正确采样，要求数据路径（data path）比时钟路径（clock path）更快，即数据到达时间（data arrival time）小于数据要求时间（data required time）。
 
 
+$$
+T_{cq} + T_{comb} + T_{su} \le T_{clk} + T_{skew}
+$$
 
-
-
-
-
-
-
+```sequence
+graph LR;
+A[]
+```
 
 
 
