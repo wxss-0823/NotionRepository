@@ -1873,7 +1873,7 @@ endspecify
 (<source_io) => <destination_io>) = <delay_value> ;
 ```
 
- 可以用 `specparam` 在 `specify` 块中定义延迟数值常量，然后赋值给路径延迟。`specparam` 定义的常量只能在 `specify` 块内部使用。
+可以用 `specparam` 在 `specify` 块中定义延迟数值常量，然后赋值给路径延迟。`specparam` 定义的常量只能在 `specify` 块内部使用。
 
 ```verilog
 specparam name = value ;
@@ -2003,12 +2003,13 @@ $$
 T_{cq} + T_{comb} + T_{su} \le T_{clk} + T_{skew}
 $$
 
-```sequence
-graph LR;
-A[]
-```
+- $T_{cq}$ ：寄存器 `clock` 端到 `Q` 端的延迟；
+- $T_{comb}$ ：data path 中组合逻辑延迟；
+- $T_{su}$ ：建立时间；
+- $T_{clk}$ ：时钟周期；
+- $T_{skew}$ ：时钟偏移。
 
-
+理论上，电路能够承载的最小时钟周期和最快时钟频率分别为
 
 
 
