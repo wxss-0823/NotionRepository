@@ -1998,7 +1998,6 @@ endspecify
 
 时钟到来之前，数据需要提前准备好，才能被时钟正确采样，要求数据路径（data path）比时钟路径（clock path）更快，即数据到达时间（data arrival time）小于数据要求时间（data required time）。
 
-
 $$
 T_{cq} + T_{comb} + T_{su} \le T_{clk} + T_{skew}
 $$
@@ -2010,8 +2009,6 @@ $$
 - $T_{skew}$ ：时钟偏移。
 
 理论上，电路能够承载的最小时钟周期和最快时钟频率分别为
-
-
 
 
 
